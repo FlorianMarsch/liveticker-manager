@@ -86,9 +86,11 @@ public class Main {
 
 				String fileName = path + "/../cache/" ;
 				File tempFile = new File(fileName);
+				tempFile = new File(tempFile.getCanonicalPath());
 				tempFile.mkdir();
-				tempFile = new File(fileName + "test.data");
+				tempFile = new File(tempFile.getCanonicalPath() + "/test.data");
 				tempFile.setWritable(Boolean.TRUE);
+				tempFile.createNewFile();
 
 				FileUtils.writeByteArrayToFile(tempFile, new Date().toString().getBytes(), true);
 				String readFileToString = FileUtils.readFileToString(tempFile);
