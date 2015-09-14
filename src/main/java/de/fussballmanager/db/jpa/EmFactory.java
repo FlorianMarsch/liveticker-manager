@@ -10,10 +10,9 @@ import javax.persistence.Persistence;
 
 public class EmFactory {
 
-	static EntityManager entityManager;
-	
+	static EntityManagerFactory entityManagerFactory;
 	public static EntityManager getEntityManager(){
-		if(entityManager == null){
+		if(entityManagerFactory == null){
 			
 			String persistenceUnitName = "my-app";
 			String databaseUrl = System.getenv("DATABASE_URL");
@@ -30,9 +29,8 @@ public class EmFactory {
 			properties.put("javax.persistence.jdbc.user", userName );
 			properties.put("javax.persistence.jdbc.password", password );
 			properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
-			EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
-			entityManager = entityManagerFactory.createEntityManager();
+			entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 		}
-		return entityManager;
+		return entityManagerFactory.createEntityManager();
 	}
 }
