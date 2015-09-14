@@ -97,6 +97,7 @@ public class Main {
 				attributes.put("results", resultList );
 				return new ModelAndView(attributes, "db.ftl");
 			} catch (Exception e) {
+				e.printStackTrace();
 				attributes.put("message", "There was an error: " + e);
 				return new ModelAndView(attributes, "error.ftl");
 			} finally {
