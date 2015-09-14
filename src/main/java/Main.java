@@ -26,6 +26,7 @@ import static spark.Spark.get;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
+import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.jpa.EmFactory;
 
 public class Main {
@@ -115,16 +116,11 @@ public class Main {
 						EntityManager em = EmFactory.getEntityManager();
 						em.getTransaction().begin();
 
-						Query createQuery = em
-								.createNativeQuery("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-						createQuery.executeUpdate();
+						em.persist(new Tick());
+						
+						Query selectQuery = em.createQuery("SELECT x FROM Tick x");
 
-						Query insertQuery = em
-								.createNativeQuery("INSERT INTO ticks VALUES (now())");
-						insertQuery.executeUpdate();
-
-						Query selectQuery = em
-								.createNativeQuery("SELECT tick FROM ticks");
+					
 						List resultList = selectQuery.getResultList();
 						em.getTransaction().commit();
 

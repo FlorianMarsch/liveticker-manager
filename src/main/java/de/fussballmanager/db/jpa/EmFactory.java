@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
+
 public class EmFactory {
 
 	static EntityManagerFactory entityManagerFactory;
@@ -29,6 +31,9 @@ public class EmFactory {
 			properties.put("javax.persistence.jdbc.user", userName );
 			properties.put("javax.persistence.jdbc.password", password );
 			properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
+			properties.put("eclipselink.ddl-generation", "create-tables");
+//			properties.put("eclipselink.ddl-generation", "drop-and-create-tables");
+			properties.put("eclipselink.ddl-generation.output-mode", "database");
 			entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 		}
 		return entityManagerFactory.createEntityManager();
