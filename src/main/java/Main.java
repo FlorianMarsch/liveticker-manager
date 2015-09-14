@@ -95,6 +95,7 @@ public class Main {
 				FileUtils.writeByteArrayToFile(tempFile, new Date().toString().getBytes(), true);
 				String readFileToString = FileUtils.readFileToString(tempFile);
 				List<String> resultList = new ArrayList<String>();
+				resultList.add(tempFile.getCanonicalPath());
 				resultList.add(readFileToString);
 				attributes.put("results", resultList );
 				return new ModelAndView(attributes, "db.ftl");
