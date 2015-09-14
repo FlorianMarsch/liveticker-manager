@@ -84,7 +84,7 @@ public class Main {
 				File createTempFile = File.createTempFile("comunio", "");
 				String path = createTempFile.getAbsolutePath();
 
-				String fileName = path + "cache/../" ;
+				String fileName = path + "/../cache/" ;
 				File tempFile = new File(fileName);
 				tempFile.mkdir();
 				tempFile = new File(fileName + "test.data");
