@@ -4,8 +4,10 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 @MappedSuperclass
 public class AbstractEntity {
@@ -14,9 +16,15 @@ public class AbstractEntity {
 	private String id = UUID.randomUUID().toString();
 	
 	@Column
-	private Long time = System.currentTimeMillis();
+	private Long creationTime = System.currentTimeMillis();
 
-	@Column(length=34)
+	@Column
+	private Long lastChangedTime;
+	
+	@Column
+	private Boolean persistend = Boolean.FALSE;
+	
+	@Column(length=4)
 	private String schemaName = System.getenv("SCHEME");
 
 	public String getId() {
@@ -27,12 +35,12 @@ public class AbstractEntity {
 		this.id = id;
 	}
 
-	public Long getTime() {
-		return time;
+	public Long getCreationTime() {
+		return creationTime;
 	}
 
-	public void setTime(Long time) {
-		this.time = time;
+	public void setCreationTime(Long creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public String getSchemaName() {
@@ -41,6 +49,22 @@ public class AbstractEntity {
 
 	public void setSchemaName(String schemaName) {
 		this.schemaName = schemaName;
+	}
+
+	public Long getLastChangedTime() {
+		return lastChangedTime;
+	}
+
+	public void setLastChangedTime(Long lastChangedTime) {
+		this.lastChangedTime = lastChangedTime;
+	}
+
+	public Boolean getPersistend() {
+		return persistend;
+	}
+
+	public void setPersistend(Boolean persistend) {
+		this.persistend = persistend;
 	}
 
 	@Override

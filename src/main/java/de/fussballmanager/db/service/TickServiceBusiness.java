@@ -22,11 +22,12 @@ public class TickServiceBusiness {
 	}
 
 	public void save(Tick aTick) {
-		Tick tempTick = em.find(Tick.class, aTick.getId());
-		if (tempTick == null) {
-			em.persist(aTick);
-		} else {
+		if (aTick.getPersistend()) {
 			em.merge(aTick);
+		} else {
+			aTick.setLastChangedTime(System.currentTimeMillis());
+			aTick.setPersistend(Boolean.TRUE);
+			em.persist(aTick);
 		}
 	}
 

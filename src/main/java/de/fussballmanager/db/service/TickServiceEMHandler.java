@@ -24,6 +24,7 @@ public class TickServiceEMHandler extends TickServiceBusiness{
 			if(transaction != null && transaction.isActive()){
 				transaction.rollback();
 			}
+			e.printStackTrace();
 			throw new AccessLayerException("A DB Problem occured", e);
 		}
 	}
@@ -40,6 +41,7 @@ public class TickServiceEMHandler extends TickServiceBusiness{
 			if(transaction != null && transaction.isActive()){
 				transaction.rollback();
 			}
+			e.printStackTrace();
 			throw new AccessLayerException("A DB Problem occured", e);
 		}
 	}
