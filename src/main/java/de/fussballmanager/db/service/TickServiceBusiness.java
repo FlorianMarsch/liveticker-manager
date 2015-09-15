@@ -10,7 +10,7 @@ import de.fussballmanager.db.entity.tick.QTick;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.jpa.QueryBuilder;
 
-public class TickServiceBusiness {
+class TickServiceBusiness {
 
 	EntityManager em;
 
@@ -22,11 +22,10 @@ public class TickServiceBusiness {
 	}
 
 	public void save(Tick aTick) {
+		aTick.setLastChangedTime(System.currentTimeMillis());
 		if (aTick.getPersistend()) {
-			aTick.setLastChangedTime(System.currentTimeMillis());
 			em.merge(aTick);
 		} else {
-			aTick.setLastChangedTime(System.currentTimeMillis());
 			aTick.setPersistend(Boolean.TRUE);
 			em.persist(aTick);
 		}

@@ -9,7 +9,7 @@ import de.fussballmanager.db.AccessLayerException;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.jpa.EmFactory;
 
-public class TickServiceEMHandler extends TickServiceBusiness{
+class TickServiceEMHandler extends TickServiceBusiness{
 
 	public List<Tick> getTicks(){
 		EntityTransaction transaction = null;

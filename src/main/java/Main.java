@@ -18,8 +18,7 @@ import org.json.JSONObject;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 import de.fussballmanager.db.entity.tick.Tick;
-import de.fussballmanager.db.service.TickServiceBusiness;
-import de.fussballmanager.db.service.TickServiceEMHandler;
+import de.fussballmanager.db.service.TickService;
 
 public class Main {
 
@@ -105,7 +104,7 @@ public class Main {
 					Map<String, Object> attributes = new HashMap<>();
 					try {
 
-						TickServiceEMHandler tempTickService = new TickServiceEMHandler();
+						TickService tempTickService = new TickService();
 						tempTickService.save(new Tick());
 						List<Tick> resultList = tempTickService.getTicks();
 						for (Tick tempTick : resultList) {

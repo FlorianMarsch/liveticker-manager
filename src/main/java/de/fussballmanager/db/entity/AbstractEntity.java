@@ -3,28 +3,25 @@ package de.fussballmanager.db.entity;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 @MappedSuperclass
 public class AbstractEntity {
 	@Id
-	@Column(length=36)
+	@Column(length = 36)
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column
 	private Long creationTime = System.currentTimeMillis();
 
 	@Column
 	private Long lastChangedTime;
-	
+
 	@Column
 	private Boolean persistend = Boolean.FALSE;
-	
-	@Column(length=4)
+
+	@Column(length = 4)
 	private String schemaName = System.getenv("SCHEME");
 
 	public String getId() {
@@ -91,6 +88,5 @@ public class AbstractEntity {
 			return false;
 		return true;
 	}
-	
-	
+
 }
