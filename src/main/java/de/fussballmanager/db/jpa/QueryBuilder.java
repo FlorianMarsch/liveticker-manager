@@ -9,7 +9,7 @@ import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.StringPath;
 
-import de.fussballmanager.db.entity.tick.AbstractEntity;
+import de.fussballmanager.db.entity.AbstractEntity;
 
 public class QueryBuilder {
 

@@ -1,36 +1,25 @@
-import java.sql.*;
+import static spark.Spark.exception;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.SparkBase.port;
+import static spark.SparkBase.staticFileLocation;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.eclipse.persistence.tools.file.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static spark.Spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
-import spark.Session;
-import static spark.Spark.get;
-
-import com.heroku.sdk.jdbc.DatabaseUrl;
-import com.mysema.query.jpa.impl.JPAQuery;
-
-import de.fussballmanager.db.entity.tick.QTick;
+import spark.template.freemarker.FreeMarkerEngine;
 import de.fussballmanager.db.entity.tick.Tick;
-import de.fussballmanager.db.jpa.EmFactory;
-import de.fussballmanager.db.jpa.QueryBuilder;
+import de.fussballmanager.db.service.TickServiceBusiness;
+import de.fussballmanager.db.service.TickServiceEMHandler;
 
 public class Main {
 
@@ -116,18 +105,14 @@ public class Main {
 					Map<String, Object> attributes = new HashMap<>();
 					try {
 
-						EntityManager em = EmFactory.getEntityManager();
-						em.getTransaction().begin();
-
-						em.persist(new Tick());
+						TickServiceEMHandler tempTickService = new TickServiceEMHandler();
+						tempTickService.save(new Tick());
+						List<Tick> resultList = tempTickService.getTicks();
+						for (Tick tempTick : resultList) {
+							tempTickService.save(tempTick);
+						}
 						
-
-						JPAQuery selectQuery = new QueryBuilder(em, QTick.tick).select(null);
-					
-						List<Tick> resultList = selectQuery.list(QTick.tick);
-						em.getTransaction().commit();
-
-						attributes.put("results", resultList);
+						attributes.put("results", resultList );
 						return new ModelAndView(attributes, "db.ftl");
 					} catch (Exception e) {
 						attributes.put("message", "There was an error: " + e);

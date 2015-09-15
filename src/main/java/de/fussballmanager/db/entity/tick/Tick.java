@@ -3,9 +3,10 @@ package de.fussballmanager.db.entity.tick;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table
-public class Tick extends AbstractEntity{
+import de.fussballmanager.db.entity.AbstractEntity;
 
-	
+@Table
+@Entity
+public class Tick extends AbstractEntity {
+
 }

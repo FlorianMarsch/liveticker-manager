@@ -1,12 +1,13 @@
-package de.fussballmanager.db.entity.tick;
+package de.fussballmanager.db.entity;
 
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
-@Entity
+@MappedSuperclass
 public class AbstractEntity {
 	@Id
 	@Column(length=36)
