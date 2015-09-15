@@ -41,6 +41,23 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>3.6.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>3.6.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -53,6 +70,8 @@
 					<target>1.8</target>
 					<optimize>true</optimize>
 					<debug>true</debug>
+					<verbose>true</verbose>
+					<fork>true</fork>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -66,6 +85,23 @@
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Query DSL generate Q Classes -->
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/classes</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

@@ -25,7 +25,9 @@ import spark.Session;
 import static spark.Spark.get;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
+import com.mysema.query.jpa.impl.JPAQuery;
 
+import de.fussballmanager.db.entity.tick.QTick;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.jpa.EmFactory;
 
@@ -118,10 +120,10 @@ public class Main {
 
 						em.persist(new Tick());
 						
-						Query selectQuery = em.createQuery("SELECT x FROM Tick x");
 
+						JPAQuery selectQuery = new JPAQuery(em).from(QTick.tick);
 					
-						List resultList = selectQuery.getResultList();
+						List<Tick> resultList = selectQuery.list(QTick.tick);
 						em.getTransaction().commit();
 
 						attributes.put("results", resultList);
