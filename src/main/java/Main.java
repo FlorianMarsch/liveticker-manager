@@ -30,6 +30,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import de.fussballmanager.db.entity.tick.QTick;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.jpa.EmFactory;
+import de.fussballmanager.db.jpa.QueryBuilder;
 
 public class Main {
 
@@ -121,7 +122,7 @@ public class Main {
 						em.persist(new Tick());
 						
 
-						JPAQuery selectQuery = new JPAQuery(em).from(QTick.tick);
+						JPAQuery selectQuery = new QueryBuilder(em, QTick.tick).select(null);
 					
 						List<Tick> resultList = selectQuery.list(QTick.tick);
 						em.getTransaction().commit();
