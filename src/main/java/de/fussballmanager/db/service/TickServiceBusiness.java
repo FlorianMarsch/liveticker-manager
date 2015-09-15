@@ -23,6 +23,7 @@ public class TickServiceBusiness {
 
 	public void save(Tick aTick) {
 		if (aTick.getPersistend()) {
+			aTick.setLastChangedTime(System.currentTimeMillis());
 			em.merge(aTick);
 		} else {
 			aTick.setLastChangedTime(System.currentTimeMillis());
