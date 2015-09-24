@@ -155,9 +155,7 @@ public class Bootstrap {
 			String norm = Normalizer.normalize(playerItem.getName(), Normalizer.Form.NFD);
 			norm = norm.replaceAll("[^\\p{ASCII}]", "");
 			
-			if(!norm.equals(playerItem.getName())){
 				tempPlayer.setNormalizedName(norm);
-			}
 			tempPlayer.setPrice(playerItem.getQuote());
 			tempPlayer.setPoints(playerItem.getPoints());
 			tempPlayer.setPosition(playerItem.getPosition());

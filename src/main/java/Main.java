@@ -18,6 +18,9 @@ import org.json.JSONObject;
 
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
+import de.fussball.live.GameDayFinder;
+import de.fussball.live.ticker.LiveTickerHandler;
+import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.player.Player;
 import de.fussballmanager.db.entity.player.PlayerService;
 import de.fussballmanager.db.entity.tick.QTick;
@@ -29,11 +32,9 @@ import de.fussballmanager.scheduler.Bootstrap;
 public class Main {
 
 	public static void main(String[] args) {
-		
-//		new Bootstrap().init();
-//		
+
 		System.out.println("Server started");
-		
+
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
 
@@ -73,6 +74,40 @@ public class Main {
 			request.session(true);
 			return new ModelAndView(attributes, "login.ftl");
 		}, new FreeMarkerEngine());
+
+		get("/live",
+				(request, response) -> {
+
+					LiveTickerHandler liveTicker = new LiveTickerHandler();
+					GameDayFinder gdf = new GameDayFinder();
+					String currentGameDay = gdf.getCurrentGameDay();
+					JSONArray data = new JSONArray();
+					currentGameDay ="6";
+					if (currentGameDay != null) {
+
+						List<Event> resolvedEvents = liveTicker
+								.getResolvedLiveTickerEvents(currentGameDay);
+
+						for (Event tempEvent : resolvedEvents) {
+							try {
+								JSONObject tempJsonPlayer = new JSONObject();
+								tempJsonPlayer.put("id", tempEvent.getId());
+								tempJsonPlayer.put("name",
+										tempEvent.getResolved());
+								tempJsonPlayer.put("event",
+										tempEvent.getEvent());
+								data.put(data.length(), tempJsonPlayer);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						}
+
+					}
+					Map<String, Object> attributes = new HashMap<>();
+					attributes.put("data", data.toString());
+					request.session(true);
+					return new ModelAndView(attributes, "json.ftl");
+				}, new FreeMarkerEngine());
 
 		get("/all", (request, response) -> {
 
@@ -145,13 +180,9 @@ public class Main {
 		get("/db", (req, res) -> {
 			Map<String, Object> attributes = new HashMap<>();
 			try {
-
+				new Bootstrap().init();
 				AbstractService<Tick> tempTickService = new TickService();
-				tempTickService.save(new Tick());
 				List<Tick> resultList = tempTickService.getAll();
-				for (Tick tempTick : resultList) {
-					tempTickService.save(tempTick);
-				}
 
 				attributes.put("results", resultList);
 				return new ModelAndView(attributes, "db.ftl");
