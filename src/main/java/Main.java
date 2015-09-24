@@ -114,13 +114,7 @@ public class Main {
 				ClassicKaderFactory ckf = new ClassicKaderFactory();
 				Set<String> set = ckf.get(id);
 				for (String value : set) {
-					try {
-//						JSONObject player = new JSONObject();
-//						player.put("name", value);
-						data.put(value);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+					data.put(value);
 				}
 			}
 			Map<String, Object> attributes = new HashMap<>();
