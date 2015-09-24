@@ -6,6 +6,7 @@ import static spark.SparkBase.staticFileLocation;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +18,22 @@ import org.json.JSONObject;
 
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
+import de.fussballmanager.db.entity.player.Player;
+import de.fussballmanager.db.entity.player.PlayerService;
+import de.fussballmanager.db.entity.tick.QTick;
 import de.fussballmanager.db.entity.tick.Tick;
-import de.fussballmanager.db.service.TickService;
+import de.fussballmanager.db.entity.tick.TickService;
+import de.fussballmanager.db.service.AbstractService;
+import de.fussballmanager.scheduler.Bootstrap;
 
 public class Main {
 
 	public static void main(String[] args) {
-
+		
+//		new Bootstrap().init();
+//		
+		System.out.println("Server started");
+		
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
 
@@ -64,61 +74,93 @@ public class Main {
 			return new ModelAndView(attributes, "login.ftl");
 		}, new FreeMarkerEngine());
 
+		get("/all", (request, response) -> {
+
+			PlayerService playerservice = new PlayerService();
+
+			List<Player> all = playerservice.getAll();
+			JSONArray data = new JSONArray();
+
+			for (Player tempPlayer : all) {
+				try {
+					JSONObject tempJsonPlayer = new JSONObject();
+					tempJsonPlayer.put("id", tempPlayer.getId());
+					tempJsonPlayer.put("extern", tempPlayer.getExternID());
+					tempJsonPlayer.put("name", tempPlayer.getDisplayName());
+					tempJsonPlayer.put("price", tempPlayer.getPrice());
+					tempJsonPlayer.put("position", tempPlayer.getPosition());
+					tempJsonPlayer.put("points", tempPlayer.getPoints());
+					data.put(data.length(), tempJsonPlayer);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			request.session(true);
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
+
 		exception(RuntimeException.class, (e, request, response) -> {
 			response.status(500);
 			response.body("Ein Fehler ist aufgetreten. ");
 		});
 
-		get("/file", (req, res) -> {
-			Map<String, Object> attributes = new HashMap<>();
-			try {
-
-				File createTempFile = File.createTempFile("common-io", "");
-				String path = createTempFile.getAbsolutePath();
-
-				String fileName = path + "/../cache/" ;
-				File tempFile = new File(fileName);
-				tempFile = new File(tempFile.getCanonicalPath());
-				tempFile.mkdir();
-				tempFile = new File(tempFile.getCanonicalPath() + "/test.data");
-				tempFile.setWritable(Boolean.TRUE);
-				tempFile.createNewFile();
-
-				FileUtils.writeByteArrayToFile(tempFile, new Date().toString().getBytes(), true);
-				String readFileToString = FileUtils.readFileToString(tempFile);
-				List<String> resultList = new ArrayList<String>();
-				resultList.add(tempFile.getCanonicalPath());
-				resultList.add(readFileToString);
-				attributes.put("results", resultList );
-				return new ModelAndView(attributes, "db.ftl");
-			} catch (Exception e) {
-				e.printStackTrace();
-				attributes.put("message", "There was an error: " + e);
-				return new ModelAndView(attributes, "error.ftl");
-			} finally {
-			}
-		}, new FreeMarkerEngine());
-
-		get("/db",
+		get("/file",
 				(req, res) -> {
 					Map<String, Object> attributes = new HashMap<>();
 					try {
 
-						TickService tempTickService = new TickService();
-						tempTickService.save(new Tick());
-						List<Tick> resultList = tempTickService.getTicks();
-						for (Tick tempTick : resultList) {
-							tempTickService.save(tempTick);
-						}
-						
-						attributes.put("results", resultList );
+						File createTempFile = File.createTempFile("common-io",
+								"");
+						String path = createTempFile.getAbsolutePath();
+
+						String fileName = path + "/../cache/";
+						File tempFile = new File(fileName);
+						tempFile = new File(tempFile.getCanonicalPath());
+						tempFile.mkdir();
+						tempFile = new File(tempFile.getCanonicalPath()
+								+ "/test.data");
+						tempFile.setWritable(Boolean.TRUE);
+						tempFile.createNewFile();
+
+						FileUtils.writeByteArrayToFile(tempFile, new Date()
+								.toString().getBytes(), true);
+						String readFileToString = FileUtils
+								.readFileToString(tempFile);
+						List<String> resultList = new ArrayList<String>();
+						resultList.add(tempFile.getCanonicalPath());
+						resultList.add(readFileToString);
+						attributes.put("results", resultList);
 						return new ModelAndView(attributes, "db.ftl");
 					} catch (Exception e) {
+						e.printStackTrace();
 						attributes.put("message", "There was an error: " + e);
 						return new ModelAndView(attributes, "error.ftl");
 					} finally {
 					}
 				}, new FreeMarkerEngine());
+
+		get("/db", (req, res) -> {
+			Map<String, Object> attributes = new HashMap<>();
+			try {
+
+				AbstractService<Tick> tempTickService = new TickService();
+				tempTickService.save(new Tick());
+				List<Tick> resultList = tempTickService.getAll();
+				for (Tick tempTick : resultList) {
+					tempTickService.save(tempTick);
+				}
+
+				attributes.put("results", resultList);
+				return new ModelAndView(attributes, "db.ftl");
+			} catch (Exception e) {
+				attributes.put("message", "There was an error: " + e);
+				return new ModelAndView(attributes, "error.ftl");
+			} finally {
+			}
+		}, new FreeMarkerEngine());
 
 	}
 
