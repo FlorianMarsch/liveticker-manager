@@ -6,11 +6,11 @@ import static spark.SparkBase.staticFileLocation;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -18,12 +18,11 @@ import org.json.JSONObject;
 
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
-import de.fussball.live.GameDayFinder;
+import de.fussball.kader.ClassicKaderFactory;
 import de.fussball.live.ticker.LiveTickerHandler;
 import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.player.Player;
 import de.fussballmanager.db.entity.player.PlayerService;
-import de.fussballmanager.db.entity.tick.QTick;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.tick.TickService;
 import de.fussballmanager.db.service.AbstractService;
@@ -106,6 +105,29 @@ public class Main {
 					request.session(true);
 					return new ModelAndView(attributes, "json.ftl");
 				}, new FreeMarkerEngine());
+
+		get("/kader/:id", (request, response) -> {
+
+			String id = request.params(":id");
+			JSONArray data = new JSONArray();
+			if (id != null) {
+				ClassicKaderFactory ckf = new ClassicKaderFactory();
+				Set<String> set = ckf.get(id);
+				for (String value : set) {
+					try {
+//						JSONObject player = new JSONObject();
+//						player.put("name", value);
+						data.put(value);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			request.session(true);
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 
 		get("/all", (request, response) -> {
 
