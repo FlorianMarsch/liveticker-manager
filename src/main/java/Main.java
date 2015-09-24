@@ -75,14 +75,12 @@ public class Main {
 			return new ModelAndView(attributes, "login.ftl");
 		}, new FreeMarkerEngine());
 
-		get("/live",
+		get("/live/:gameday",
 				(request, response) -> {
 
 					LiveTickerHandler liveTicker = new LiveTickerHandler();
-					GameDayFinder gdf = new GameDayFinder();
-					String currentGameDay = gdf.getCurrentGameDay();
+					String currentGameDay = request.params(":gameday");
 					JSONArray data = new JSONArray();
-					currentGameDay ="6";
 					if (currentGameDay != null) {
 
 						List<Event> resolvedEvents = liveTicker
