@@ -20,7 +20,7 @@ public class Bootstrap {
 
 	public void init() {
 		Club tempClub = new Club();
-		tempClub.setName("FC Bayern München");
+		tempClub.setName("FC Bayern M\u00fcnchen");
 		tempClub.setLogoUrl("logo");
 		tempClub.setExternID(1);
 		clubService.save(tempClub);
@@ -86,7 +86,7 @@ public class Bootstrap {
 		clubService.save(tempClub);
 
 		tempClub = new Club();
-		tempClub.setName("1. FC Köln");
+		tempClub.setName("1. FC K\u00f6ln");
 		tempClub.setLogoUrl("logo");
 		tempClub.setExternID(13);
 		clubService.save(tempClub);
