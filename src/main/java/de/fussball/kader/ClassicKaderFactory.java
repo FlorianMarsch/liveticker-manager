@@ -55,5 +55,25 @@ public class ClassicKaderFactory {
 			throw new RuntimeException("abbruch", e);
 		}
 	}
+	
+	public Map<String,Set<String>> getAll(){
+		Map<String,Set<String>>returnMap = new HashMap<String,Set<String>>();
+		
+		returnMap.put("FCEtepetete", get("9414334"));
+		returnMap.put("TorpedoEric", get("9128310"));
+		returnMap.put("CheaterP", get("9958945"));
+		returnMap.put("JuventusFlorin", get("9105942"));
+		returnMap.put("ZenitTill", get("9198836"));
+		returnMap.put("SpartaTobyIO", get("9206452"));
+		returnMap.put("FcPhoenix", get("9369292"));
+		returnMap.put("FCTor", get("9462897"));
+		returnMap.put("HerrmanniacAnna", get("9311676"));
+		returnMap.put("LokomotiveKaiopolis", get("10526925"));
+		returnMap.put("Annika", get("10958878"));
+		returnMap.put("Nadine", get("10956588"));
+		
+		return returnMap;
+		
+	}
 
 }

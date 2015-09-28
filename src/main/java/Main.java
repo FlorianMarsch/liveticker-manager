@@ -106,6 +106,52 @@ public class Main {
 					return new ModelAndView(attributes, "json.ftl");
 				}, new FreeMarkerEngine());
 
+		get("/resolvedgoals/:gameday",
+				(request, response) -> {
+
+					String currentGameDay = request.params(":gameday");
+					JSONArray data = new JSONArray();
+					if (currentGameDay != null) {
+						LiveTickerHandler liveTicker = new LiveTickerHandler();
+						ClassicKaderFactory ckf = new ClassicKaderFactory();
+
+						Map<String, Set<String>> allPlayer = ckf.getAll();
+
+						List<Event> resolvedEvents = liveTicker
+								.getResolvedLiveTickerEvents(currentGameDay);
+
+						for (Event tempEvent : resolvedEvents) {
+							try {
+								for (String trainer : allPlayer.keySet()) {
+									Set<String> team = allPlayer.get(trainer);
+
+									if (team.contains(tempEvent.getResolved())) {
+
+										JSONObject tempJsonPlayer = new JSONObject();
+										tempJsonPlayer.put("id",
+												tempEvent.getId());
+										tempJsonPlayer.put("name",
+												tempEvent.getResolved());
+										tempJsonPlayer.put("type",
+												tempEvent.getEvent());
+										tempJsonPlayer.put("owner", trainer);
+										data.put(data.length(), tempJsonPlayer);
+									}
+
+								}
+
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						}
+
+					}
+					Map<String, Object> attributes = new HashMap<>();
+					attributes.put("data", data.toString());
+					request.session(true);
+					return new ModelAndView(attributes, "json.ftl");
+				}, new FreeMarkerEngine());
+
 		get("/kader/:id", (request, response) -> {
 
 			String id = request.params(":id");
