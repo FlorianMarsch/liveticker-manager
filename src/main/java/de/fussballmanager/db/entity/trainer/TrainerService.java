@@ -8,4 +8,9 @@ public class TrainerService extends AbstractService<Trainer> {
 		super(QTrainer.trainer);
 	}
 
+	@Override
+	public Trainer getNewInstance() {
+		return new Trainer();
+	}
+
 }

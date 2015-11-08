@@ -42,5 +42,7 @@ public abstract class AbstractService<E extends AbstractEntity> extends Abstract
 			throw new AccessLayerException("A Call Problem occured", e);
 		}
 	}
+	
+	public abstract E getNewInstance();
 
 }

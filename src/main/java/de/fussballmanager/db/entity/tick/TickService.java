@@ -8,4 +8,9 @@ public class TickService extends AbstractService<Tick> {
 		super(QTick.tick);
 	}
 
+	@Override
+	public Tick getNewInstance() {
+		return new Tick();
+	}
+
 }

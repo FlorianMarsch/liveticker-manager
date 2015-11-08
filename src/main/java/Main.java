@@ -21,10 +21,12 @@ import spark.template.freemarker.FreeMarkerEngine;
 import de.fussball.kader.ClassicKaderFactory;
 import de.fussball.live.ticker.LiveTickerHandler;
 import de.fussball.live.ticker.event.Event;
+import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.player.Player;
 import de.fussballmanager.db.entity.player.PlayerService;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.tick.TickService;
+import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.fussballmanager.db.service.AbstractService;
 import de.fussballmanager.scheduler.Bootstrap;
 
@@ -253,6 +255,10 @@ public class Main {
 			}
 		}, new FreeMarkerEngine());
 
+		
+		new ClubJSONProducer().registerServices();
+		new TrainerJSONProducer().registerServices();
+		
 	}
 
 }

@@ -14,4 +14,9 @@ public class PlayerService extends AbstractService<Player> {
 		return super.getAllOrderedInMap(QPlayer.player.externID);
 	}
 
+	@Override
+	public Player getNewInstance() {
+		return new Player();
+	}
+
 }

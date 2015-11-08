@@ -14,4 +14,9 @@ public class ClubService extends AbstractService<Club> {
 		return super.getAllOrderedInMap(QClub.club.externID);
 	}
 
+	@Override
+	public Club getNewInstance() {
+		return new Club();
+	}
+
 }
