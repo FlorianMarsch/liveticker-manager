@@ -78,10 +78,6 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	}
 
-	private boolean isAssignable(String key) {
-		return !key.equals("id");
-	}
-	
 	private void registerGetAttributeById() {
 		Spark.get("/" + root + "/:id/:property", (request, response) -> {
 			String id = request.params(":id");
@@ -158,7 +154,13 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			NoSuchMethodException {
 		Map<String, String> describe = BeanUtils.describe(tempEntity);
 		describe.remove("class");
+		describe.remove("schemaName");
+		describe.remove("persistend");
 		return describe;
+	}
+	
+	private boolean isAssignable(String key) {
+		return !(key.equals("id") ||key.equals("class") ||key.equals("schemaName") ||key.equals("persistend") );
 	}
 
 }

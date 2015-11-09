@@ -12,7 +12,6 @@ import com.mysema.query.types.Path;
 
 import de.fussballmanager.db.AccessLayerException;
 import de.fussballmanager.db.entity.AbstractEntity;
-import de.fussballmanager.db.jpa.EmFactory;
 import de.fussballmanager.db.jpa.EmPool;
 
 public abstract class AbstractServiceEMHandler<E extends AbstractEntity> extends AbstractServiceBusiness<E>{

@@ -22,6 +22,7 @@ import de.fussball.kader.ClassicKaderFactory;
 import de.fussball.live.ticker.LiveTickerHandler;
 import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
+import de.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.fussballmanager.db.entity.player.Player;
 import de.fussballmanager.db.entity.player.PlayerService;
 import de.fussballmanager.db.entity.tick.Tick;
@@ -258,6 +259,7 @@ public class Main {
 		
 		new ClubJSONProducer().registerServices();
 		new TrainerJSONProducer().registerServices();
+		new MatchdayJSONProducer().registerServices();
 		
 	}
 
