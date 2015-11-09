@@ -1,0 +1,122 @@
+tr a{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1vw;
+	font-decoration :none;
+	color: #333;
+	text-decoration: none;
+	text-underline: none; 
+}
+
+tr:hover a:hover {
+  color: #428bca;
+text-decoration: underline;
+}
+
+table {
+ font-family: 'Ubuntu', sans-serif;
+  font-size: 1vw;
+  color: #333;
+  font-weight: 300;
+  text-align: left;
+  line-height: 40px;
+  border-spacing: 0;
+  border: 0px solid #428bca;
+  width: 100%;
+  margin: 20px auto;
+}
+
+
+
+thead tr:first-child {
+  background: #428bca;
+  color: #fff;
+  border: none;
+}
+
+th {font-weight: bold;}
+th:first-child, td:first-child {padding: 0 15px 0 20px;}
+
+thead tr:last-child th {border-bottom: 2px solid #ddd;}
+
+tbody tr:hover {background-color: #E6E6FF}
+tbody tr:last-child td {border: none;}
+tbody td {border-bottom: 1px solid #E6E6FF}
+
+td:last-child {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.button {
+  color: #E5E5E5;
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+
+tr:hover .button {
+  color: #A4A4A4;
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+
+tr:hover .alterar:hover {
+  color: #428bca;
+}
+
+tr:hover .excluir:hover {
+  color: #dc2a2a;
+}
+
+tr .addText {
+  color: #E5E5E5;
+}
+tr:hover .addText {
+  color: #A4A4A4;
+}
+thead{
+  display:none;
+}
+
+.row{
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1vw;
+	font-decoration :none;
+	color: #A4A4A4;
+	text-decoration: none;
+	text-underline: none; 
+}
+
+.row:hover  div{
+  background-color: #E6E6FF;
+}
+
+
+.clicked div{
+  background-color: #E6E6FF;
+}
+
+.row .addText {
+  color: #E5E5E5;
+}
+.row:hover .addText {
+  color: #A4A4A4;
+}
+
+.clicked .addText {
+  color: #A4A4A4;
+}
+.uuidContainer{
+color: white;
+}
+
+.bestdeal  div{
+border-top: solid 1px #A4A4A4;
+margin-top:25px;
+}
+
+
+
+
+
