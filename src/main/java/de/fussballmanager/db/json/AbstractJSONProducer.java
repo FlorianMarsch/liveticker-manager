@@ -1,5 +1,6 @@
 package de.fussballmanager.db.json;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,34 +32,37 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	public void registerServices() {
 		registerGetAll();
 		registerGetById();
+		registerGetAttributeById();
 		registerSave();
 	}
 
 	private void registerSave() {
-		Spark.put("/"+root+"/:id", (request, response) -> {
+		Spark.put("/" + root + "/:id", (request, response) -> {
 			List<E> all = service.getAll();
 			String id = request.params(":id");
 			List<E> found = get(id);
 			E entity;
-			if(found.isEmpty()){
+			if (found.isEmpty()) {
 				entity = service.getNewInstance();
-			}else{
+			} else {
 				entity = found.get(0);
 			}
-			String bodyString =request.body();
+			String bodyString = request.body();
 			JSONObject body = null;
 			try {
 				body = new JSONObject(bodyString);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			try {
 				Iterator keys = body.keys();
 				while (keys.hasNext()) {
 					String key = keys.next().toString();
-					Object value = body.get(key);
-					BeanUtils.setProperty(entity, key, value);
+					if (isAssignable(key)) {
+						Object value = body.get(key);
+						BeanUtils.setProperty(entity, key, value);
+					}
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -71,7 +75,30 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			attributes.put("data", data.toString());
 			return new ModelAndView(attributes, "json.ftl");
 		}, new FreeMarkerEngine());
-		
+
+	}
+
+	private boolean isAssignable(String key) {
+		return !key.equals("id");
+	}
+	
+	private void registerGetAttributeById() {
+		Spark.get("/" + root + "/:id/:property", (request, response) -> {
+			String id = request.params(":id");
+			String property = request.params(":property");
+			List<E> found = get(id);
+			String data = null;
+			try {
+				data = BeanUtils.getProperty(found.iterator().next(), property);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Map<String, Object> attributes = new HashMap<>();
+			JSONArray value = new JSONArray();
+			value.put(data);
+			attributes.put("data", value);
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 	}
 
 	private void registerGetById() {
@@ -114,8 +141,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			try {
 				JSONObject tempJsonPlayer = new JSONObject();
 
-				Map<String, String> describtion = BeanUtils
-						.describe(tempEntity);
+				Map<String, String> describtion = describe(tempEntity);
 				for (String key : describtion.keySet()) {
 					tempJsonPlayer.put(key, describtion.get(key));
 				}
@@ -125,6 +151,14 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			}
 		}
 		return data;
+	}
+
+	private Map<String, String> describe(E tempEntity)
+			throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+		Map<String, String> describe = BeanUtils.describe(tempEntity);
+		describe.remove("class");
+		return describe;
 	}
 
 }

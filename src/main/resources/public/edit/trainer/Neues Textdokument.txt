@@ -1,0 +1,212 @@
+<html>
+<head>
+</head>
+<body>
+<table>
+  <thead>
+  <tr>
+    <th>Bezeichnung</th>
+    <th>Kategorie</th>
+    <th>Verfügbarkeit</th>
+    <th>Preis</th>
+    <th>Typ</th>
+    <th>User</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Various - Kill Bill Vol. 2</td>
+    <td>CD</td>
+    <td>nicht verfügbar</td>
+    <td>1,59 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Various - Kill Bill Vol. 1</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Fettes Brot - Jein</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Faithless - Insomnia</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Die Fantastischen Vier - Mfg</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Die fantastischen Vier - Sie ist weg</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>das Bo - T€rlich, T€rlich (Sicher Dicker)</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>No Doubt - The Singles 1992-2003</td>
+    <td>CD</td>
+    <td></td>
+    <td>1,09 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Die fantastischen Vier - Die da</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Absolute Beginner - Liebes Lied</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Haddaway - Just the Best Vol.1 (1993)</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Eiffel 65 - Blue [Da Ba Dee]</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Coldplay - Viva La Vida</td>
+    <td>CD</td>
+    <td>nicht verfügbar</td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Rammstein - Engel</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Lena - My Cassette Player</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Unser Star f€r Oslo: Lena Meyer-Landrut - Satellite (Gewinner Euro-Vision-</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Echt - Du Tr€gst Keine Liebe In Dir (Maxi-CD)</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>The White Stripes - Elephant</td>
+    <td>CD</td>
+    <td>nicht verfügbar</td>
+    <td>1,09 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>MC Hammer - U can&amp;#039;t touch this</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Bl€mchen - Herz an Herz</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Culture Beat - Mr. vain</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Guano Apes - Open Your Eyes</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,50 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Snap - Rhythm Is a Dancer</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  <tr>
+    <td>Fettes Brot - Nordisch By Nature</td>
+    <td>CD</td>
+    <td></td>
+    <td>0,99 €</td>
+    <td>Wunsch</td>
+    <td>Florian</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
