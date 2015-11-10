@@ -47,6 +47,7 @@ public abstract class AbstractServiceEMHandler<E extends AbstractEntity> extends
 			em = remove(em);
 			return new HashMap<K, E>(resultList);
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(transaction != null && transaction.isActive()){
 				transaction.rollback();
 			}

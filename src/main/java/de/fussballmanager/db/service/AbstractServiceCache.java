@@ -1,6 +1,5 @@
 package de.fussballmanager.db.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,8 @@ public abstract class  AbstractServiceCache<E extends AbstractEntity> extends Ab
 				resultList = super.getAll();
 				cachedMap.put(GET_ALL, resultList);
 			}
-			return new ArrayList<E>(resultList);
+//			return new ArrayList<E>(resultList);
+			return resultList;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new AccessLayerException("A Cache Problem occured", e);
@@ -40,7 +40,8 @@ public abstract class  AbstractServiceCache<E extends AbstractEntity> extends Ab
 				resultList = super.getAllOrderedInMap(aKey);
 				cachedMap.put(aKey, resultList);
 			}
-			return new HashMap<K, E>(resultList);
+			return resultList;
+//			return new HashMap<K, E>(resultList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new AccessLayerException("A Cache Problem occured", e);

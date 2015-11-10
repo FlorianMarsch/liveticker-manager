@@ -4,22 +4,19 @@
 <script src="jquery.js"></script>
 <script>
 $( document ).ready(function() {
-	$('.los').on('click', function(){
-		var root = $('.input').val();
+	$.ajax({
+		method: "get",
+		url: "/player"
+	}).done(function( msg ) {
+		var message = JSON.parse(msg);
+		jQuery.each(message.data,function(indexInArray, value){
+			var id = value.id;
 			$.ajax({
 				method: "get",
-				url: root
-			}).done(function( msg ) {
-				var message = JSON.parse(msg);
-				jQuery.each(message.data,function(indexInArray, value){
-					var id = value.id;
-					$.ajax({
-						method: "get",
-						url: root+"/"+id
-					});
-				
-				});
+				url: "/player/"+id
 			});
+		
+		});
 	});
 });
 </script>

@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.google.common.base.Stopwatch;
 
 import spark.ModelAndView;
 import spark.Spark;
@@ -77,42 +80,47 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	private void registerGetAttributeById() {
-		Spark.get("/" + root + "/:id/:property", (request, response) -> {
-			String id = request.params(":id");
-			String property = request.params(":property");
-			List<E> found = get(id);
-			String data = null;
-			try {
-				data = BeanUtils.getProperty(found.iterator().next(), property);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			Map<String, Object> attributes = new HashMap<>();
-			JSONArray value = new JSONArray();
-			value.put(data);
-			attributes.put("data", value);
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+		Spark.get(
+				"/" + root + "/:id/:property",
+				(request, response) -> {
+					String id = request.params(":id");
+					String property = request.params(":property");
+					List<E> found = get(id);
+					String data = null;
+					try {
+						data = BeanUtils.getProperty(found.iterator().next(),
+								property);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					Map<String, Object> attributes = new HashMap<>();
+					JSONArray value = new JSONArray();
+					value.put(data);
+					attributes.put("data", value);
+					return new ModelAndView(attributes, "json.ftl");
+				}, new FreeMarkerEngine());
 	}
 
 	private void registerGetById() {
 		Spark.get("/" + root + "/:id", (request, response) -> {
+
+			Stopwatch stopwatch = Stopwatch.createStarted();
 			String id = request.params(":id");
 			List<E> found = get(id);
 			JSONArray data = JSON.getJsonArray(found);
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("data", data.toString());
+			stopwatch.stop();
+			System.out.println(stopwatch.elapsed(TimeUnit.MICROSECONDS));
 			return new ModelAndView(attributes, "json.ftl");
 		}, new FreeMarkerEngine());
 	}
 
 	private List<E> get(String id) {
-		List<E> all = service.getAll();
-		List<E> found = new ArrayList<E>();
-		for (E tempEntity : all) {
-			if (tempEntity.getId().equals(id)) {
-				found.add(tempEntity);
-			}
+		List<E> found = new ArrayList<E>(1);
+		E temp = service.getAllAsMap().get(id);
+		if (temp!=null) {
+			found.add(temp);
 		}
 		return found;
 	}
@@ -129,7 +137,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	private boolean isAssignable(String key) {
-		return !(key.equals("id") ||key.equals("class") ||key.equals("schemaName") ||key.equals("persistend") );
+		return !(key.equals("id") || key.equals("class")
+				|| key.equals("schemaName") || key.equals("persistend"));
 	}
 
 }
