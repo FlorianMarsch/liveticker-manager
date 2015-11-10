@@ -70,7 +70,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			}
 			service.save(entity);
 			found = get(entity.getId());
-			JSONArray data = getJsonArray(found);
+			JSONArray data = JSON.getJsonArray(found);
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("data", data.toString());
 			return new ModelAndView(attributes, "json.ftl");
@@ -101,7 +101,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		Spark.get("/" + root + "/:id", (request, response) -> {
 			String id = request.params(":id");
 			List<E> found = get(id);
-			JSONArray data = getJsonArray(found);
+			JSONArray data = JSON.getJsonArray(found);
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("data", data.toString());
 			return new ModelAndView(attributes, "json.ftl");
@@ -122,7 +122,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	private void registerGetAll() {
 		Spark.get("/" + root, (request, response) -> {
 			List<E> all = service.getAll();
-			JSONArray data = getJsonArray(all);
+			JSONArray data = JSON.getJsonArray(all);
 
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("data", data.toString());
@@ -130,35 +130,6 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		}, new FreeMarkerEngine());
 	}
 
-	private JSONArray getJsonArray(List<E> all) {
-		JSONArray data = new JSONArray();
-
-		for (E tempEntity : all) {
-			try {
-				JSONObject tempJsonPlayer = new JSONObject();
-
-				Map<String, String> describtion = describe(tempEntity);
-				for (String key : describtion.keySet()) {
-					tempJsonPlayer.put(key, describtion.get(key));
-				}
-				data.put(data.length(), tempJsonPlayer);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-		return data;
-	}
-
-	private Map<String, String> describe(E tempEntity)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-		Map<String, String> describe = BeanUtils.describe(tempEntity);
-		describe.remove("class");
-		describe.remove("schemaName");
-		describe.remove("persistend");
-		return describe;
-	}
-	
 	private boolean isAssignable(String key) {
 		return !(key.equals("id") ||key.equals("class") ||key.equals("schemaName") ||key.equals("persistend") );
 	}

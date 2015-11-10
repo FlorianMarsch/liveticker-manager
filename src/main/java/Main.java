@@ -24,6 +24,7 @@ import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.fussballmanager.db.entity.player.Player;
+import de.fussballmanager.db.entity.player.PlayerJSONProducer;
 import de.fussballmanager.db.entity.player.PlayerService;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.tick.TickService;
@@ -260,6 +261,7 @@ public class Main {
 		new ClubJSONProducer().registerServices();
 		new TrainerJSONProducer().registerServices();
 		new MatchdayJSONProducer().registerServices();
+		new PlayerJSONProducer().registerServices();
 		
 	}
 
