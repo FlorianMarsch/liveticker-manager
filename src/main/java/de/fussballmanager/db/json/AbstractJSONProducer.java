@@ -1,6 +1,5 @@
 package de.fussballmanager.db.json;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,7 +37,6 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	private void registerSave() {
 		Spark.put("/" + root + "/:id", (request, response) -> {
-			List<E> all = service.getAll();
 			String id = request.params(":id");
 			List<E> found = get(id);
 			E entity;

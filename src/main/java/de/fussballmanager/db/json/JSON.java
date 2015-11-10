@@ -17,13 +17,10 @@ public class JSON {
 
 		for (E tempEntity : all) {
 			try {
-				JSONObject tempJsonPlayer = new JSONObject();
 
 				Map<String, String> describtion = describe(tempEntity);
-				for (String key : describtion.keySet()) {
-					tempJsonPlayer.put(key, describtion.get(key));
-				}
-				data.put(data.length(), tempJsonPlayer);
+				
+				data.put(data.length(), new JSONObject(describtion));
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
