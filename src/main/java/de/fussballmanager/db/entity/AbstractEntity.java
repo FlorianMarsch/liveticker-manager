@@ -89,4 +89,9 @@ public class AbstractEntity {
 		return true;
 	}
 
+	@Override
+	public final String toString() {
+		return id;
+	}
+
 }
