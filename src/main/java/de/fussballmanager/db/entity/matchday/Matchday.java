@@ -32,6 +32,9 @@ public class Matchday extends AbstractEntity{
 		this.results = results;
 	}
 	
-	
+	@Override
+	public String getDisplayValue() {
+		return String.valueOf(number);
+	}
 	
 }

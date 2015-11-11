@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class AbstractEntity {
+public abstract class AbstractEntity {
 	@Id
 	@Column(length = 36)
 	private String id = UUID.randomUUID().toString();
@@ -94,4 +94,6 @@ public class AbstractEntity {
 		return id;
 	}
 
+	public abstract String getDisplayValue();
+	
 }

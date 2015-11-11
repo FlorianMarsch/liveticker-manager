@@ -9,4 +9,9 @@ import de.fussballmanager.db.entity.AbstractEntity;
 @Entity
 public class Tick extends AbstractEntity {
 
+	@Override
+	public String getDisplayValue() {
+		return getId();
+	}
+
 }

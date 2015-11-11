@@ -37,6 +37,9 @@ public class JSON {
 		describe.remove("class");
 		describe.remove("schemaName");
 		describe.remove("persistend");
+		describe.remove("displayValue");
+		describe.remove("lastChangedTime");
+		describe.remove("creationTime");
 		return describe;
 	}
 	

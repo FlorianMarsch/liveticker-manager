@@ -165,4 +165,11 @@ public class Player extends AbstractEntity {
 			return getName();
 		}
 	}
+
+	@Override
+	public String getDisplayValue() {
+		return getDisplayName();
+	}
+	
+	
 }

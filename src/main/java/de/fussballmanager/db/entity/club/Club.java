@@ -47,4 +47,9 @@ public class Club extends AbstractEntity {
 		this.logoUrl = logoUrl;
 	}
 
+	@Override
+	public String getDisplayValue() {
+		return name;
+	}
+
 }
