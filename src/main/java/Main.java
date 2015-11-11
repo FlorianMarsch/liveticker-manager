@@ -29,6 +29,7 @@ import de.fussballmanager.db.entity.player.PlayerService;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.tick.TickService;
 import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
+import de.fussballmanager.db.json.BindContext;
 import de.fussballmanager.db.service.AbstractService;
 import de.fussballmanager.scheduler.Bootstrap;
 
@@ -258,10 +259,12 @@ public class Main {
 		}, new FreeMarkerEngine());
 
 		
-		new ClubJSONProducer().registerServices();
-		new TrainerJSONProducer().registerServices();
-		new MatchdayJSONProducer().registerServices();
-		new PlayerJSONProducer().registerServices();
+		BindContext ctx = new BindContext();
+		
+		new ClubJSONProducer().bindServices(ctx);
+		new TrainerJSONProducer().bindServices(ctx);
+		new MatchdayJSONProducer().bindServices(ctx);
+		new PlayerJSONProducer().bindServices(ctx);
 		
 	}
 
