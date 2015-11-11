@@ -47,7 +47,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		service = aAbstractService;
 	}
 	
-	
+	@Deprecated
 	public AbstractJSONProducer(AbstractService<E> aAbstractService,
 			String aRoot) {
 		register(aAbstractService, aRoot);
