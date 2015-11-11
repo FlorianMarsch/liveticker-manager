@@ -1,5 +1,7 @@
 package de.fussballmanager.db.json;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +19,7 @@ import spark.ModelAndView;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 import de.fussballmanager.db.entity.AbstractEntity;
+import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.service.AbstractService;
 
 public abstract class AbstractJSONProducer<E extends AbstractEntity> {
@@ -24,11 +27,30 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	private String root;
 	private AbstractService<E> service;
 
-	public AbstractJSONProducer(AbstractService<E> aAbstractService,
-			String aRoot) {
+	public AbstractJSONProducer(AbstractService<E> aAbstractService){
+		Type genericSuperclass = this.getClass().getGenericSuperclass();
+		Type x = ((ParameterizedType)genericSuperclass).getActualTypeArguments()[0];
+		Class<?> forName = null;
+		try {
+			forName = Class.forName(x.getTypeName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		register(aAbstractService, forName.getSimpleName());
+	}
+
+
+	private void register(AbstractService<E> aAbstractService, String aRoot) {
 		root = aRoot;
 		System.out.println("Register root : " + root);
 		service = aAbstractService;
+	}
+	
+	
+	public AbstractJSONProducer(AbstractService<E> aAbstractService,
+			String aRoot) {
+		register(aAbstractService, aRoot);
 	}
 
 	public void registerServices() {

@@ -1,6 +1,8 @@
 package fussballmanager;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import junit.framework.Assert;
 
@@ -9,6 +11,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Test;
 
 import de.fussballmanager.db.entity.club.Club;
+import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.trainer.Trainer;
 
 public class BeanUtilsTest {
@@ -31,7 +34,17 @@ public class BeanUtilsTest {
 		
 		Class checkValue =PropertyUtils.getPropertyType(tempTrainer, "name");
 		Assert.assertTrue(checkValue.equals(String.class));
-		System.out.println(checkValue);
 	}
 
+	@Test
+	public void testGeneric() throws ClassNotFoundException {
+
+		Type genericSuperclass = ClubJSONProducer.class.getGenericSuperclass();
+		Type x = ((ParameterizedType)genericSuperclass).getActualTypeArguments()[0];
+		Class<?> forName = Class.forName(x.getTypeName());
+		System.out.println(forName.getSimpleName());
+		
+	}
+	
+	
 }
