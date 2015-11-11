@@ -35,7 +35,30 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		registerGetAll();
 		registerGetById();
 		registerGetAttributeById();
+		registerGetSchema();
 		registerSave();
+	}
+
+	private void registerGetSchema() {
+		Spark.get("/" + root + "/"+"schema/", (request, response) -> {
+
+			Stopwatch stopwatch = Stopwatch.createStarted();
+			E temp = service.getNewInstance();
+			Map<String, String> types = null;
+			try {
+				types = JSON.describeTypes(temp);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			JSONObject data = new JSONObject(types);
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			stopwatch.stop();
+			System.out.println(stopwatch.elapsed(TimeUnit.MICROSECONDS));
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
+		
 	}
 
 	private void registerSave() {
