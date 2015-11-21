@@ -59,6 +59,15 @@ public abstract class AbstractService<E extends AbstractEntity> extends Abstract
 		}
 	}
 	
+	public void delete(E aEntity) {
+		try {
+			super.delete(aEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AccessLayerException("A Call Problem occured", e);
+		}
+	}
+	
 	public abstract E getNewInstance();
 
 }

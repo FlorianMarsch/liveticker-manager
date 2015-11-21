@@ -59,4 +59,14 @@ public abstract class  AbstractServiceCache<E extends AbstractEntity> extends Ab
 		}
 	}
 	
+	public void delete(E aAbstractEntity){
+		try {
+			super.delete(aAbstractEntity);
+			cachedMap.clear();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AccessLayerException("A Cache Problem occured", e);
+		}
+	}
+	
 }

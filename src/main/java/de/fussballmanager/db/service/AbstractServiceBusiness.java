@@ -22,10 +22,10 @@ public abstract class AbstractServiceBusiness<E extends AbstractEntity> {
 		List<E> resultList = (List<E>) selectQuery.list(source);
 		return resultList;
 	}
-	
-	public <K> Map<K,E> getAllOrderedInMap(Path<K> aKey) {
+
+	public <K> Map<K, E> getAllOrderedInMap(Path<K> aKey) {
 		JPAQuery selectQuery = new QueryBuilder(em, source).select(null);
-		Map<K,E> resultMap = (Map<K,E>) selectQuery.map(aKey, source);
+		Map<K, E> resultMap = (Map<K, E>) selectQuery.map(aKey, source);
 		return resultMap;
 	}
 
@@ -36,6 +36,17 @@ public abstract class AbstractServiceBusiness<E extends AbstractEntity> {
 		} else {
 			aEntity.setPersistend(Boolean.TRUE);
 			em.persist(aEntity);
+		}
+	}
+
+	public void delete(E aEntity) {
+		JPAQuery selectQuery = new QueryBuilder(em, source).select(null);
+		List<E> all = (List<E>) selectQuery.list(source);
+		for (E e : all) {
+			if(e.equals(aEntity)){
+				em.refresh(e);
+				em.remove(e);
+			}
 		}
 	}
 

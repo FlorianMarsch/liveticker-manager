@@ -76,6 +76,25 @@ public abstract class AbstractServiceEMHandler<E extends AbstractEntity> extends
 		}
 	}
 	
+	public void delete(E aAbstractEntity){
+		EntityTransaction transaction = null;
+		try {
+			em = getInitialized(em);
+			transaction = em.getTransaction();
+			transaction.begin();
+			super.delete(aAbstractEntity);
+			transaction.commit();
+			em = remove(em);
+		} catch (Exception e) {
+			if(transaction != null && transaction.isActive()){
+				transaction.rollback();
+			}
+			em = destroy(em);
+			e.printStackTrace();
+			throw new AccessLayerException("A DB Problem occured", e);
+		}
+	}
+	
 	private EntityManager getInitialized(EntityManager aEntityManager) {
 		if(aEntityManager == null){
 			return EmPool.instance.get();
