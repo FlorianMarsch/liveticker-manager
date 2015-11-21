@@ -63,4 +63,24 @@ public class Match extends AbstractEntity {
 		this.homeGoals = homeGoals;
 	}
 
+	public Integer getHomePoints(){
+		if(homeGoals > guestGoals){
+			return 3;
+		}else if(homeGoals < guestGoals){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+	
+	public Integer getGuestPoints(){
+		if(homeGoals < guestGoals){
+			return 3;
+		}else if(homeGoals > guestGoals){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+	
 }
