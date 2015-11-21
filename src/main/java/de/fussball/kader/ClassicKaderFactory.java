@@ -59,16 +59,16 @@ public class ClassicKaderFactory {
 	public Map<String,Set<String>> getAll(){
 		Map<String,Set<String>>returnMap = new HashMap<String,Set<String>>();
 		
-		returnMap.put("FCEtepetete", get("9414334"));
-		returnMap.put("TorpedoEric", get("9128310"));
-		returnMap.put("CheaterP", get("9958945"));
-		returnMap.put("JuventusFlorin", get("9105942"));
-		returnMap.put("ZenitTill", get("9198836"));
-		returnMap.put("SpartaTobyIO", get("9206452"));
-		returnMap.put("FcPhoenix", get("9369292"));
-		returnMap.put("FCTor", get("9462897"));
-		returnMap.put("HerrmanniacAnna", get("9311676"));
-		returnMap.put("LokomotiveKaiopolis", get("10526925"));
+		returnMap.put("FC Etepetete", get("9414334"));
+		returnMap.put("Torpedo Eric", get("9128310"));
+		returnMap.put("Cheater P", get("9958945"));
+		returnMap.put("Juventus Florin", get("9105942"));
+		returnMap.put("Zenit Till", get("9198836"));
+		returnMap.put("Sparta Toby IO", get("9206452"));
+		returnMap.put("Fc.Phoenix", get("9369292"));
+		returnMap.put("FC Tor", get("9462897"));
+		returnMap.put("Herrmanniac Anna", get("9311676"));
+		returnMap.put("Lokomotive Kaiopolis", get("10526925"));
 		returnMap.put("Annika", get("10958878"));
 		returnMap.put("Nadine", get("10956588"));
 		

@@ -30,6 +30,8 @@ import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.tick.TickService;
 import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.fussballmanager.db.json.BindContext;
+import de.fussballmanager.db.misc.GamedayProcessor;
+import de.fussballmanager.db.misc.ProcessingResult;
 import de.fussballmanager.db.service.AbstractService;
 import de.fussballmanager.scheduler.Bootstrap;
 
@@ -265,6 +267,21 @@ public class Main {
 		new TrainerJSONProducer().bindServices(ctx);
 		new MatchdayJSONProducer().bindServices(ctx);
 		new PlayerJSONProducer().bindServices(ctx);
+		
+		
+		get("/overview/:id", (request, response) -> {
+			Integer id = Integer.valueOf(request.params(":id"));
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = gp.process(id);
+			
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday().getNumber());
+			attributes.put("events", process.getEvents());
+			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
+			
+			return new ModelAndView(attributes, "overview.ftl");
+		}, new FreeMarkerEngine());
 		
 	}
 
