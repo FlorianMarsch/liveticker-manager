@@ -22,13 +22,20 @@ import de.fussball.kader.ClassicKaderFactory;
 import de.fussball.live.ticker.LiveTickerHandler;
 import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
+import de.fussballmanager.db.entity.match.Match;
+import de.fussballmanager.db.entity.match.MatchService;
+import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
+import de.fussballmanager.db.entity.matchday.MatchdayService;
 import de.fussballmanager.db.entity.player.Player;
 import de.fussballmanager.db.entity.player.PlayerJSONProducer;
 import de.fussballmanager.db.entity.player.PlayerService;
 import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.tick.TickService;
+import de.fussballmanager.db.entity.trainer.QTrainer;
+import de.fussballmanager.db.entity.trainer.Trainer;
 import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
+import de.fussballmanager.db.entity.trainer.TrainerService;
 import de.fussballmanager.db.json.BindContext;
 import de.fussballmanager.db.misc.GamedayProcessor;
 import de.fussballmanager.db.misc.ProcessingResult;
@@ -127,13 +134,27 @@ public class Main {
 						List<Event> resolvedEvents = liveTicker
 								.getResolvedLiveTickerEvents(currentGameDay);
 
+						
+						Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(Integer.valueOf(currentGameDay));
+						Map<String, Trainer> allTrainer = new TrainerService().getAllOrderedInMap(QTrainer.trainer.name);
+						List<Match> matches = new MatchService().getAllByMatchday(aMatchday);
 						for (Event tempEvent : resolvedEvents) {
 							try {
 								for (String trainer : allPlayer.keySet()) {
 									Set<String> team = allPlayer.get(trainer);
 
 									if (team.contains(tempEvent.getResolved())) {
-
+										
+										
+										Trainer trainerObj = allTrainer.get(trainer);
+										Match current = null;
+										for (Match tempMatch : matches) {
+											if(tempMatch.getHome().equals(trainerObj) || tempMatch.getHome().equals(trainerObj)){
+												current = tempMatch;
+											}
+										}
+										String gameHashTag = "#"+current.getHome().getHashTag()+"vs"+current.getGuest().getHashTag();
+										
 										JSONObject tempJsonPlayer = new JSONObject();
 										tempJsonPlayer.put("id",
 												tempEvent.getId());
@@ -142,6 +163,8 @@ public class Main {
 										tempJsonPlayer.put("type",
 												tempEvent.getEvent());
 										tempJsonPlayer.put("owner", trainer);
+										tempJsonPlayer.put("hashTag", "#"+trainerObj.getHashTag());
+										tempJsonPlayer.put("gameHashTag", gameHashTag);
 										data.put(data.length(), tempJsonPlayer);
 									}
 
