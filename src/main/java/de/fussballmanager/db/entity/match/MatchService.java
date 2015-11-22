@@ -18,7 +18,16 @@ public class MatchService extends AbstractService<Match> {
 	}
 	
 	public List<Match> getAllByMatchday(Matchday aMatchday){
-		return new ArrayList<Match>();
+		
+		ArrayList<Match> arrayList = new ArrayList<Match>();
+		List<Match> all = getAll();
+		for (Match match : all) {
+			if(match.getMatchday().equals(aMatchday)){
+				arrayList.add(match);
+			}
+		}
+		
+		return arrayList;
 	}
 
 }

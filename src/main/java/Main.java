@@ -149,7 +149,7 @@ public class Main {
 										Trainer trainerObj = allTrainer.get(trainer);
 										Match current = null;
 										for (Match tempMatch : matches) {
-											if(tempMatch.getHome().equals(trainerObj) || tempMatch.getHome().equals(trainerObj)){
+											if(tempMatch.getHome().equals(trainerObj) || tempMatch.getGuest().equals(trainerObj)){
 												current = tempMatch;
 											}
 										}
