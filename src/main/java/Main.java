@@ -136,21 +136,19 @@ public class Main {
 
 						
 						Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(Integer.valueOf(currentGameDay));
-						Map<String, Trainer> allTrainer = new TrainerService().getAllOrderedInMap(QTrainer.trainer.name);
 						List<Match> matches = new MatchService().getAllByMatchday(aMatchday);
 						for (Event tempEvent : resolvedEvents) {
-							Map<String, Set<String>> allPlayer = ckf.getAll();
+							Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);
 							try {
-								for (String trainer : allPlayer.keySet()) {
+								for (Trainer trainer : allPlayer.keySet()) {
 									Set<String> team = allPlayer.get(trainer);
 
 									if (team.contains(tempEvent.getResolved())) {
 										
 										
-										Trainer trainerObj = allTrainer.get(trainer);
 										Match current = null;
 										for (Match tempMatch : matches) {
-											if(tempMatch.getHome().equals(trainerObj) || tempMatch.getGuest().equals(trainerObj)){
+											if(tempMatch.getHome().equals(trainer) || tempMatch.getGuest().equals(trainer)){
 												current = tempMatch;
 											}
 										}
@@ -164,7 +162,7 @@ public class Main {
 										tempJsonPlayer.put("type",
 												tempEvent.getEvent());
 										tempJsonPlayer.put("owner", trainer);
-										tempJsonPlayer.put("hashTag", "#"+trainerObj.getHashTag());
+										tempJsonPlayer.put("hashTag", "#"+trainer.getHashTag());
 										tempJsonPlayer.put("gameHashTag", gameHashTag);
 										data.put(data.length(), tempJsonPlayer);
 									}
@@ -182,23 +180,6 @@ public class Main {
 					request.session(true);
 					return new ModelAndView(attributes, "json.ftl");
 				}, new FreeMarkerEngine());
-
-		get("/kader/:id", (request, response) -> {
-
-			String id = request.params(":id");
-			JSONArray data = new JSONArray();
-			if (id != null) {
-				ClassicKaderFactory ckf = new ClassicKaderFactory();
-				Set<String> set = ckf.get(id);
-				for (String value : set) {
-					data.put(value);
-				}
-			}
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", data.toString());
-			request.session(true);
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
 
 		get("/all", (request, response) -> {
 
