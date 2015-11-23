@@ -298,7 +298,7 @@ public class Main {
 			ProcessingResult process = gp.process(id);
 			
 			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("matchday", process.getMatchday().getNumber());
+			attributes.put("matchday", process.getMatchday());
 			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
 			attributes.put("allTimeTable", process.getTable());
@@ -311,7 +311,7 @@ public class Main {
 			ProcessingResult process = gp.process(id, Boolean.TRUE);
 			
 			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("matchday", process.getMatchday().getNumber());
+			attributes.put("matchday", process.getMatchday());
 			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
 			attributes.put("allTimeTable", process.getTable());

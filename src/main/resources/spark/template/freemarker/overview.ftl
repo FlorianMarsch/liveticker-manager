@@ -3,12 +3,17 @@
 <head>
 <title></title>
 </head>
-
+<style type="text/css">
+    fieldset{
+         display: inline-block;
+         float:left;
+    }
+</style>
 
 <body>
-	<h1>Spieltag ${matchday}</h1>
-	<div style="float:left">
-		<div>
+	<h1>Spieltag ${matchday.number}</h1>
+	 <fieldset>
+	<legend>Results</legend>
 			<table border="0">
 				<tbody>
 <#list results as x>
@@ -26,8 +31,9 @@
 </#list>
 				</tbody>
 			</table>
-		</div>
-		<div>
+		</fieldset>
+		 <fieldset>
+		<legend>Events</legend>
 			<table border="0">
 				<tbody>
 <#list events as x>
@@ -45,9 +51,9 @@
 </#list>
 				</tbody>
 			</table>
-		</div>
-	</div>
-	<div style="float:left">
+	 </fieldset>
+	 <fieldset>
+<legend>Table</legend>
 		<table border="0">
 			<thead>
 			<tr>
@@ -96,7 +102,7 @@
 </#list>
 				</tbody>
 			</table>
-	</div>
+	</fieldset>
 </body>
 
 </html>
