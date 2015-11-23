@@ -72,13 +72,16 @@ public class GamedayProcessor {
 					tableEntry.setMatchday(currentMatchday);
 					allTimeTableMap.put(trainer, tableEntry);
 				}
-
 				Integer goals = match.getHomeGoals();
 				Integer goalsAgainst = match.getGuestGoals();
 				Integer points = match.getHomePoints();
-				tableEntry.addGoals(goals);
-				tableEntry.addGoalsAgainst(goalsAgainst);
-				tableEntry.addPoints(points);
+				if (match.isByeGame()) {
+					tableEntry.addGoals(goals);
+				} else {
+					tableEntry.addGoals(goals);
+					tableEntry.addGoalsAgainst(goalsAgainst);
+					tableEntry.addPoints(points);
+				}
 			}
 		}
 		for (Match match : matchesUntil) {
@@ -95,9 +98,13 @@ public class GamedayProcessor {
 				Integer goals = match.getGuestGoals();
 				Integer goalsAgainst = match.getHomeGoals();
 				Integer points = match.getGuestPoints();
-				tableEntry.addGoals(goals);
-				tableEntry.addGoalsAgainst(goalsAgainst);
-				tableEntry.addPoints(points);
+				if (match.isByeGame()) {
+					tableEntry.addGoals(goals);
+				} else {
+					tableEntry.addGoals(goals);
+					tableEntry.addGoalsAgainst(goalsAgainst);
+					tableEntry.addPoints(points);
+				}
 			}
 		}
 

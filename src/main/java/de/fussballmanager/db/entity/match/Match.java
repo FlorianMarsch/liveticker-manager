@@ -87,4 +87,8 @@ public class Match extends AbstractEntity {
 		return home.getFake() || guest.getFake();
 	}
 	
+	public Boolean isByeGame() {
+		return home.equals(guest);
+	}
+	
 }

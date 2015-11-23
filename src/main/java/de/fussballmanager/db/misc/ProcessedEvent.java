@@ -34,6 +34,9 @@ public class ProcessedEvent extends Event {
 			tempJsonPlayer.put("hashTag", "#"+ trainer.getHashTag());
 			tempJsonPlayer.put("gameHashTag", match.getDisplayValue());
 			tempJsonPlayer.put("result", match.getHomeGoals()+":"+match.getGuestGoals());
+			tempJsonPlayer.put("bye", match.isByeGame());
+			tempJsonPlayer.put("fake", match.isFake());
+			
 			return tempJsonPlayer;
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
