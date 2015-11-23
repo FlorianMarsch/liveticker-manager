@@ -40,9 +40,6 @@ public class GamedayProcessor {
 		
 		List<ProcessedEvent> events = goalResolver.getGoals(currentMatchday);
 		processingResult.setEvents(events);
-		for (ProcessedEvent processedEvent : events) {
-			addEventToMatch(processedEvent,currentMatches );
-		}
 		if(saveProcessing){
 			for (Match match : currentMatches) {
 				matchService.save(match);
@@ -101,39 +98,6 @@ public class GamedayProcessor {
 		return new ArrayList<AllTimeTable>(allTimeTableMap.values());
 	}
 
-	private void addEventToMatch(ProcessedEvent processedEvent,
-			List<Match> currentMatches) {
-		String trainer = processedEvent.getTrainer();
-		for (Match match : currentMatches) {
-			if(match.getHome().getName().equals(trainer)
-					|| match.getGuest().getName().equals(trainer)){
-				addEventToMatch(processedEvent, match);
-				return;
-			}
-		}
-		
-	}
-
-	private void addEventToMatch(ProcessedEvent processedEvent, Match match) {
-		String trainer = processedEvent.getTrainer();
-		Boolean isHome = match.getHome().getName().equals(trainer);
-		Boolean isGoal = processedEvent.getEvent().equals("Goal")||processedEvent.getEvent().equals("Penalty");
-		Integer homeGoals = match.getHomeGoals();
-		Integer guestGoals = match.getGuestGoals();
-		
-		if(isHome && isGoal){
-			match.setHomeGoals(homeGoals +1);
-		}
-		if(!isHome && isGoal){
-			match.setGuestGoals(guestGoals +1);
-		}
-		if(isHome && !isGoal){
-			match.setGuestGoals(guestGoals +1);
-		}
-		if(!isHome && !isGoal){
-			match.setHomeGoals(homeGoals +1);
-		}
-	}
 
 	private List<Match> getMatchesUntil(Matchday currentMatchday) {
 		List<Match> currentMatches = new ArrayList<Match>();
