@@ -19,14 +19,13 @@ public class GamedayProcessor {
 	MatchService matchService = new MatchService();
 
 	GoalResolver goalResolver = new GoalResolver();
-	public ProcessingResult process(Integer number){
-		return process(number, Boolean.FALSE);
+	public ProcessingResult process(Matchday currentMatchday){
+		return process(currentMatchday, Boolean.FALSE);
 	}
 	
-	public ProcessingResult process(Integer number, Boolean saveProcessing){
+	public ProcessingResult process(Matchday currentMatchday, Boolean saveProcessing){
 		ProcessingResult processingResult = new ProcessingResult();
 		
-		Matchday currentMatchday =getMatchday(number);
 		processingResult.setMatchday(currentMatchday);
 		if(currentMatchday.getProcessed()){
 			throw new RuntimeException("matchday already processed");
@@ -39,7 +38,7 @@ public class GamedayProcessor {
 		List<Match> currentMatches = getMatches(currentMatchday);
 		processingResult.setMatches(currentMatches);
 		
-		List<ProcessedEvent> events = goalResolver.getGoals(number);
+		List<ProcessedEvent> events = goalResolver.getGoals(currentMatchday);
 		processingResult.setEvents(events);
 		for (ProcessedEvent processedEvent : events) {
 			addEventToMatch(processedEvent,currentMatches );
@@ -160,14 +159,26 @@ public class GamedayProcessor {
 		return currentMatches;
 	}
 
-	private Matchday getMatchday(Integer number) {
-		List<Matchday> allMatchdays = matchdayService.getAll();
-		for (Matchday matchday : allMatchdays) {
-			if(matchday.getNumber().equals(number)){
-				return matchday;
-			}
-		}
-		return null;
+	public ProcessingResult review(Matchday aMatchday) {
+		ProcessingResult processingResult = new ProcessingResult();
+		processingResult.setMatchday(aMatchday);
+		
+		List<Match> currentMatches = getMatches(aMatchday);
+		processingResult.setMatches(currentMatches);
+		
+		List<Match> allHappendMatchesUntil = new ArrayList<Match>();
+		allHappendMatchesUntil.addAll(currentMatches);
+		allHappendMatchesUntil.addAll(getMatchesUntil(aMatchday));
+		
+		
+		
+		List<AllTimeTable> table = getTable(allHappendMatchesUntil, aMatchday);
+		Collections.sort(table);
+		processingResult.setTable(table);
+		
+		processingResult.setEvents(new ArrayList<ProcessedEvent>());
+		
+		return processingResult;
 	}
 	
 	

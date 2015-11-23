@@ -6,6 +6,7 @@ import java.util.List;
 import de.fussball.live.ticker.event.Event;
 import de.fussball.live.ticker.event.EventResolver;
 import de.fussball.live.ticker.event.TickerResolver;
+import de.fussballmanager.db.entity.matchday.Matchday;
 
 public class LiveTickerHandler {
 
@@ -16,10 +17,10 @@ public class LiveTickerHandler {
 	public LiveTickerHandler(){
 	}
 	
-	public List<Event> getResolvedLiveTickerEvents(String gameday){
+	public List<Event> getResolvedLiveTickerEvents(Matchday aMatchday){
 		List<Event> tempReturn = new ArrayList<Event>();
 		
-		String tempLive = tickerResolver.getLiveTicker(gameday);
+		String tempLive = tickerResolver.getLiveTicker(aMatchday);
 		List<Event> events = eventResolver.getResolvedLiveTickerEvents(tempLive);
 		
 		for (Event event : events) {

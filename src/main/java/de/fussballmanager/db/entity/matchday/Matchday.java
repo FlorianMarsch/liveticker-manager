@@ -37,4 +37,13 @@ public class Matchday extends AbstractEntity{
 		return String.valueOf(number);
 	}
 	
+	public String getStatus() {
+		if(processed){
+			return "Inactive, Matchday in the past";
+		}else{
+			return "Still active or Matchday in the future";
+		}
+		
+	}
+	
 }

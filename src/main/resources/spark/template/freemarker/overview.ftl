@@ -12,6 +12,7 @@
 
 <body>
 	<h1>Spieltag ${matchday.number}</h1>
+	<h2>${matchday.status}</h2>
 	 <fieldset>
 	<legend>Results</legend>
 			<table border="0">

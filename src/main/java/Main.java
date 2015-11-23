@@ -92,12 +92,17 @@ public class Main {
 				(request, response) -> {
 
 					LiveTickerHandler liveTicker = new LiveTickerHandler();
-					String currentGameDay = request.params(":gameday");
+					Integer currentGameDay = Integer.valueOf(request
+							.params(":gameday"));
+					Matchday aMatchday = new MatchdayService()
+							.getMatchdaysByNumber().get(
+									Integer.valueOf(currentGameDay));
+
 					JSONArray data = new JSONArray();
 					if (currentGameDay != null) {
 
 						List<Event> resolvedEvents = liveTicker
-								.getResolvedLiveTickerEvents(currentGameDay);
+								.getResolvedLiveTickerEvents(aMatchday);
 
 						for (Event tempEvent : resolvedEvents) {
 							try {
@@ -123,37 +128,47 @@ public class Main {
 		get("/resolvedgoals/:gameday",
 				(request, response) -> {
 
-					String currentGameDay = request.params(":gameday");
+					Integer currentGameDay = Integer.valueOf(request
+							.params(":gameday"));
+					Matchday aMatchday = new MatchdayService()
+							.getMatchdaysByNumber().get(
+									Integer.valueOf(currentGameDay));
+
 					JSONArray data = new JSONArray();
 					if (currentGameDay != null) {
 						LiveTickerHandler liveTicker = new LiveTickerHandler();
 						ClassicKaderFactory ckf = new ClassicKaderFactory();
 
-						
-
 						List<Event> resolvedEvents = liveTicker
-								.getResolvedLiveTickerEvents(currentGameDay);
+								.getResolvedLiveTickerEvents(aMatchday);
 
-						
-						Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(Integer.valueOf(currentGameDay));
-						List<Match> matches = new MatchService().getAllByMatchday(aMatchday);
+						List<Match> matches = new MatchService()
+								.getAllByMatchday(aMatchday);
 						for (Event tempEvent : resolvedEvents) {
-							Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);
+							Map<Trainer, Set<String>> allPlayer = ckf
+									.getAll(aMatchday);
 							try {
 								for (Trainer trainer : allPlayer.keySet()) {
 									Set<String> team = allPlayer.get(trainer);
 
 									if (team.contains(tempEvent.getResolved())) {
-										
-										
+
 										Match current = null;
 										for (Match tempMatch : matches) {
-											if(tempMatch.getHome().equals(trainer) || tempMatch.getGuest().equals(trainer)){
+											if (tempMatch.getHome().equals(
+													trainer)
+													|| tempMatch.getGuest()
+															.equals(trainer)) {
 												current = tempMatch;
 											}
 										}
-										String gameHashTag = "#"+current.getHome().getHashTag()+"vs"+current.getGuest().getHashTag();
-										
+										String gameHashTag = "#"
+												+ current.getHome()
+														.getHashTag()
+												+ "vs"
+												+ current.getGuest()
+														.getHashTag();
+
 										JSONObject tempJsonPlayer = new JSONObject();
 										tempJsonPlayer.put("id",
 												tempEvent.getId());
@@ -162,8 +177,10 @@ public class Main {
 										tempJsonPlayer.put("type",
 												tempEvent.getEvent());
 										tempJsonPlayer.put("owner", trainer);
-										tempJsonPlayer.put("hashTag", "#"+trainer.getHashTag());
-										tempJsonPlayer.put("gameHashTag", gameHashTag);
+										tempJsonPlayer.put("hashTag", "#"
+												+ trainer.getHashTag());
+										tempJsonPlayer.put("gameHashTag",
+												gameHashTag);
 										data.put(data.length(), tempJsonPlayer);
 									}
 
@@ -265,42 +282,50 @@ public class Main {
 			}
 		}, new FreeMarkerEngine());
 
-		
 		BindContext ctx = new BindContext();
-		
+
 		new ClubJSONProducer().bindServices(ctx);
 		new TrainerJSONProducer().bindServices(ctx);
 		new MatchdayJSONProducer().bindServices(ctx);
 		new PlayerJSONProducer().bindServices(ctx);
-		
-		
+
 		get("/overview/:id", (request, response) -> {
-			Integer id = Integer.valueOf(request.params(":id"));
+			Integer currentGameDay = Integer.valueOf(request.params(":id"));
+			Matchday aMatchday = new MatchdayService().getMatchdaysByNumber()
+					.get(Integer.valueOf(currentGameDay));
 			GamedayProcessor gp = new GamedayProcessor();
-			ProcessingResult process = gp.process(id);
-			
+			ProcessingResult process = null;
+			if (aMatchday.getProcessed()) {
+				process = gp.review(aMatchday);
+			} else {
+				process = gp.process(aMatchday);
+			}
+
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("matchday", process.getMatchday());
 			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
 			attributes.put("allTimeTable", process.getTable());
-			
+
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
 		get("/process/:id", (request, response) -> {
-			Integer id = Integer.valueOf(request.params(":id"));
+			Integer currentGameDay = Integer.valueOf(request.params(":id"));
+			Matchday aMatchday = new MatchdayService().getMatchdaysByNumber()
+					.get(Integer.valueOf(currentGameDay));
+
 			GamedayProcessor gp = new GamedayProcessor();
-			ProcessingResult process = gp.process(id, Boolean.TRUE);
-			
+			ProcessingResult process = gp.process(aMatchday, Boolean.TRUE);
+
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("matchday", process.getMatchday());
 			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
 			attributes.put("allTimeTable", process.getTable());
-			
+
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
-		
+
 	}
 
 }

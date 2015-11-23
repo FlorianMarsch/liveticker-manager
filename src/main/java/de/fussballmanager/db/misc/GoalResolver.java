@@ -14,15 +14,14 @@ import de.fussballmanager.db.entity.trainer.Trainer;
 
 public class GoalResolver {
 
-	public List<ProcessedEvent> getGoals(Integer currentGameDay){
+	public List<ProcessedEvent> getGoals(Matchday aMatchday){
 		List<ProcessedEvent> returnEvents = new ArrayList<ProcessedEvent>();
 		LiveTickerHandler liveTicker = new LiveTickerHandler();
 		ClassicKaderFactory ckf = new ClassicKaderFactory();
-		Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(currentGameDay);
 		
 
 		List<Event> resolvedEvents = liveTicker
-				.getResolvedLiveTickerEvents(String.valueOf(currentGameDay));
+				.getResolvedLiveTickerEvents(aMatchday);
 
 		for (Event tempEvent : resolvedEvents) {
 			Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);

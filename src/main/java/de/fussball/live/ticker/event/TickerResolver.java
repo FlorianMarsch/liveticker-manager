@@ -7,14 +7,16 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import de.fussballmanager.db.entity.matchday.Matchday;
+
 public class TickerResolver {
 
 	public TickerResolver(){
 		
 	}
 	
-	public String getLiveTicker(String gameday) {
-		Integer id = Integer.valueOf(gameday) + 5662927;
+	public String getLiveTicker(Matchday aMatchday) {
+		Integer id = aMatchday.getNumber() + 5662927;
 		String content = loadFile("http://feedmonster.iliga.de/feeds/il/de/competitions/1/1271/matchdays/"
 				+ id + ".json");
 		return content;
