@@ -18,6 +18,17 @@ public class Trainer extends AbstractEntity {
 	
 	@Column
 	private String hashTag;
+	
+	@Column
+	private Boolean fake = Boolean.FALSE;
+
+	public Boolean getFake() {
+		return fake;
+	}
+
+	public void setFake(Boolean fake) {
+		this.fake = fake;
+	}
 
 	public String getName() {
 		return name;

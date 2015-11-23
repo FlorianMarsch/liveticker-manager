@@ -26,6 +26,10 @@ public class ClassicKaderFactory {
 	LineUpService lineUpService = new LineUpService();
 
 	public Set<String> get(Trainer trainer, Matchday currentMatchday) {
+		if(trainer.getFake()){
+			return new HashSet<String>();
+		}
+		
 		List<LineUp> all = lineUpService.getAll();
 		for (LineUp lineUp : all) {
 			if(lineUp.getTrainer().equals(trainer) && lineUp.getMatchday().equals(currentMatchday)){
