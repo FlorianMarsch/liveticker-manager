@@ -16,12 +16,12 @@ public class GoalResolver {
 		LiveTickerHandler liveTicker = new LiveTickerHandler();
 		ClassicKaderFactory ckf = new ClassicKaderFactory();
 
-		Map<String, Set<String>> allPlayer = ckf.getAll();
 
 		List<Event> resolvedEvents = liveTicker
 				.getResolvedLiveTickerEvents(String.valueOf(currentGameDay));
 
 		for (Event tempEvent : resolvedEvents) {
+			Map<String, Set<String>> allPlayer = ckf.getAll();
 			try {
 				for (String trainer : allPlayer.keySet()) {
 					Set<String> team = allPlayer.get(trainer);

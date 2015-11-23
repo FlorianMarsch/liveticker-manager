@@ -129,7 +129,7 @@ public class Main {
 						LiveTickerHandler liveTicker = new LiveTickerHandler();
 						ClassicKaderFactory ckf = new ClassicKaderFactory();
 
-						Map<String, Set<String>> allPlayer = ckf.getAll();
+						
 
 						List<Event> resolvedEvents = liveTicker
 								.getResolvedLiveTickerEvents(currentGameDay);
@@ -139,6 +139,7 @@ public class Main {
 						Map<String, Trainer> allTrainer = new TrainerService().getAllOrderedInMap(QTrainer.trainer.name);
 						List<Match> matches = new MatchService().getAllByMatchday(aMatchday);
 						for (Event tempEvent : resolvedEvents) {
+							Map<String, Set<String>> allPlayer = ckf.getAll();
 							try {
 								for (String trainer : allPlayer.keySet()) {
 									Set<String> team = allPlayer.get(trainer);
