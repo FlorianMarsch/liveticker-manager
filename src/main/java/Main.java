@@ -305,6 +305,19 @@ public class Main {
 			
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
+		get("/process/:id", (request, response) -> {
+			Integer id = Integer.valueOf(request.params(":id"));
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = gp.process(id, Boolean.TRUE);
+			
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday().getNumber());
+			attributes.put("events", process.getEvents());
+			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
+			
+			return new ModelAndView(attributes, "overview.ftl");
+		}, new FreeMarkerEngine());
 		
 	}
 

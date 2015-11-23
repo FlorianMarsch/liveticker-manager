@@ -9,7 +9,7 @@
 	<h1>Spieltag ${matchday}</h1>
 	<div style="float:left">
 		<div>
-			<table border="1">
+			<table border="0">
 				<tbody>
 <#list results as x>
 					<tr>
@@ -28,7 +28,7 @@
 			</table>
 		</div>
 		<div>
-			<table border="1">
+			<table border="0">
 				<tbody>
 <#list events as x>
 					<tr>
@@ -48,7 +48,7 @@
 		</div>
 	</div>
 	<div style="float:left">
-		<table border="1">
+		<table border="0">
 			<thead>
 			<tr>
 						<td>
@@ -65,6 +65,9 @@
 						</td>
 						<td>
 							P
+						</td>
+						<td>
+							S/U/N
 						</td>
 					</tr>
 			</thead>
@@ -85,6 +88,9 @@
 						</td>
 						<td>
 							${x.points}
+						</td>
+						<td>
+							${x.won}/${x.draw}/${x.loose}
 						</td>
 					</tr>
 </#list>

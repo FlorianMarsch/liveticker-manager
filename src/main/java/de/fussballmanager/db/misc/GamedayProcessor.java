@@ -19,12 +19,22 @@ public class GamedayProcessor {
 	MatchService matchService = new MatchService();
 
 	GoalResolver goalResolver = new GoalResolver();
-	
 	public ProcessingResult process(Integer number){
+		return process(number, Boolean.FALSE);
+	}
+	
+	public ProcessingResult process(Integer number, Boolean saveProcessing){
 		ProcessingResult processingResult = new ProcessingResult();
 		
 		Matchday currentMatchday =getMatchday(number);
 		processingResult.setMatchday(currentMatchday);
+		if(currentMatchday.getProcessed()){
+			throw new RuntimeException("matchday already processed");
+		}
+		if(saveProcessing){
+			currentMatchday.setProcessed(Boolean.TRUE);
+			matchdayService.save(currentMatchday);
+		}
 		
 		List<Match> currentMatches = getMatches(currentMatchday);
 		processingResult.setMatches(currentMatches);
@@ -34,12 +44,18 @@ public class GamedayProcessor {
 		for (ProcessedEvent processedEvent : events) {
 			addEventToMatch(processedEvent,currentMatches );
 		}
+		if(saveProcessing){
+			for (Match match : currentMatches) {
+				matchService.save(match);
+			}
+		}
 		
 		List<Match> matchesUntil = getMatchesUntil(currentMatchday);
 		matchesUntil.addAll(currentMatches);
 		List<AllTimeTable> table = getTable(matchesUntil, currentMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
+
 		
 		return processingResult;
 		
