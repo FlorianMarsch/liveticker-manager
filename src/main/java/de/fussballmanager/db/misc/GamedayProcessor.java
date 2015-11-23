@@ -19,104 +19,112 @@ public class GamedayProcessor {
 	MatchService matchService = new MatchService();
 
 	GoalResolver goalResolver = new GoalResolver();
-	public ProcessingResult process(Matchday currentMatchday){
+
+	public ProcessingResult process(Matchday currentMatchday) {
 		return process(currentMatchday, Boolean.FALSE);
 	}
-	
-	public ProcessingResult process(Matchday currentMatchday, Boolean saveProcessing){
+
+	public ProcessingResult process(Matchday currentMatchday,
+			Boolean saveProcessing) {
 		ProcessingResult processingResult = new ProcessingResult();
-		
+
 		processingResult.setMatchday(currentMatchday);
-		if(currentMatchday.getProcessed()){
+		if (currentMatchday.getProcessed()) {
 			throw new RuntimeException("matchday already processed");
 		}
-		if(saveProcessing){
+		if (saveProcessing) {
 			currentMatchday.setProcessed(Boolean.TRUE);
 			matchdayService.save(currentMatchday);
 		}
-		
+
 		List<Match> currentMatches = getMatches(currentMatchday);
 		processingResult.setMatches(currentMatches);
-		
+
 		List<ProcessedEvent> events = goalResolver.getGoals(currentMatchday);
 		processingResult.setEvents(events);
-		if(saveProcessing){
+		if (saveProcessing) {
 			for (Match match : currentMatches) {
 				matchService.save(match);
 			}
 		}
-		
+
 		List<Match> matchesUntil = getMatchesUntil(currentMatchday);
 		matchesUntil.addAll(currentMatches);
 		List<AllTimeTable> table = getTable(matchesUntil, currentMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
 
-		
 		return processingResult;
-		
+
 	}
 
-	private List<AllTimeTable> getTable(List<Match> matchesUntil, Matchday currentMatchday) {
+	private List<AllTimeTable> getTable(List<Match> matchesUntil,
+			Matchday currentMatchday) {
 		Map<Trainer, AllTimeTable> allTimeTableMap = new HashMap<Trainer, AllTimeTable>();
-		
+
 		for (Match match : matchesUntil) {
-			Trainer trainer = match.getHome();
-			AllTimeTable tableEntry = allTimeTableMap.get(trainer);
-			if(tableEntry == null){
-				tableEntry = new AllTimeTable();
-				tableEntry.setTrainer(trainer);
-				tableEntry.setMatchday(currentMatchday);
-				allTimeTableMap.put(trainer, tableEntry);
+			if (!match.isFake()) {
+				Trainer trainer = match.getHome();
+				AllTimeTable tableEntry = allTimeTableMap.get(trainer);
+				if (tableEntry == null) {
+					tableEntry = new AllTimeTable();
+					tableEntry.setTrainer(trainer);
+					tableEntry.setMatchday(currentMatchday);
+					allTimeTableMap.put(trainer, tableEntry);
+				}
+
+				Integer goals = match.getHomeGoals();
+				Integer goalsAgainst = match.getGuestGoals();
+				Integer points = match.getHomePoints();
+				tableEntry.addGoals(goals);
+				tableEntry.addGoalsAgainst(goalsAgainst);
+				tableEntry.addPoints(points);
 			}
-			
-			Integer goals = match.getHomeGoals();
-			Integer goalsAgainst =match.getGuestGoals();
-			Integer points = match.getHomePoints();
-			tableEntry.addGoals(goals);
-			tableEntry.addGoalsAgainst(goalsAgainst);
-			tableEntry.addPoints(points);
 		}
 		for (Match match : matchesUntil) {
-			Trainer trainer = match.getGuest();
-			AllTimeTable tableEntry = allTimeTableMap.get(trainer);
-			if(tableEntry == null){
-				tableEntry = new AllTimeTable();
-				tableEntry.setTrainer(trainer);
-				tableEntry.setMatchday(currentMatchday);
-				allTimeTableMap.put(trainer, tableEntry);
+			if (!match.isFake()) {
+				Trainer trainer = match.getGuest();
+				AllTimeTable tableEntry = allTimeTableMap.get(trainer);
+				if (tableEntry == null) {
+					tableEntry = new AllTimeTable();
+					tableEntry.setTrainer(trainer);
+					tableEntry.setMatchday(currentMatchday);
+					allTimeTableMap.put(trainer, tableEntry);
+				}
+
+				Integer goals = match.getGuestGoals();
+				Integer goalsAgainst = match.getHomeGoals();
+				Integer points = match.getGuestPoints();
+				tableEntry.addGoals(goals);
+				tableEntry.addGoalsAgainst(goalsAgainst);
+				tableEntry.addPoints(points);
 			}
-			
-			Integer goals = match.getGuestGoals();
-			Integer goalsAgainst =match.getHomeGoals();
-			Integer points = match.getGuestPoints();
-			tableEntry.addGoals(goals);
-			tableEntry.addGoalsAgainst(goalsAgainst);
-			tableEntry.addPoints(points);
 		}
-		
+
 		return new ArrayList<AllTimeTable>(allTimeTableMap.values());
 	}
 
-
 	private List<Match> getMatchesUntil(Matchday currentMatchday) {
 		List<Match> currentMatches = new ArrayList<Match>();
-		
+
 		List<Match> all = matchService.getAll();
 		for (Match match : all) {
-			if(match.getMatchday().getNumber() < currentMatchday.getNumber()){
-				currentMatches.add(match);
+			if (match.getMatchday().getNumber() < currentMatchday.getNumber()) {
+				if (match.getMatchday().getModus()
+						.equals(currentMatchday.getModus())) {
+					currentMatches.add(match);
+				}
 			}
 		}
 		return currentMatches;
 	}
-	
+
 	private List<Match> getMatches(Matchday currentMatchday) {
 		List<Match> currentMatches = new ArrayList<Match>();
-		
+
 		List<Match> all = matchService.getAll();
 		for (Match match : all) {
-			if(match.getMatchday().equals(currentMatchday)){
+			if (match.getMatchday().equals(currentMatchday)) {
 				currentMatches.add(match);
 			}
 		}
@@ -126,24 +134,21 @@ public class GamedayProcessor {
 	public ProcessingResult review(Matchday aMatchday) {
 		ProcessingResult processingResult = new ProcessingResult();
 		processingResult.setMatchday(aMatchday);
-		
+
 		List<Match> currentMatches = getMatches(aMatchday);
 		processingResult.setMatches(currentMatches);
-		
+
 		List<Match> allHappendMatchesUntil = new ArrayList<Match>();
 		allHappendMatchesUntil.addAll(currentMatches);
 		allHappendMatchesUntil.addAll(getMatchesUntil(aMatchday));
-		
-		
-		
+
 		List<AllTimeTable> table = getTable(allHappendMatchesUntil, aMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
-		
+
 		processingResult.setEvents(new ArrayList<ProcessedEvent>());
-		
+
 		return processingResult;
 	}
-	
-	
+
 }

@@ -82,5 +82,9 @@ public class Match extends AbstractEntity {
 			return 1;
 		}
 	}
+
+	public Boolean isFake() {
+		return home.getFake() || guest.getFake();
+	}
 	
 }

@@ -12,7 +12,14 @@ public class Matchday extends AbstractEntity{
 	private Integer number;
 	private Boolean processed = Boolean.FALSE;
 	private String results;
+	private String modus;
 	
+	public String getModus() {
+		return modus;
+	}
+	public void setModus(String modus) {
+		this.modus = modus;
+	}
 	public Integer getNumber() {
 		return number;
 	}
@@ -39,9 +46,9 @@ public class Matchday extends AbstractEntity{
 	
 	public String getStatus() {
 		if(processed){
-			return "Inactive, Matchday in the past";
+			return modus + " - Inactive, Matchday in the past";
 		}else{
-			return "Still active or Matchday in the future";
+			return modus + " - Still active or Matchday in the future";
 		}
 		
 	}
