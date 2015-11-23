@@ -6,25 +6,17 @@ import static spark.SparkBase.staticFileLocation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.freemarker.FreeMarkerEngine;
-import de.fussball.kader.ClassicKaderFactory;
-import de.fussball.live.ticker.LiveTickerHandler;
-import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
-import de.fussballmanager.db.entity.match.Match;
-import de.fussballmanager.db.entity.match.MatchService;
 import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.fussballmanager.db.entity.matchday.MatchdayService;
 import de.fussballmanager.db.entity.player.PlayerJSONProducer;
-import de.fussballmanager.db.entity.trainer.Trainer;
 import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.fussballmanager.db.json.BindContext;
 import de.fussballmanager.db.misc.GamedayProcessor;
