@@ -1,4 +1,3 @@
-import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.SparkBase.port;
 import static spark.SparkBase.staticFileLocation;
@@ -30,8 +29,18 @@ public class Main {
 
 		System.out.println("Server started");
 
+		
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
+		
+		ErrorHandler errorHandler = new ErrorHandler();
+		
+		
+		
+		get("/exception", (request, response) -> {
+			throw new RuntimeException("test");
+		});
+		
 
 		get("/live/:id", (request, response) -> {
 			String param = ":id";
@@ -53,11 +62,6 @@ public class Main {
 			attributes.put("data", data.toString());
 			return new ModelAndView(attributes, "json.ftl");
 		}, new FreeMarkerEngine());
-
-		exception(RuntimeException.class, (e, request, response) -> {
-			response.status(500);
-			response.body("Ein Fehler ist aufgetreten. ");
-		});
 
 		BindContext ctx = new BindContext();
 
