@@ -10,6 +10,8 @@ import org.json.JSONArray;
 
 import spark.ModelAndView;
 import spark.Request;
+import spark.Response;
+import spark.Route;
 import spark.template.freemarker.FreeMarkerEngine;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.matchday.Matchday;
@@ -26,21 +28,22 @@ import de.fussballmanager.db.misc.ProcessingResult;
 public class Main {
 
 	public static void main(String[] args) {
+		Long startTime = System.currentTimeMillis();
+		System.out.println("Server started at "+startTime);
 
-		System.out.println("Server started");
-
-		
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
-		
-		registerErrorHandler( new ErrorHandler());
-		
+
+		registerErrorHandler(new ErrorHandler());
+
 		get("/the.appcache", (request, response) -> {
-			 response.type("text/cache-manifest");
-			return new ModelAndView(null, "offlineManifest.ftl");
+			response.type("text/cache-manifest");
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", startTime);
+			return new ModelAndView(attributes, "offlineManifest.ftl");
 		}, new FreeMarkerEngine());
-		
-		
+
 		get("/live/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
