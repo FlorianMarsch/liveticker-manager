@@ -35,6 +35,12 @@ public class Main {
 		
 		registerErrorHandler( new ErrorHandler());
 		
+		get("/the.appcache", (request, response) -> {
+			 response.type("text/cache-manifest");
+			return new ModelAndView(null, "offlineManifest.ftl");
+		}, new FreeMarkerEngine());
+		
+		
 		get("/live/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
