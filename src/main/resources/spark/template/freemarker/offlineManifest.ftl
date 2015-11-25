@@ -9,4 +9,5 @@ NETWORK:
 
 # offline.html will be served in place of all other .html files
 FALLBACK:
-/ /offline.html
+/error404.js /offline.js
+/*.html /offline.html
