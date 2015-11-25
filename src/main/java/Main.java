@@ -33,7 +33,7 @@ public class Main {
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
 		
-		ErrorHandler errorHandler = new ErrorHandler();
+		registerErrorHandler( new ErrorHandler());
 		
 		get("/live/:id", (request, response) -> {
 			String param = ":id";
@@ -98,6 +98,10 @@ public class Main {
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
 
+	}
+
+	private static void registerErrorHandler(ErrorHandler errorHandler) {
+		errorHandler.register();
 	}
 
 	private static Matchday getMatchday(Request request, String param) {
