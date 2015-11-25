@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Page Not Found</title>
+<title>Checking...</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.write('<script src="/error404.js"><\/script>')</script>
@@ -38,14 +38,19 @@ p {
 	width: 280px;
 }
 
-body > div.offline{
+body > div.clientoffline{
+	display:none;
+}
+body > div.pageoffline{
 	display:none;
 }
 body > div.error404{
 	display:none;
 }
-
-body.offline > div.offline{
+body.clientoffline > div.clientoffline{
+	display:block;
+}
+body.pageoffline > div.pageoffline{
 	display:block;
 }
 body.error404 > div.error404{
@@ -64,10 +69,18 @@ body.error404 > div.error404{
 </style>
 </head>
 <body>
-	<div class="offline">
+	<div class="pageoffline">
 		<h1>Page Offline</h1>
 		<p>Sorry, but the page you were trying to view is currently
 			offline.</p>
+		<p>
+			Click <a href="#" onclick="location.reload(); ">here</a> to try
+			again.
+		</p>
+	</div>
+		<div class="clientoffline">
+		<h1>Your PC is Offline</h1>
+		<p>Please connect to the Internet.</p>
 		<p>
 			Click <a href="#" onclick="location.reload(); ">here</a> to try
 			again.

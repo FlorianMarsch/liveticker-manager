@@ -1,4 +1,8 @@
 window.onload = function() {
-	document.getElementsByTagName('body')[0].className += 'offline';
+	if(navigator.onLine){
+		document.getElementsByTagName('body')[0].className += 'pageoffline';
+	}else{
+		document.getElementsByTagName('body')[0].className += 'clientoffline';
+	}
 	document.title='Oops!';
 }
