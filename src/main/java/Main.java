@@ -35,13 +35,6 @@ public class Main {
 		
 		ErrorHandler errorHandler = new ErrorHandler();
 		
-		
-		
-		get("/exception", (request, response) -> {
-			throw new RuntimeException("test");
-		});
-		
-
 		get("/live/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
