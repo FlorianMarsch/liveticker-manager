@@ -3,8 +3,10 @@ package de.fussballmanager.db.misc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.fussballmanager.db.entity.allTimeTable.AllTimeTable;
 import de.fussballmanager.db.entity.match.Match;
@@ -41,6 +43,12 @@ public class GamedayProcessor {
 		processingResult.setMatches(currentMatches);
 
 		List<ProcessedEvent> events = goalResolver.getGoals(currentMatchday);
+		for (ProcessedEvent processedEvent : events) {
+			Integer pos = currentMatches.indexOf(processedEvent.getMatch());
+			Match theMatch = currentMatches.get(pos);
+			processedEvent.setMatch(theMatch);
+			processedEvent.addEventToMatch();
+		}
 		processingResult.setEvents(events);
 		if (saveProcessing) {
 			for (Match match : currentMatches) {
