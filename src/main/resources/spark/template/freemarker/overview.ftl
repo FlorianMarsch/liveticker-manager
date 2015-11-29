@@ -46,7 +46,7 @@
 							${x.name}
 						</td>
 						<td>
-							${x.trainer}
+							${x.trainer.name}
 						</td>
 					</tr>
 </#list>
