@@ -14,6 +14,7 @@ import spark.Response;
 import spark.Route;
 import spark.template.freemarker.FreeMarkerEngine;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
+import de.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.fussballmanager.db.entity.matchday.MatchdayService;
@@ -71,7 +72,8 @@ public class Main {
 		new TrainerJSONProducer().bindServices(ctx);
 		new MatchdayJSONProducer().bindServices(ctx);
 		new PlayerJSONProducer().bindServices(ctx);
-
+		new MatchJSONProducer().bindServices(ctx);
+		
 		get("/overview/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);

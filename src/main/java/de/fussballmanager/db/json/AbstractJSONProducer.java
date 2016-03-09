@@ -21,7 +21,7 @@ import de.fussballmanager.db.service.AbstractService;
 
 public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
-	private String root;
+	protected String root;
 	private RequestHandler<E> handler;
 	
 	public AbstractJSONProducer(AbstractService<E> aAbstractService) {
