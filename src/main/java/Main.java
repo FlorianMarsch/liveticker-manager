@@ -109,6 +109,27 @@ public class Main {
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
 
+		
+		get("/view/:id", (request, response) -> {
+			String param = ":id";
+			Matchday aMatchday = getMatchday(request, param);
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = null;
+			if (aMatchday.getProcessed()) {
+				process = gp.review(aMatchday);
+			} else {
+				process = gp.process(aMatchday);
+			}
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday());
+			attributes.put("events", process.getEvents());
+			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
+
+			return new ModelAndView(attributes, "live.ftl");
+		}, new FreeMarkerEngine());
+		
 	}
 
 	private static void registerErrorHandler(ErrorHandler errorHandler) {

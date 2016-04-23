@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<body>
+
+
+
+
+
+
+	<script>
+		var app = angular.module('myApp', []);
+
+		app.controller('customersCtrl', function($scope, $http) {
+			var scope = $scope;
+			var http = $http;
+			var me = this;
+			scope.players;
+
+			$http({
+				method : 'GET',
+				url : '/Player'
+			}).then(function successCallback(response) {
+				scope.players = response.data.data;
+			}, function errorCallback(response) {
+				// called asynchronously if an error occurs
+				// or server returns response with an error status.
+			});
+
+		});
+	</script>
+
+	<div class="panel-body" ng-app="myApp" ng-controller="customersCtrl">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Players</div>
+			<div class="panel-body">
+
+
+
+
+				<div class="row">
+					<div class="col-sm-12 col-md-2" ng-repeat="x in players">
+						<div class="thumbnail">
+							<img src="http://www.comunio.de/bundesligaspieler/tradablePhoto.phtml/b/{{x.externID}}.gif" alt="{{x.displayName}}">
+							<div class="caption">
+								<h5>{{x.displayName}}</h5>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>
