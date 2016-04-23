@@ -97,7 +97,7 @@
 								<div class="result">
 									<p>
 										<span><img
-											src="/pages/images/${x.home.hashTag}.png"></img></span>
+											src="${x.home.imageUrl}"></img></span>
 									</p>
 									<p>
 										<span class="trainer">${x.home.name}</span>
@@ -107,7 +107,7 @@
 									</p>
 									<p>
 										<span><img
-											src="/pages/images/${x.guest.hashTag}.png"></img></span>
+											src="${x.guest.imageUrl}"></img></span>
 									</p>
 								</div>
 							</div>
