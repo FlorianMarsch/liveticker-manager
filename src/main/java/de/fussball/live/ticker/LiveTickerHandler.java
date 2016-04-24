@@ -3,13 +3,13 @@ package de.fussball.live.ticker;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.fussball.live.ticker.event.EventResolver;
 import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.tick.Tick;
+import de.fussballmanager.db.entity.tick.TickService;
 
 public class LiveTickerHandler {
 
-	EventResolver eventResolver = new EventResolver();
+	TickService ts = new TickService();
 	PlayernameMatcher nameMatcher = new PlayernameMatcher();
 	
 	public LiveTickerHandler(){
@@ -18,7 +18,7 @@ public class LiveTickerHandler {
 	public List<Tick> getResolvedLiveTickerEvents(Matchday aMatchday){
 		List<Tick> tempReturn = new ArrayList<Tick>();
 		
-		List<Tick> events = eventResolver.getLiveTickerEvents(aMatchday);
+		List<Tick> events = ts.getAllByMatchday(aMatchday);
 		
 		for (Tick event : events) {
 			String name = event.getName();
