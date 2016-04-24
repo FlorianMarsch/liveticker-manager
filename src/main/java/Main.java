@@ -15,6 +15,7 @@ import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.fussballmanager.db.entity.matchday.MatchdayService;
 import de.fussballmanager.db.entity.player.PlayerJSONProducer;
+import de.fussballmanager.db.entity.tick.TickJSONProducer;
 import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.fussballmanager.db.json.BindContext;
 import de.fussballmanager.db.misc.GamedayProcessor;
@@ -71,6 +72,7 @@ public class Main {
 		new MatchdayJSONProducer().bindServices(ctx);
 		new PlayerJSONProducer().bindServices(ctx);
 		new MatchJSONProducer().bindServices(ctx);
+		new TickJSONProducer().bindServices(ctx);
 		
 		get("/overview/:id", (request, response) -> {
 			String param = ":id";
