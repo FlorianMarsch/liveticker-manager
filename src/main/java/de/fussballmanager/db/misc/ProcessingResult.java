@@ -2,6 +2,7 @@ package de.fussballmanager.db.misc;
 
 import java.util.List;
 
+import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.allTimeTable.AllTimeTable;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.matchday.Matchday;
@@ -10,7 +11,7 @@ public class ProcessingResult {
 
 	private Matchday matchday;
 	private List<Match> matches;
-	private List<ProcessedEvent> events;
+	private List<Event> events;
 	private List<AllTimeTable> table;
 	
 	public Matchday getMatchday() {
@@ -25,10 +26,10 @@ public class ProcessingResult {
 	public void setMatches(List<Match> matches) {
 		this.matches = matches;
 	}
-	public List<ProcessedEvent> getEvents() {
+	public List<Event> getEvents() {
 		return events;
 	}
-	public void setEvents(List<ProcessedEvent> events) {
+	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
 	public List<AllTimeTable> getTable() {

@@ -15,8 +15,8 @@ import de.fussballmanager.db.entity.trainer.Trainer;
 
 public class GoalResolver {
 
-	public List<ProcessedEvent> getGoals(Matchday aMatchday) {
-		List<ProcessedEvent> returnEvents = new ArrayList<ProcessedEvent>();
+	public List<Event> getGoals(Matchday aMatchday) {
+		List<Event> returnEvents = new ArrayList<Event>();
 		LiveTickerHandler liveTicker = new LiveTickerHandler();
 		ClassicKaderFactory ckf = new ClassicKaderFactory();
 
@@ -35,7 +35,7 @@ public class GoalResolver {
 
 						Match match = getMatch(matches, trainer);
 						
-						ProcessedEvent processedEvent = new ProcessedEvent();
+						Event processedEvent = new Event();
 						processedEvent.setEvent(tempEvent.getEvent());
 						processedEvent.setId(tempEvent.getId());
 						processedEvent.setName(tempEvent.getName());

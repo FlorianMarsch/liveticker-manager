@@ -8,11 +8,7 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.template.freemarker.FreeMarkerEngine;
+import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.fussballmanager.db.entity.matchday.Matchday;
@@ -23,8 +19,10 @@ import de.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.fussballmanager.db.json.BindContext;
 import de.fussballmanager.db.misc.GamedayProcessor;
 import de.fussballmanager.db.misc.GoalResolver;
-import de.fussballmanager.db.misc.ProcessedEvent;
 import de.fussballmanager.db.misc.ProcessingResult;
+import spark.ModelAndView;
+import spark.Request;
+import spark.template.freemarker.FreeMarkerEngine;
 
 public class Main {
 
@@ -51,9 +49,9 @@ public class Main {
 			JSONArray data = new JSONArray();
 
 			GoalResolver gr = new GoalResolver();
-			List<ProcessedEvent> resolvedEvents = gr.getGoals(aMatchday);
+			List<Event> resolvedEvents = gr.getGoals(aMatchday);
 
-			for (ProcessedEvent tempEvent : resolvedEvents) {
+			for (Event tempEvent : resolvedEvents) {
 				try {
 					data.put(data.length(), tempEvent.toJSONObject());
 				} catch (Exception e1) {
