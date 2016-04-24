@@ -1,4 +1,4 @@
-package de.fussball.live.ticker.event;
+package de.fussball.live.ticker;
 
 import org.json.JSONException;
 import org.json.JSONObject;

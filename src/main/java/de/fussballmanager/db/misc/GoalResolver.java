@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import de.fussball.kader.ClassicKaderFactory;
+import de.fussball.live.ticker.Event;
 import de.fussball.live.ticker.LiveTickerHandler;
-import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.match.MatchService;
 import de.fussballmanager.db.entity.matchday.Matchday;

@@ -2,7 +2,7 @@ package de.fussballmanager.db.misc;
 
 import java.util.List;
 
-import de.fussball.live.ticker.event.Event;
+import de.fussball.live.ticker.Event;
 import de.fussballmanager.db.entity.allTimeTable.AllTimeTable;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.matchday.Matchday;

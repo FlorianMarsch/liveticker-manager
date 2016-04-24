@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
-import de.fussball.live.ticker.event.Event;
+import de.fussball.live.ticker.Event;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.fussballmanager.db.entity.matchday.Matchday;
