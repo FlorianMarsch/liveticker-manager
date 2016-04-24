@@ -1,4 +1,4 @@
-package de.fussball.kader;
+package de.fussballmanager.db.entity.lineup;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -16,8 +16,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import de.fussballmanager.db.entity.lineup.LineUp;
-import de.fussballmanager.db.entity.lineup.LineUpService;
 import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.trainer.Trainer;
 import de.fussballmanager.db.entity.trainer.TrainerService;
