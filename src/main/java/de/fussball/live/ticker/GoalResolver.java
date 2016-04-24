@@ -1,12 +1,10 @@
-package de.fussballmanager.db.misc;
+package de.fussball.live.ticker;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.fussball.live.ticker.Event;
-import de.fussball.live.ticker.LiveTickerHandler;
 import de.fussballmanager.db.entity.lineup.ClassicKaderFactory;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.match.MatchService;
