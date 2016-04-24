@@ -9,7 +9,7 @@ import de.fussballmanager.db.entity.AbstractEntity;
 @Entity
 public class Tick extends AbstractEntity {
 
-	
+	private int matchdayNumber;
 	private String event;
 	private String externId;
 	private String name;
@@ -68,6 +68,18 @@ public class Tick extends AbstractEntity {
 	@Override
 	public String getDisplayValue() {
 		return getId();
+	}
+
+
+
+	public int getMatchdayNumber() {
+		return matchdayNumber;
+	}
+
+
+
+	public void setMatchdayNumber(int matchdayNumber) {
+		this.matchdayNumber = matchdayNumber;
 	}
 
 }
