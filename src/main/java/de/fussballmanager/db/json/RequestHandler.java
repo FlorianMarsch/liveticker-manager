@@ -105,6 +105,11 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 		}
 		return found;
 	}
+	
+	public void delete(E aEntity) {
+		service.delete(aEntity);
+	}
+	
 
 	public List<E> getAll() {
 		List<E> all = service.getAll();

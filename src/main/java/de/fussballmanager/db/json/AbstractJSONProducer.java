@@ -58,6 +58,20 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		registerGetAttributeById();
 		registerGetSchema();
 		registerSave();
+		registerDelete();
+	}
+
+	private void registerDelete() {
+		Spark.delete("/" + root + "/:id", (request, response) -> {
+
+
+			List<E> found = handler.get(request);
+			handler.delete(found.get(0));
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", new JSONArray());
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
+		
 	}
 
 	private void registerGetSchema() {
