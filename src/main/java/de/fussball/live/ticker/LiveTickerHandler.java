@@ -3,31 +3,28 @@ package de.fussball.live.ticker;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.fussball.live.ticker.event.Event;
 import de.fussball.live.ticker.event.EventResolver;
-import de.fussball.live.ticker.event.TickerResolver;
 import de.fussballmanager.db.entity.matchday.Matchday;
+import de.fussballmanager.db.entity.tick.Tick;
 
 public class LiveTickerHandler {
 
 	EventResolver eventResolver = new EventResolver();
-	TickerResolver tickerResolver = new TickerResolver();
 	PlayernameMatcher nameMatcher = new PlayernameMatcher();
 	
 	public LiveTickerHandler(){
 	}
 	
-	public List<Event> getResolvedLiveTickerEvents(Matchday aMatchday){
-		List<Event> tempReturn = new ArrayList<Event>();
+	public List<Tick> getResolvedLiveTickerEvents(Matchday aMatchday){
+		List<Tick> tempReturn = new ArrayList<Tick>();
 		
-		String tempLive = tickerResolver.getLiveTicker(aMatchday);
-		List<Event> events = eventResolver.getResolvedLiveTickerEvents(tempLive);
+		List<Tick> events = eventResolver.getLiveTickerEvents(aMatchday);
 		
-		for (Event event : events) {
+		for (Tick event : events) {
 			String name = event.getName();
 			String resolvedName = nameMatcher.getMatchedName(name);
 			if(resolvedName != null){
-				event.setResolved(resolvedName);
+				event.setResolvedName(resolvedName);
 				tempReturn.add(event);
 			}
 		}

@@ -11,6 +11,7 @@ import de.fussball.live.ticker.event.Event;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.match.MatchService;
 import de.fussballmanager.db.entity.matchday.Matchday;
+import de.fussballmanager.db.entity.tick.Tick;
 import de.fussballmanager.db.entity.trainer.Trainer;
 
 public class GoalResolver {
@@ -22,16 +23,16 @@ public class GoalResolver {
 
 		List<Match> matches = new MatchService().getAllByMatchday(aMatchday);
 
-		List<Event> resolvedEvents = liveTicker
+		List<Tick> resolvedEvents = liveTicker
 				.getResolvedLiveTickerEvents(aMatchday);
 
-		for (Event tempEvent : resolvedEvents) {
+		for (Tick tempEvent : resolvedEvents) {
 			Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);
 			try {
 				for (Trainer trainer : allPlayer.keySet()) {
 					Set<String> team = allPlayer.get(trainer);
 
-					if (team.contains(tempEvent.getResolved())) {
+					if (team.contains(tempEvent.getResolvedName())) {
 
 						Match match = getMatch(matches, trainer);
 						
@@ -39,7 +40,7 @@ public class GoalResolver {
 						processedEvent.setEvent(tempEvent.getEvent());
 						processedEvent.setId(tempEvent.getId());
 						processedEvent.setName(tempEvent.getName());
-						processedEvent.setResolved(tempEvent.getResolved());
+						processedEvent.setResolved(tempEvent.getResolvedName());
 						processedEvent.setTrainer(trainer);
 						processedEvent.setMatch(match);
 						processedEvent.addEventToMatch();
