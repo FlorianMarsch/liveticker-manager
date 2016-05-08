@@ -3,10 +3,13 @@ package de.fussball.live.processor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import de.fussball.live.ticker.Event;
 import de.fussball.live.ticker.GoalResolver;
 import de.fussballmanager.db.entity.allTimeTable.AllTimeTable;
+import de.fussballmanager.db.entity.division.Division;
+import de.fussballmanager.db.entity.division.DivisionService;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.match.MatchService;
 import de.fussballmanager.db.entity.matchday.Matchday;
@@ -16,8 +19,9 @@ public class GamedayProcessor {
 
 	MatchdayService matchdayService = new MatchdayService();
 	MatchService matchService = new MatchService();
-
 	GoalResolver goalResolver = new GoalResolver();
+	TableProcessor tableProcessor = new TableProcessor();
+	DivisionProcessor divisionProcessor = new DivisionProcessor();
 
 	public ProcessingResult process(Matchday currentMatchday) {
 		return process(currentMatchday, Boolean.FALSE);
@@ -55,10 +59,20 @@ public class GamedayProcessor {
 
 		List<Match> matchesUntil = matchService.getMatchesUntil(currentMatchday);
 		matchesUntil.addAll(currentMatches);
-		List<AllTimeTable> table = new TableProcessor().getTable(matchesUntil, currentMatchday);
+		List<AllTimeTable> table = tableProcessor.getTable(matchesUntil, currentMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
+		
+		Map<Division, List<AllTimeTable>> divisionalTables;
+		divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday);
+		processingResult.setDivisionalTables(divisionalTables );
 
+		
+		if(currentMatchday.getDivisionFinals() && saveProcessing){
+			List<Division> newDivisions = divisionProcessor.processDownswing(divisionalTables);
+			
+		}
+		
 		return processingResult;
 
 	}
@@ -89,7 +103,7 @@ public class GamedayProcessor {
 		allHappendMatchesUntil.addAll(currentMatches);
 		allHappendMatchesUntil.addAll(matchService.getMatchesUntil(aMatchday));
 
-		List<AllTimeTable> table = new TableProcessor().getTable(allHappendMatchesUntil, aMatchday);
+		List<AllTimeTable> table = tableProcessor.getTable(allHappendMatchesUntil, aMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
 

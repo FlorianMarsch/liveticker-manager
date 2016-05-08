@@ -1,8 +1,11 @@
 package de.fussball.live.processor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,14 +24,7 @@ public class DivisionProcessor {
 	MatchService matchService = new MatchService();
 
 	public Map<Division, List<AllTimeTable>> getDivisionalTables(Matchday currentMatchday){
-		List<Match> divisonalMatches = matchService.getDivisonalMatchesUntil(currentMatchday);
-		return getDivisionalTables(currentMatchday, divisonalMatches);
-	}
-	
-	public Map<Division, List<AllTimeTable>> getFinalDivisionalTables(Matchday currentMatchday){
-		if(!currentMatchday.getDivisionFinals()){
-			throw new IllegalArgumentException();
-		}
+
 		List<Match> divisonalMatches = matchService.getDivisonalMatchesUntil(currentMatchday);
 		divisonalMatches.addAll(matchService.getAllByMatchday(currentMatchday));
 		return getDivisionalTables(currentMatchday, divisonalMatches);
@@ -57,5 +53,42 @@ public class DivisionProcessor {
 		}
 		
 		return new TableProcessor().getTable(new ArrayList<>(affectedMatches), currentMatchday);
+	}
+
+	public List<Division> processDownswing(Map<Division, List<AllTimeTable>> divisionalTables) {
+
+		List<Division> order = new ArrayList<>(divisionalTables.keySet());
+		Collections.sort(order,new Comparator<Division>() {
+
+			@Override
+			public int compare(Division division1, Division division2) {
+				return division1.getName().compareTo(division2.getName());
+			}
+		});
+		Iterator<Division> iterator = order.iterator();
+		Trainer relegater = null;
+		Division last = null;
+		while (iterator.hasNext()) {
+			Division division = iterator.next();
+			List<AllTimeTable> table = divisionalTables.get(division);
+			Collections.sort(table);
+			
+			if(relegater!=null){
+				division.getTrainers().add(relegater);
+				last.getTrainers().remove(relegater);
+				relegater = null;
+			}
+			
+			
+			Trainer tempClimber = table.get(0).getTrainer();
+			relegater = table.get(table.size()).getTrainer();
+			if(last != null){
+				last.getTrainers().add(tempClimber);
+				division.getTrainers().remove(tempClimber);
+			}
+			
+			last = division;
+		}
+		return order;
 	}
 }
