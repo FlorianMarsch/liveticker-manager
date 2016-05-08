@@ -13,6 +13,7 @@ public class Matchday extends AbstractEntity{
 	private Boolean processed = Boolean.FALSE;
 	private String results;
 	private String modus;
+	private Boolean divisionFinals = Boolean.FALSE;
 	
 	public String getModus() {
 		return modus;
@@ -51,6 +52,12 @@ public class Matchday extends AbstractEntity{
 			return modus + " - Still active or Matchday in the future";
 		}
 		
+	}
+	public Boolean getDivisionFinals() {
+		return divisionFinals;
+	}
+	public void setDivisionFinals(Boolean divisionFinals) {
+		this.divisionFinals = divisionFinals;
 	}
 	
 }
