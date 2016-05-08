@@ -8,10 +8,10 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
+import de.fussball.live.processor.GamedayProcessor;
+import de.fussball.live.processor.ProcessingResult;
 import de.fussball.live.ticker.Event;
-import de.fussball.live.ticker.GamedayProcessor;
 import de.fussball.live.ticker.GoalResolver;
-import de.fussball.live.ticker.ProcessingResult;
 import de.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.fussballmanager.db.entity.matchday.Matchday;

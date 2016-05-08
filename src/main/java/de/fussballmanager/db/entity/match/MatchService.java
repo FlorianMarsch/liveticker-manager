@@ -1,8 +1,11 @@
 package de.fussballmanager.db.entity.match;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import de.fussballmanager.db.entity.division.Division;
 import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.service.AbstractService;
 
@@ -29,5 +32,42 @@ public class MatchService extends AbstractService<Match> {
 		
 		return arrayList;
 	}
+	
+	public List<Match> getMatchesUntil(Matchday currentMatchday) {
+		List<Match> currentMatches = new ArrayList<Match>();
+
+		for (Match match : getAll()) {
+			if (match.getMatchday().getNumber() < currentMatchday.getNumber()) {
+				if (match.getMatchday().getModus()
+						.equals(currentMatchday.getModus())) {
+					currentMatches.add(match);
+				}
+			}
+		}
+		return currentMatches;
+	}
+	
+	public List<Match> getDivisonalMatchesUntil(Matchday currentMatchday) {
+		List<Match> currentMatches = new ArrayList<Match>();
+		List<Match> matchesUntil = getMatchesUntil(currentMatchday);
+		
+		Collections.sort(matchesUntil, new Comparator<Match>() {
+
+			@Override
+			public int compare(Match match1, Match match2) {
+				return match1.getMatchday().getNumber().compareTo(match2.getMatchday().getNumber());
+			}
+		});
+		
+		for (Match match : matchesUntil) {
+			currentMatches.add(match);
+			if(match.getMatchday().getDivisionFinals()){
+				currentMatches.clear();
+			}
+		}
+
+		return currentMatches;
+	}
+	
 
 }
