@@ -1,7 +1,6 @@
 package de.fussball.live.processor;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,54 +18,43 @@ public class MatchCreator {
 	
 	
 	public void createDivisionalMatches(List<Trainer> trainers, Matchday currentMatchday){
-		Collections.shuffle(trainers);
 		Trainer a = trainers.get(0);
 		Trainer b = trainers.get(1);
 		Trainer c = trainers.get(2);
 		Trainer d = trainers.get(3);
 		
-		Integer number = currentMatchday.getNumber();
-		List< Matchday> all = matchdayService.getAll();
+		Matchday startingAt = getMatchdayService().getNextMatchday(currentMatchday);
 		
-		Collections.sort(all,new Comparator<Matchday>() {
-
-			@Override
-			public int compare(Matchday o1, Matchday o2) {
-				// TODO Auto-generated method stub
-				return o1.getNumber().compareTo(o2.getNumber());
-			}
-		});
-		
-		Matchday startingAt = null;
-		for (Matchday gameDay : all) {
-			if(startingAt == null && gameDay.getNumber() > number && gameDay.getModus().equals(currentMatchday.getModus())){
-				startingAt = gameDay;
-			}
-		}
-		
-		Map<Integer, Matchday> allOrderedInMap = matchdayService.getAllOrderedInMap(QMatchday.matchday.number);
-		Matchday first = allOrderedInMap.get(startingAt.getNumber());
-		Matchday second = allOrderedInMap.get(startingAt.getNumber()+1);
-		Matchday third= allOrderedInMap.get(startingAt.getNumber()+2);
+		Matchday first = getMatchdayService().get(startingAt.getNumber());
+		Matchday second = getMatchdayService().get(startingAt.getNumber()+1);
+		Matchday third= getMatchdayService().get(startingAt.getNumber()+2);
 		
 		generateMatches(first, a,b,c,d);
 		generateMatches(second, a,c,b,d);
 		generateMatches(third, a,d,c,b);
 	}
 
-
-	private void generateMatches(Matchday aMatchday, Trainer a, Trainer b, Trainer c, Trainer d) {
+	
+	void generateMatches(Matchday aMatchday, Trainer a, Trainer b, Trainer c, Trainer d) {
 		createMatch(aMatchday, a,b);
 		createMatch(aMatchday, b,c);
 	}
 
-
-	private void createMatch(Matchday aMatchday, Trainer aHome, Trainer aGuest) {
+	void createMatch(Matchday aMatchday, Trainer aHome, Trainer aGuest) {
 		Match match = new Match();
 		match.setHome(aHome);
 		match.setGuest(aGuest);
 		match.setMatchday(aMatchday);
-		matchService.save(match);
+		getMatchService().save(match);
+	}
+
+
+	MatchService getMatchService() {
+		return matchService;
+	}
+	
+	MatchdayService getMatchdayService() {
+		return matchdayService;
 	}
 	
 }
