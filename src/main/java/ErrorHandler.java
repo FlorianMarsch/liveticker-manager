@@ -1,4 +1,5 @@
 import static spark.Spark.exception;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
