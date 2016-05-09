@@ -15,7 +15,6 @@ public class Division extends AbstractEntity {
 	private String name;
 	private String description;
 	private List<Trainer> trainers;
-	private Division successor;
 	
 	@Override
 	public String getDisplayValue() {
@@ -42,15 +41,5 @@ public class Division extends AbstractEntity {
 	public void setTrainers(List<Trainer> trainers) {
 		this.trainers = trainers;
 	}
-
-	public Division getSuccessor() {
-		return successor;
-	}
-
-	public void setSuccessor(Division successor) {
-		this.successor = successor;
-	}
-
-
 
 }

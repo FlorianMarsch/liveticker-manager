@@ -89,6 +89,9 @@ public class DivisionProcessor {
 			
 			last = division;
 		}
+		for (Division division : order) {
+			divisionService.save(division);
+		}
 		return order;
 	}
 }

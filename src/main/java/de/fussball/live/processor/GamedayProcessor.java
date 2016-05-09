@@ -9,11 +9,11 @@ import de.fussball.live.ticker.Event;
 import de.fussball.live.ticker.GoalResolver;
 import de.fussballmanager.db.entity.allTimeTable.AllTimeTable;
 import de.fussballmanager.db.entity.division.Division;
-import de.fussballmanager.db.entity.division.DivisionService;
 import de.fussballmanager.db.entity.match.Match;
 import de.fussballmanager.db.entity.match.MatchService;
 import de.fussballmanager.db.entity.matchday.Matchday;
 import de.fussballmanager.db.entity.matchday.MatchdayService;
+import de.fussballmanager.db.entity.trainer.Trainer;
 
 public class GamedayProcessor {
 
@@ -22,13 +22,13 @@ public class GamedayProcessor {
 	GoalResolver goalResolver = new GoalResolver();
 	TableProcessor tableProcessor = new TableProcessor();
 	DivisionProcessor divisionProcessor = new DivisionProcessor();
+	MatchCreator matchCreator = new MatchCreator();
 
 	public ProcessingResult process(Matchday currentMatchday) {
 		return process(currentMatchday, Boolean.FALSE);
 	}
 
-	public ProcessingResult process(Matchday currentMatchday,
-			Boolean saveProcessing) {
+	public ProcessingResult process(Matchday currentMatchday, Boolean saveProcessing) {
 		ProcessingResult processingResult = new ProcessingResult();
 
 		processingResult.setMatchday(currentMatchday);
@@ -62,23 +62,28 @@ public class GamedayProcessor {
 		List<AllTimeTable> table = tableProcessor.getTable(matchesUntil, currentMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
-		
+
 		Map<Division, List<AllTimeTable>> divisionalTables;
 		divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday);
-		processingResult.setDivisionalTables(divisionalTables );
+		processingResult.setDivisionalTables(divisionalTables);
 
-		
-		if(currentMatchday.getDivisionFinals() && saveProcessing){
+		if (currentMatchday.getDivisionFinals() && saveProcessing) {
 			List<Division> newDivisions = divisionProcessor.processDownswing(divisionalTables);
-			
+			for (Division division : newDivisions) {
+				List<Trainer> trainers = division.getTrainers();
+				if (trainers.size() == 4) {
+
+					matchCreator.createDivisionalMatches(trainers, currentMatchday);
+
+				} else {
+					throw new IllegalArgumentException(division.getName());
+				}
+			}
 		}
-		
+
 		return processingResult;
 
 	}
-
-
-
 
 	private List<Match> getMatches(Matchday currentMatchday) {
 		List<Match> currentMatches = new ArrayList<Match>();
