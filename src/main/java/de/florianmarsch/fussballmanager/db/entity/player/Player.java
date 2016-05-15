@@ -13,46 +13,57 @@ import de.florianmarsch.fussballmanager.db.entity.club.Club;
 @Entity
 public class Player extends AbstractEntity {
 
-	@Column
-	@NotNull
+	private String comunio;
+	private String feedmonster;
+
+	private String country;
+	private String firstName;
+	private String lastName;
 	private String name;
-
-	@Column
-	private String normalizedName;
-
-	@Column
-	@NotNull
-	private Integer externID;
-
-	@Column
-	private Integer price;
-
-	@ManyToOne
-	private Club club;
-
-	@Column
-	private Integer points = 0;
-
-	@Column
-	private Integer goals = 0;
-
-	@Column
-	private Integer owngoals = 0;
-
-	@Column
-	private Integer red = 0;
-
-	@Column
-	private Integer yellow = 0;
-
-	@Column
-	private Integer yellowRed = 0;
-
-	@Column
-	private String status;
-
-	@Column
+	private String abbreviationName;
 	private String position;
+	private String age;
+	private String thumbnail;
+
+	public String getComunio() {
+		return comunio;
+	}
+
+	public void setComunio(String comunio) {
+		this.comunio = comunio;
+	}
+
+	public String getFeedmonster() {
+		return feedmonster;
+	}
+
+	public void setFeedmonster(String feedmonster) {
+		this.feedmonster = feedmonster;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
 	public String getName() {
 		return name;
@@ -62,92 +73,12 @@ public class Player extends AbstractEntity {
 		this.name = name;
 	}
 
-	public String getNormalizedName() {
-		return normalizedName;
+	public String getAbbreviationName() {
+		return abbreviationName;
 	}
 
-	public void setNormalizedName(String normalizedName) {
-		this.normalizedName = normalizedName;
-	}
-
-	public Integer getExternID() {
-		return externID;
-	}
-
-	public void setExternID(Integer aExternID) {
-		this.externID = aExternID;
-	}
-
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-	public Club getClub() {
-		return club;
-	}
-
-	public void setClub(Club club) {
-		this.club = club;
-	}
-
-	public Integer getPoints() {
-		return points;
-	}
-
-	public void setPoints(Integer points) {
-		this.points = points;
-	}
-
-	public Integer getGoals() {
-		return goals;
-	}
-
-	public void setGoals(Integer goals) {
-		this.goals = goals;
-	}
-
-	public Integer getOwngoals() {
-		return owngoals;
-	}
-
-	public void setOwngoals(Integer owngoals) {
-		this.owngoals = owngoals;
-	}
-
-	public Integer getRed() {
-		return red;
-	}
-
-	public void setRed(Integer red) {
-		this.red = red;
-	}
-
-	public Integer getYellow() {
-		return yellow;
-	}
-
-	public void setYellow(Integer yellow) {
-		this.yellow = yellow;
-	}
-
-	public Integer getYellowRed() {
-		return yellowRed;
-	}
-
-	public void setYellowRed(Integer yellowRed) {
-		this.yellowRed = yellowRed;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
+	public void setAbbreviationName(String abbreviationName) {
+		this.abbreviationName = abbreviationName;
 	}
 
 	public String getPosition() {
@@ -158,18 +89,25 @@ public class Player extends AbstractEntity {
 		this.position = position;
 	}
 
-	public String getDisplayName(){
-		if(getNormalizedName() != null){
-			return getNormalizedName();
-		}else{
-			return getName();
-		}
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 	@Override
 	public String getDisplayValue() {
-		return getDisplayName();
+		return getName();
 	}
-	
-	
+
 }
