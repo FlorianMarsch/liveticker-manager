@@ -19,6 +19,7 @@ public class ErrorHandler {
 	public void handle(Exception e, Request request, Response response) {
 		response.status(500);
 		response.body(renderdErrorMessage);
+		e.printStackTrace();
 	}
 	
 	public void register(){
