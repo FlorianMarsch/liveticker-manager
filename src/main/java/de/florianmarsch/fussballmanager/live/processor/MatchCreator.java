@@ -21,6 +21,10 @@ public class MatchCreator {
 		Trainer d = trainers.get(3);
 		
 		Matchday startingAt = getMatchdayService().getNextMatchday(currentMatchday);
+		if(startingAt == null){
+			//last Game reached
+			return;
+		}
 		
 		Matchday first = getMatchdayService().get(startingAt.getNumber());
 		Matchday second = getMatchdayService().get(startingAt.getNumber()+1);
