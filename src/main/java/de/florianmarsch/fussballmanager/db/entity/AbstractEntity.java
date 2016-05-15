@@ -21,9 +21,6 @@ public abstract class AbstractEntity {
 	@Column
 	private Boolean persistend = Boolean.FALSE;
 
-	@Column(length = 4)
-	private String schemaName = System.getenv("SCHEME");
-
 	public String getId() {
 		return id;
 	}
@@ -38,14 +35,6 @@ public abstract class AbstractEntity {
 
 	public void setCreationTime(Long creationTime) {
 		this.creationTime = creationTime;
-	}
-
-	public String getSchemaName() {
-		return schemaName;
-	}
-
-	public void setSchemaName(String schemaName) {
-		this.schemaName = schemaName;
 	}
 
 	public Long getLastChangedTime() {
