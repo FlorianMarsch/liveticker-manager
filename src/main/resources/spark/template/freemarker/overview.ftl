@@ -13,6 +13,69 @@
 <body>
 	<h1>Spieltag ${matchday.number}</h1>
 	<h2>${matchday.status}</h2>
+	
+	
+	 <fieldset>
+		<legend>Divisions</legend>
+<table border="0">
+	<#list divisionalTables as item>
+    <#assign division = item.getKey()/>
+    <#assign table = item.getValue()/>
+			<tbody>
+			<tr>
+						<td>
+							Division ${division.name}
+						</td>
+					
+						<td>
+							T
+						</td>
+						<td>
+							G
+						</td>
+						<td>
+							P
+						</td>
+						
+					</tr>
+		
+<#list table as x>
+					<tr>
+						<td>
+							${x?counter}. ${x.trainer.name}
+						</td>
+						<td>
+							${x.goals}
+						</td>
+						<td>
+							${x.goalsAgainst}
+						</td>
+						<td>
+							${x.points}
+						</td>
+						
+					</tr>
+</#list>
+			<tr>
+						<td>
+							&nbsp;
+						</td>
+						<td>
+							&nbsp;
+						</td>
+						<td>
+							&nbsp;
+						</td>
+						<td>
+							&nbsp;
+						</td>
+						
+					</tr>	
+	</#list>
+	</tbody>
+			</table>
+	</fieldset>
+	
 	 <fieldset>
 	<legend>Results</legend>
 			<table border="0">

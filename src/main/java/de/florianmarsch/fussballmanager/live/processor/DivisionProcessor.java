@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import de.florianmarsch.fussballmanager.db.entity.allTimeTable.AllTimeTable;
 import de.florianmarsch.fussballmanager.db.entity.division.Division;
@@ -32,7 +33,7 @@ public class DivisionProcessor {
 
 	private Map<Division, List<AllTimeTable>> getDivisionalTables(Matchday currentMatchday,
 			List<Match> divisonalMatches) {
-		Map<Division, List<AllTimeTable>> returnMap = new HashMap<>();
+		Map<Division, List<AllTimeTable>> returnMap = new TreeMap<>();
 		List<Division> all = divisionService.getAll();
 		for (Division division : all) {
 			List<Trainer> trainers = division.getTrainers();

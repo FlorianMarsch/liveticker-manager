@@ -90,6 +90,8 @@ public class Main {
 			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
 			attributes.put("allTimeTable", process.getTable());
+			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
+
 
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
@@ -105,6 +107,7 @@ public class Main {
 			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
 			attributes.put("allTimeTable", process.getTable());
+			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
 
 			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
