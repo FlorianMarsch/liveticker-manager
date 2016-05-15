@@ -24,26 +24,8 @@ public class QueryBuilder {
 	public JPAQuery select(BooleanBuilder condition){
 		
 		JPAQuery tempQuery = new JPAQuery(em).from(source);
-		tempQuery.where(buildCondition(condition));
+		tempQuery.where(condition);
 		return tempQuery;
 	}
 
-	private BooleanBuilder buildCondition(BooleanBuilder condition) {
-		BooleanBuilder finalCondition = null;
-		BooleanBuilder schemeCondition = new BooleanBuilder();
-		
-		PathMetadata<String> forProperty = PathMetadataFactory.forProperty(source, "schemaName");
-		   
-		
-		schemeCondition.and(new StringPath(forProperty).eq( System.getenv("SCHEME")));
-		if(condition!= null && condition.hasValue()){
-			BooleanBuilder joinCondition = new BooleanBuilder();
-			joinCondition.and(condition);
-			joinCondition.and(schemeCondition);
-			finalCondition = joinCondition;
-		}else{
-			finalCondition = schemeCondition;
-		}
-		return finalCondition;
-	}
 }
