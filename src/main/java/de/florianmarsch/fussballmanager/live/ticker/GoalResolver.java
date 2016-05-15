@@ -10,39 +10,38 @@ import de.florianmarsch.fussballmanager.db.entity.match.Match;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchService;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.tick.Tick;
+import de.florianmarsch.fussballmanager.db.entity.tick.TickService;
 import de.florianmarsch.fussballmanager.db.entity.trainer.Trainer;
 
 public class GoalResolver {
 
 	public List<Event> getGoals(Matchday aMatchday) {
 		List<Event> returnEvents = new ArrayList<Event>();
-		LiveTickerHandler liveTicker = new LiveTickerHandler();
+		TickService liveTicker = new TickService();
 		ClassicKaderFactory ckf = new ClassicKaderFactory();
 
 		List<Match> matches = new MatchService().getAllByMatchday(aMatchday);
 
-		List<Tick> resolvedEvents = liveTicker
-				.getResolvedLiveTickerEvents(aMatchday);
+		List<Tick> ticks = liveTicker.getAllByMatchday(aMatchday);
 
-		for (Tick tempEvent : resolvedEvents) {
-			Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);
+		Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);
+		for (Tick tick : ticks) {
 			try {
 				for (Trainer trainer : allPlayer.keySet()) {
 					Set<String> team = allPlayer.get(trainer);
 
-					if (team.contains(tempEvent.getResolvedName())) {
+					if (team.contains(tick.getName())) {
 
 						Match match = getMatch(matches, trainer);
-						
-						Event processedEvent = new Event();
-						processedEvent.setEvent(tempEvent.getEvent());
-						processedEvent.setId(tempEvent.getId());
-						processedEvent.setName(tempEvent.getName());
-						processedEvent.setResolved(tempEvent.getResolvedName());
-						processedEvent.setTrainer(trainer);
-						processedEvent.setMatch(match);
-						processedEvent.addEventToMatch();
-						returnEvents.add(processedEvent);
+
+						Event event = new Event();
+						event.setEvent(tick.getEvent());
+						event.setId(tick.getId());
+						event.setName(tick.getName());
+						event.setTrainer(trainer);
+						event.setMatch(match);
+						event.addEventToMatch();
+						returnEvents.add(event);
 
 					}
 
@@ -55,16 +54,14 @@ public class GoalResolver {
 		return returnEvents;
 	}
 
-	
-	public Match getMatch(List<Match> matches, Trainer trainer){
+	public Match getMatch(List<Match> matches, Trainer trainer) {
 		Match current = null;
 		for (Match tempMatch : matches) {
-			if (tempMatch.getHome().equals(trainer)
-					|| tempMatch.getGuest().equals(trainer)) {
+			if (tempMatch.getHome().equals(trainer) || tempMatch.getGuest().equals(trainer)) {
 				current = tempMatch;
 			}
 		}
 		return current;
 	}
-	
+
 }

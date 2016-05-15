@@ -13,7 +13,6 @@ public class Tick extends AbstractEntity {
 	private String event;
 	private String externId;
 	private String name;
-	private String resolvedName;
 	
 	
 	
@@ -50,20 +49,6 @@ public class Tick extends AbstractEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
-
-	public String getResolvedName() {
-		return resolvedName;
-	}
-
-
-
-	public void setResolvedName(String resolvedName) {
-		this.resolvedName = resolvedName;
-	}
-
-
 
 	@Override
 	public String getDisplayValue() {

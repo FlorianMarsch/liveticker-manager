@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.Normalizer;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -16,9 +17,16 @@ import org.jsoup.select.Elements;
 import de.florianmarsch.fussballmanager.db.entity.trainer.Trainer;
 import de.florianmarsch.fussballmanager.db.service.AbstractService;
 import de.florianmarsch.fussballmanager.db.entity.lineup.QLineUp;
+import de.florianmarsch.fussballmanager.db.entity.player.Player;
+import de.florianmarsch.fussballmanager.db.entity.player.PlayerService;
+import de.florianmarsch.fussballmanager.db.entity.player.QPlayer;
 
 public class LineUpService extends AbstractService<LineUp> {
 
+	PlayerService ps = new PlayerService();
+	Map<String, Player> players = ps.getAllOrderedInMap(
+			QPlayer.player.name);
+	
 	public LineUpService() {
 		super(QLineUp.lineUp);
 	}
@@ -49,13 +57,28 @@ public class LineUpService extends AbstractService<LineUp> {
 				String norm = Normalizer.normalize(tempName,
 						Normalizer.Form.NFD);
 				norm = norm.replaceAll("[^\\p{ASCII}]", "");
-				teamList.add(norm.trim());
+				String trim = norm.trim();
+				
+				String name = getMatchedName(trim);
+				if(name != null){
+					teamList.add(name);
+				}
 			}
 			System.out.println(teamList);
 			return teamList;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("abbruch", e);
+		}
+	}
+	
+	public String getMatchedName(String name) {
+		System.out.println("check " + name);
+		boolean contains = players.containsKey(name);
+		if(contains){
+			return players.get(name).getAbbreviationName();
+		}else{
+			return null;
 		}
 	}
 	

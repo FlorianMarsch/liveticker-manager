@@ -9,7 +9,6 @@ import de.florianmarsch.fussballmanager.db.entity.trainer.Trainer;
 public class Event {
 	private String id;
 	private String name;
-	private String resolved;
 	private String event;
 	
 	private Trainer trainer;
@@ -60,12 +59,6 @@ public class Event {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getResolved() {
-		return resolved;
-	}
-	public void setResolved(String resolved) {
-		this.resolved = resolved;
-	}
 
 	public Trainer getTrainer() {
 		return trainer;
@@ -84,7 +77,7 @@ public class Event {
 		try {
 			JSONObject tempJsonPlayer = new JSONObject();
 			tempJsonPlayer.put("id", getId());
-			tempJsonPlayer.put("name", getResolved());
+			tempJsonPlayer.put("name", getName());
 			tempJsonPlayer.put("type", getEvent());
 			tempJsonPlayer.put("owner", trainer.getName());
 			tempJsonPlayer.put("hashTag", "#"+ trainer.getHashTag());
