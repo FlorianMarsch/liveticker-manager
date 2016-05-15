@@ -24,8 +24,12 @@ public class GoalResolver {
 
 		List<Tick> ticks = liveTicker.getAllByMatchday(aMatchday);
 
-		Map<Trainer, Set<String>> allPlayer = ckf.getAll(aMatchday);
+		Map<Trainer, Set<String>> allPlayer = null;
 		for (Tick tick : ticks) {
+			if(allPlayer == null){
+				// Load them only if there are goals to process
+				allPlayer = ckf.getAll(aMatchday);
+			}
 			try {
 				for (Trainer trainer : allPlayer.keySet()) {
 					Set<String> team = allPlayer.get(trainer);
