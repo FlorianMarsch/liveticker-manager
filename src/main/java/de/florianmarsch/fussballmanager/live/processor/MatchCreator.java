@@ -34,7 +34,7 @@ public class MatchCreator {
 	
 	void generateMatches(Matchday aMatchday, Trainer a, Trainer b, Trainer c, Trainer d) {
 		createMatch(aMatchday, a,b);
-		createMatch(aMatchday, b,c);
+		createMatch(aMatchday, c,d);
 	}
 
 	void createMatch(Matchday aMatchday, Trainer aHome, Trainer aGuest) {
