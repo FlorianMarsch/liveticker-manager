@@ -47,8 +47,8 @@ public class MatchCreator {
 		match.setGuest(aGuest);
 		match.setMatchday(aMatchday);
 		
-		match.setHomeGoals(Double.valueOf(Math.random()*5).intValue());
-		match.setGuestGoals(Double.valueOf(Math.random()*5).intValue());
+//		match.setHomeGoals(Double.valueOf(Math.random()*5).intValue());
+//		match.setGuestGoals(Double.valueOf(Math.random()*5).intValue());
 		getMatchService().save(match);
 	}
 
