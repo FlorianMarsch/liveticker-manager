@@ -124,9 +124,7 @@
 						<td>
 							Platz
 						</td>
-						<td>
-							
-						</td>
+						
 						<td>
 							T
 						</td>
@@ -145,10 +143,7 @@
 <#list allTimeTable as x>
 					<tr>
 						<td>
-							${x?counter}
-						</td>
-						<td>
-							${x.trainer.name}
+							${x?counter}. ${x.trainer.name}
 						</td>
 						<td>
 							${x.goals}
