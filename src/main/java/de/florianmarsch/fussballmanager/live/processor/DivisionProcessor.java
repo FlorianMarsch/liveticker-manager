@@ -81,7 +81,7 @@ public class DivisionProcessor {
 			
 			
 			Trainer tempClimber = table.get(0).getTrainer();
-			relegater = table.get(table.size()).getTrainer();
+			relegater = table.get(table.size()-1).getTrainer();
 			if(last != null){
 				last.getTrainers().add(tempClimber);
 				division.getTrainers().remove(tempClimber);
