@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,7 +27,7 @@ public class LineUpService extends AbstractService<LineUp> {
 
 	PlayerService ps = new PlayerService();
 	Map<String, Player> players = ps.getAllOrderedInMap(
-			QPlayer.player.name);
+			QPlayer.player.abbreviationName);
 	
 	public LineUpService() {
 		super(QLineUp.lineUp);
@@ -43,23 +45,12 @@ public class LineUpService extends AbstractService<LineUp> {
 			InputStream is = (InputStream) new URL(urlString).getContent();
 			html = IOUtils.toString(is, "UTF-8");
 
-			html = Normalizer.normalize(html, Normalizer.Form.NFD);
-			html = html.replaceAll("[^\\p{ASCII}]", "");
-
-			Document doc = Jsoup.parse(html);
-			Elements lines = doc.select(".name_cont");
-
+			JSONArray lineUps = new JSONObject(html).getJSONArray("data");
+			
 			Set<String> teamList = new HashSet<String>();
-			for (int i = 0; i < lines.size(); i++) {
-				Element line = lines.get(i);
-				String tempName = line.html();
-				tempName = StringEscapeUtils.unescapeHtml(tempName);
-				String norm = Normalizer.normalize(tempName,
-						Normalizer.Form.NFD);
-				norm = norm.replaceAll("[^\\p{ASCII}]", "");
-				String trim = norm.trim();
-				
-				String name = getMatchedName(trim);
+			for (int i = 0; i < lineUps.length(); i++) {
+				String tempName = lineUps.getString(i);
+				String name = getMatchedName(tempName);
 				if(name != null){
 					teamList.add(name);
 				}
@@ -76,7 +67,7 @@ public class LineUpService extends AbstractService<LineUp> {
 		System.out.println("check " + name);
 		boolean contains = players.containsKey(name);
 		if(contains){
-			return players.get(name).getAbbreviationName();
+			return players.get(name).getName();
 		}else{
 			return null;
 		}
