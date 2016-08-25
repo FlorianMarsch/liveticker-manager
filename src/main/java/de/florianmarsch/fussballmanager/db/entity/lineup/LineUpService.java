@@ -25,10 +25,6 @@ import de.florianmarsch.fussballmanager.db.entity.player.QPlayer;
 
 public class LineUpService extends AbstractService<LineUp> {
 
-	PlayerService ps = new PlayerService();
-	Map<String, Player> players = ps.getAllOrderedInMap(
-			QPlayer.player.abbreviationName);
-	
 	public LineUpService() {
 		super(QLineUp.lineUp);
 	}
@@ -37,8 +33,8 @@ public class LineUpService extends AbstractService<LineUp> {
 	public LineUp getNewInstance() {
 		return new LineUp();
 	}
-	
-	public Set<String> reciveCurrentLineUp(Trainer trainer){
+
+	public Set<String> reciveCurrentLineUp(Trainer trainer) {
 		try {
 			String html = null;
 			String urlString = trainer.getUrl();
@@ -46,14 +42,16 @@ public class LineUpService extends AbstractService<LineUp> {
 			html = IOUtils.toString(is, "UTF-8");
 
 			JSONArray lineUps = new JSONObject(html).getJSONArray("data");
-			
+
 			Set<String> teamList = new HashSet<String>();
 			for (int i = 0; i < lineUps.length(); i++) {
-				String tempName = lineUps.getString(i);
-				String name = getMatchedName(tempName);
-				if(name != null){
+				JSONObject player = lineUps.getJSONObject(i);
+
+				if (player.has("match")) {
+					String name = player.getJSONObject("match").getString("name");
 					teamList.add(name);
 				}
+
 			}
 			System.out.println(teamList);
 			return teamList;
@@ -62,15 +60,5 @@ public class LineUpService extends AbstractService<LineUp> {
 			throw new RuntimeException("abbruch", e);
 		}
 	}
-	
-	public String getMatchedName(String name) {
-		System.out.println("check " + name);
-		boolean contains = players.containsKey(name);
-		if(contains){
-			return players.get(name).getName();
-		}else{
-			return null;
-		}
-	}
-	
+
 }
