@@ -10,6 +10,7 @@ import org.json.JSONArray;
 
 import de.florianmarsch.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
+import de.florianmarsch.fussballmanager.db.entity.match.Match;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchService;
 import de.florianmarsch.fussballmanager.db.entity.match.QMatch;
@@ -142,7 +143,8 @@ public class Main {
 			String param = ":id";
 			
 			
-			Matchday aMatchday = new MatchService().getAllAsMap().get(param).getMatchday();
+			Match match = new MatchService().getAllAsMap().get(param);
+			Matchday aMatchday = match.getMatchday();
 			
 			GamedayProcessor gp = new GamedayProcessor();
 			ProcessingResult process = null;
