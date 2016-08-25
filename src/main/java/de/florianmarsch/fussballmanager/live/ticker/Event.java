@@ -85,6 +85,7 @@ public class Event {
 			tempJsonPlayer.put("result", match.getHomeGoals()+":"+match.getGuestGoals());
 			tempJsonPlayer.put("bye", match.isByeGame());
 			tempJsonPlayer.put("fake", match.isFake());
+			tempJsonPlayer.put("match", match.getId());
 			
 			return tempJsonPlayer;
 		} catch (JSONException e) {
