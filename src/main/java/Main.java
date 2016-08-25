@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import de.florianmarsch.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchJSONProducer;
+import de.florianmarsch.fussballmanager.db.entity.match.MatchService;
+import de.florianmarsch.fussballmanager.db.entity.match.QMatch;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
@@ -133,6 +135,28 @@ public class Main {
 			attributes.put("allTimeTable", process.getTable());
 
 			return new ModelAndView(attributes, "live.ftl");
+		}, new FreeMarkerEngine());
+		
+		
+		get("/screen/:id", (request, response) -> {
+			String param = ":id";
+			
+			
+			Matchday aMatchday = new MatchService().getAllAsMap().get(param).getMatchday();
+			
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = null;
+			if (aMatchday.getProcessed()) {
+				process = gp.review(aMatchday);
+			} else {
+				process = gp.process(aMatchday);
+			}
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("results", process.getMatches());
+
+
+			return new ModelAndView(attributes, "overview.ftl");
 		}, new FreeMarkerEngine());
 		
 	}
