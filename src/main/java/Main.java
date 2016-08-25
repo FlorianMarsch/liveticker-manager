@@ -9,6 +9,7 @@ import java.util.Map;
 import org.json.JSONArray;
 
 import de.florianmarsch.fussballmanager.db.entity.club.ClubJSONProducer;
+import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
@@ -73,6 +74,7 @@ public class Main {
 		new PlayerJSONProducer().bindServices(ctx);
 		new MatchJSONProducer().bindServices(ctx);
 		new TickJSONProducer().bindServices(ctx);
+		new LineUpJSONProducer().bindServices(ctx);
 		
 		get("/overview/:id", (request, response) -> {
 			String param = ":id";
