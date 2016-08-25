@@ -143,7 +143,7 @@ public class Main {
 			String param = ":id";
 			
 			
-			Match match = new MatchService().getAllAsMap().get(param);
+			Match match = new MatchService().getAllAsMap().get(request.params(param));
 			Matchday aMatchday = match.getMatchday();
 			
 			GamedayProcessor gp = new GamedayProcessor();
