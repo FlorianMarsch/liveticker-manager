@@ -155,7 +155,10 @@ public class Main {
 			}
 
 			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday());
+			attributes.put("events", process.getEvents());
 			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
 
 
 			return new ModelAndView(attributes, "overview.ftl");
