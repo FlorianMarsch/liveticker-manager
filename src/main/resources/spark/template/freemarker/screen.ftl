@@ -78,7 +78,6 @@
 
 
 
-		<div class="panel panel-default">
 		
 
 
@@ -115,7 +114,6 @@
 				</div>
 
 
-			</div>
 		</div>
 	</div>
 
