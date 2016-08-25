@@ -33,7 +33,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Long startTime = System.currentTimeMillis();
-		System.out.println("Server started at "+startTime);
+		System.out.println("Server started at " + startTime);
 
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
@@ -46,7 +46,7 @@ public class Main {
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("data", startTime);
 			return new ModelAndView(attributes, "offlineManifest.ftl");
-		}, new FreeMarkerEngine());
+		} , new FreeMarkerEngine());
 
 		get("/live/:id", (request, response) -> {
 			String param = ":id";
@@ -67,7 +67,7 @@ public class Main {
 			Map<String, Object> attributes = new HashMap<>();
 			attributes.put("data", data.toString());
 			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+		} , new FreeMarkerEngine());
 
 		BindContext ctx = new BindContext();
 
@@ -78,7 +78,7 @@ public class Main {
 		new MatchJSONProducer().bindServices(ctx);
 		new TickJSONProducer().bindServices(ctx);
 		new LineUpJSONProducer().bindServices(ctx);
-		
+
 		get("/overview/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
@@ -97,9 +97,8 @@ public class Main {
 			attributes.put("allTimeTable", process.getTable());
 			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
 
-
 			return new ModelAndView(attributes, "overview.ftl");
-		}, new FreeMarkerEngine());
+		} , new FreeMarkerEngine());
 		get("/process/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
@@ -115,9 +114,8 @@ public class Main {
 			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
 
 			return new ModelAndView(attributes, "overview.ftl");
-		}, new FreeMarkerEngine());
+		} , new FreeMarkerEngine());
 
-		
 		get("/view/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
@@ -136,16 +134,19 @@ public class Main {
 			attributes.put("allTimeTable", process.getTable());
 
 			return new ModelAndView(attributes, "live.ftl");
-		}, new FreeMarkerEngine());
-		
-		
+		} , new FreeMarkerEngine());
+
 		get("/screen/:id", (request, response) -> {
 			String param = ":id";
+
+			String id = request.params(param);
+			System.out.println(id);
 			
-			
-			Match match = new MatchService().getAllAsMap().get(request.params(param));
+			Match match = new MatchService().getAllAsMap().get(id);
+			System.out.println(match);
 			Matchday aMatchday = match.getMatchday();
-			
+			System.out.println(aMatchday);
+
 			GamedayProcessor gp = new GamedayProcessor();
 			ProcessingResult process = null;
 			if (aMatchday.getProcessed()) {
@@ -155,15 +156,18 @@ public class Main {
 			}
 
 			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("matchday", process.getMatchday());
-			attributes.put("events", process.getEvents());
-			attributes.put("results", process.getMatches());
-			attributes.put("allTimeTable", process.getTable());
 
+			List<Match> matches = process.getMatches();
+			for (Match temp : matches) {
+				if (temp.getId().equals(id)) {
+					attributes.put("x", temp);
+					System.out.println(temp);
+				}
+			}
 
-			return new ModelAndView(attributes, "overview.ftl");
-		}, new FreeMarkerEngine());
-		
+			return new ModelAndView(attributes, "screen.ftl");
+		} , new FreeMarkerEngine());
+
 	}
 
 	private static void registerErrorHandler(ErrorHandler errorHandler) {
@@ -172,8 +176,7 @@ public class Main {
 
 	private static Matchday getMatchday(Request request, String param) {
 		Integer currentGameDay = Integer.valueOf(request.params(param));
-		Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(
-				Integer.valueOf(currentGameDay));
+		Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(Integer.valueOf(currentGameDay));
 		return aMatchday;
 	}
 
