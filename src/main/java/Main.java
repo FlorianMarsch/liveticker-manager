@@ -8,16 +8,13 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
-import de.florianmarsch.fussballmanager.db.entity.club.ClubJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.Match;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchService;
-import de.florianmarsch.fussballmanager.db.entity.match.QMatch;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
-import de.florianmarsch.fussballmanager.db.entity.player.PlayerJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.tick.TickJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.florianmarsch.fussballmanager.db.json.BindContext;
@@ -71,10 +68,8 @@ public class Main {
 
 		BindContext ctx = new BindContext();
 
-		new ClubJSONProducer().bindServices(ctx);
 		new TrainerJSONProducer().bindServices(ctx);
 		new MatchdayJSONProducer().bindServices(ctx);
-		new PlayerJSONProducer().bindServices(ctx);
 		new MatchJSONProducer().bindServices(ctx);
 		new TickJSONProducer().bindServices(ctx);
 		new LineUpJSONProducer().bindServices(ctx);
