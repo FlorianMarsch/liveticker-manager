@@ -114,6 +114,10 @@ public class GamedayProcessor {
 
 		processingResult.setEvents(new ArrayList<Event>());
 
+		Map<Division, List<AllTimeTable>> divisionalTables;
+		divisionalTables = divisionProcessor.getDivisionalTables(aMatchday);
+		processingResult.setDivisionalTables(divisionalTables);
+		
 		return processingResult;
 	}
 
