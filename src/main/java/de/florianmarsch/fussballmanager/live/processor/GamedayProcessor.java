@@ -112,7 +112,8 @@ public class GamedayProcessor {
 		Collections.sort(table);
 		processingResult.setTable(table);
 
-		processingResult.setEvents(new ArrayList<Event>());
+		List<Event> events = goalResolver.getGoals(aMatchday);
+		processingResult.setEvents(events);
 
 		Map<Division, List<AllTimeTable>> divisionalTables;
 		divisionalTables = divisionProcessor.getDivisionalTables(aMatchday);
