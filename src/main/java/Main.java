@@ -77,14 +77,7 @@ public class Main {
 
 		
 		get("/leaderboard", (request, response) -> {
-			List<Matchday> all = new MatchdayService().getAll();
-			Matchday aMatchday = null;
-			for (Matchday tempMatchday : all) {
-				if(!tempMatchday.getProcessed()){
-					aMatchday = tempMatchday;
-					break;
-				}
-			}
+			Matchday aMatchday = getLiveGameDay();
 			
 			
 			GamedayProcessor gp = new GamedayProcessor();
@@ -162,6 +155,26 @@ public class Main {
 
 			return new ModelAndView(attributes, "live.ftl");
 		} , new FreeMarkerEngine());
+		
+		
+		get("/view", (request, response) -> {
+			Matchday aMatchday = getLiveGameDay();
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = null;
+			if (aMatchday.getProcessed()) {
+				process = gp.review(aMatchday);
+			} else {
+				process = gp.process(aMatchday);
+			}
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday());
+			attributes.put("events", process.getEvents());
+			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
+
+			return new ModelAndView(attributes, "live.ftl");
+		} , new FreeMarkerEngine());
 
 		get("/screen/:id", (request, response) -> {
 			String param = ":id";
@@ -195,6 +208,18 @@ public class Main {
 			return new ModelAndView(attributes, "screen.ftl");
 		} , new FreeMarkerEngine());
 
+	}
+
+	static Matchday getLiveGameDay() {
+		List<Matchday> all = new MatchdayService().getAll();
+		Matchday aMatchday = null;
+		for (Matchday tempMatchday : all) {
+			if(!tempMatchday.getProcessed()){
+				aMatchday = tempMatchday;
+				break;
+			}
+		}
+		return aMatchday;
 	}
 
 	private static void registerErrorHandler(ErrorHandler errorHandler) {
