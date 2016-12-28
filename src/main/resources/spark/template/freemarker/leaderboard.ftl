@@ -159,9 +159,9 @@
 		<h2>Test</h2>
 	</div>
 
-<div class="row">
+
 				<#list results as x>
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<div class="thumbnail">
 							<div class="caption overview">
 								<h2>
@@ -189,7 +189,7 @@
 						</div>
 					</div>
 					</#list>
-				</div>
+				
 
 
 
