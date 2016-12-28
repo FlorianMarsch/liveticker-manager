@@ -99,6 +99,26 @@ public class Main {
 		} , new FreeMarkerEngine());
 		
 		
+		get("/overview", (request, response) -> {
+			Matchday aMatchday = getLiveGameDay();
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = null;
+			if (aMatchday.getProcessed()) {
+				process = gp.review(aMatchday);
+			} else {
+				process = gp.process(aMatchday);
+			}
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday());
+			attributes.put("events", process.getEvents());
+			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
+			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
+
+			return new ModelAndView(attributes, "overview.ftl");
+		} , new FreeMarkerEngine());
+		
 		get("/overview/:id", (request, response) -> {
 			String param = ":id";
 			Matchday aMatchday = getMatchday(request, param);
