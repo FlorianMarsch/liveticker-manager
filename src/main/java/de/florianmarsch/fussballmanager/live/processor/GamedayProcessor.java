@@ -64,7 +64,12 @@ public class GamedayProcessor {
 		processingResult.setTable(table);
 
 		Map<Division, List<AllTimeTable>> divisionalTables;
-		divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday);
+		
+		if(saveProcessing){
+			divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday);
+		}else{
+			divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday, currentMatches);
+		}
 		processingResult.setDivisionalTables(divisionalTables);
 
 		if (currentMatchday.getDivisionFinals() && saveProcessing) {

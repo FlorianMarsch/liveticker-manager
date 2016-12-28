@@ -31,7 +31,7 @@ public class DivisionProcessor {
 		return getDivisionalTables(currentMatchday, divisonalMatches);
 	}
 
-	private Map<Division, List<AllTimeTable>> getDivisionalTables(Matchday currentMatchday,
+	public Map<Division, List<AllTimeTable>> getDivisionalTables(Matchday currentMatchday,
 			List<Match> divisonalMatches) {
 		Map<Division, List<AllTimeTable>> returnMap = new TreeMap<>();
 		List<Division> all = divisionService.getAll();

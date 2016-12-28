@@ -18,6 +18,7 @@ import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
 import de.florianmarsch.fussballmanager.db.entity.tick.TickJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.florianmarsch.fussballmanager.db.json.BindContext;
+import de.florianmarsch.fussballmanager.live.GameDayFinder;
 import de.florianmarsch.fussballmanager.live.processor.GamedayProcessor;
 import de.florianmarsch.fussballmanager.live.processor.ProcessingResult;
 import de.florianmarsch.fussballmanager.live.ticker.Event;
@@ -75,9 +76,17 @@ public class Main {
 		new LineUpJSONProducer().bindServices(ctx);
 
 		
-		get("/leadrboard/:id", (request, response) -> {
-			String param = ":id";
-			Matchday aMatchday = getMatchday(request, param);
+		get("/leaderboard", (request, response) -> {
+			List<Matchday> all = new MatchdayService().getAll();
+			Matchday aMatchday = null;
+			for (Matchday tempMatchday : all) {
+				if(!tempMatchday.getProcessed()){
+					aMatchday = tempMatchday;
+					break;
+				}
+			}
+			
+			
 			GamedayProcessor gp = new GamedayProcessor();
 			ProcessingResult process = null;
 			if (aMatchday.getProcessed()) {
@@ -197,5 +206,6 @@ public class Main {
 		Matchday aMatchday = new MatchdayService().getMatchdaysByNumber().get(Integer.valueOf(currentGameDay));
 		return aMatchday;
 	}
-
+	
+	
 }
