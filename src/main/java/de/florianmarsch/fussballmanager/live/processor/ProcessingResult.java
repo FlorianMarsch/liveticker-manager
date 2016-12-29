@@ -7,6 +7,7 @@ import de.florianmarsch.fussballmanager.db.entity.allTimeTable.AllTimeTable;
 import de.florianmarsch.fussballmanager.db.entity.division.Division;
 import de.florianmarsch.fussballmanager.db.entity.match.Match;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
+import de.florianmarsch.fussballmanager.db.entity.trainer.Trainer;
 import de.florianmarsch.fussballmanager.live.ticker.Event;
 
 public class ProcessingResult {
@@ -14,6 +15,7 @@ public class ProcessingResult {
 	private Matchday matchday;
 	private List<Match> matches;
 	private List<Event> events;
+	private List<AllTimeTable> tableDayBefore;
 	private List<AllTimeTable> table;
 	private Map<Division, List<AllTimeTable>> divisionalTables;
 	
@@ -47,8 +49,33 @@ public class ProcessingResult {
 	public void setDivisionalTables(Map<Division, List<AllTimeTable>> divisionalTables) {
 		this.divisionalTables = divisionalTables;
 	}
+	public List<AllTimeTable> getTableDayBefore() {
+		return tableDayBefore;
+	}
+	public void setTableDayBefore(List<AllTimeTable> tableDayBefore) {
+		this.tableDayBefore = tableDayBefore;
+	}
 	
 	
-	
+	public void applyTableDayBefore(List<AllTimeTable> tableDayBefore){
+		if(tableDayBefore == null || tableDayBefore.isEmpty()){
+			return;
+		}
+		
+		for (AllTimeTable allTimeTable : table) {
+			Trainer trainer = allTimeTable.getTrainer();
+			int position = table.indexOf(allTimeTable);
+			
+			AllTimeTable tableBefore = null;
+			for (AllTimeTable allTimeTableBefore : tableDayBefore) {
+				if(allTimeTableBefore.getTrainer().equals(trainer)){
+					tableBefore = allTimeTableBefore;
+				}
+			}
+			int positionBefore = tableDayBefore.indexOf(tableBefore);
+			int delta = positionBefore - position;
+			allTimeTable.setBetter(delta);
+		}
+	}
 	
 }

@@ -1,5 +1,7 @@
 package de.florianmarsch.fussballmanager.db.entity.allTimeTable;
 
+import java.beans.Transient;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,8 +11,7 @@ import de.florianmarsch.fussballmanager.db.entity.trainer.Trainer;
 
 @Table
 @Entity
-public class AllTimeTable extends AbstractEntity implements
-		Comparable<AllTimeTable> {
+public class AllTimeTable extends AbstractEntity implements Comparable<AllTimeTable> {
 
 	Matchday matchday;
 	Trainer trainer;
@@ -21,11 +22,13 @@ public class AllTimeTable extends AbstractEntity implements
 	Integer draw = 0;
 	Integer loose = 0;
 
+	@javax.persistence.Transient
+	Integer better;
+
 	@Override
 	public String getDisplayValue() {
 
-		return matchday.getDisplayValue() + "-" + trainer.getDisplayValue()
-				+ " " + points;
+		return matchday.getDisplayValue() + "-" + trainer.getDisplayValue() + " " + points;
 	}
 
 	public Matchday getMatchday() {
@@ -94,8 +97,7 @@ public class AllTimeTable extends AbstractEntity implements
 
 	@Override
 	public int compareTo(AllTimeTable o) {
-		int macthdayCompare = matchday.getNumber().compareTo(
-				o.getMatchday().getNumber());
+		int macthdayCompare = matchday.getNumber().compareTo(o.getMatchday().getNumber());
 		if (macthdayCompare != 0) {
 			return macthdayCompare;
 		}
@@ -157,6 +159,14 @@ public class AllTimeTable extends AbstractEntity implements
 		points = points + 0;
 		loose = loose + 1;
 
+	}
+
+	public Integer getBetter() {
+		return better;
+	}
+
+	public void setBetter(Integer better) {
+		this.better = better;
 	}
 
 }

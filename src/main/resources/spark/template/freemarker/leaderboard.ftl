@@ -31,6 +31,16 @@
 	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 	crossorigin="anonymous"></script>
 
+
+<style>
+.green {
+    color: lightgreen; 
+}
+.red {
+    color: lightcoral; 
+}
+</style>
+
 </head>
 <body>
 	<div class="col-xs-12">
@@ -80,6 +90,7 @@
 				<thead>
 					<tr>
 						<th width="85%">Unsere Tabelle</th>
+						<th></th>
 						<th>Punkte</th>
 
 					</tr>
@@ -87,7 +98,18 @@
 				<tbody>
 				<#list allTimeTable as x>
 					<tr>
-						<td>${x?counter}. ${x.trainer.name}</td>
+						<td>${x?counter}. ${x.trainer.name}</td> 
+						<td>
+							<#if x.better == 0>
+								<!-- gleich gut -->
+							<#elseif x.better lt 0>
+								<!-- schlechter -->
+								<span class="glyphicon glyphicon-arrow-down red"></span>
+							<#elseif x.better gt 0 >
+								<!-- besser -->
+								<span class="glyphicon glyphicon-arrow-up green"></span>
+							</#if>
+						</td>
 
 						<td>${x.points}</td>
 

@@ -62,6 +62,11 @@ public class GamedayProcessor {
 		List<AllTimeTable> table = tableProcessor.getTable(matchesUntil, currentMatchday);
 		Collections.sort(table);
 		processingResult.setTable(table);
+		
+		List<Match> matchesBefore = matchService.getMatchesUntil(currentMatchday);
+		List<AllTimeTable> tableDayBefore = tableProcessor.getTable(matchesBefore,currentMatchday);
+		Collections.sort(tableDayBefore);
+		processingResult.applyTableDayBefore(tableDayBefore);
 
 		Map<Division, List<AllTimeTable>> divisionalTables;
 		
