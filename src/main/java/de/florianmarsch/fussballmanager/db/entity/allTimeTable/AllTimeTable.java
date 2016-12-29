@@ -24,6 +24,9 @@ public class AllTimeTable extends AbstractEntity implements Comparable<AllTimeTa
 
 	@javax.persistence.Transient
 	Integer better;
+	
+	@javax.persistence.Transient
+	Integer betterPoints;
 
 	@Override
 	public String getDisplayValue() {
@@ -167,6 +170,14 @@ public class AllTimeTable extends AbstractEntity implements Comparable<AllTimeTa
 
 	public void setBetter(Integer better) {
 		this.better = better;
+	}
+	
+	public Integer getBetterPoints() {
+		return betterPoints;
+	}
+
+	public void setBetterPoints(Integer betterPoints) {
+		this.betterPoints = betterPoints;
 	}
 
 }

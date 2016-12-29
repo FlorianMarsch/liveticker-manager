@@ -39,6 +39,9 @@
 .red {
     color: lightcoral; 
 }
+.grey {
+    color: silver; 
+}
 </style>
 
 </head>
@@ -68,7 +71,10 @@
 				<#list table as x>
 					<tr>
 						<td>${x?counter}. ${x.trainer.name}</td>
-						<td><span class="badge">${x.points}</span></td>
+						
+						<td>${x.points}</td>
+						
+						
 						<td>${x.goals} : ${x.goalsAgainst}</td>
 
 
@@ -111,7 +117,7 @@
 							</#if>
 						</td>
 
-						<td>${x.points}</td>
+						<td>${x.points} <span class="grey">(+${x.betterPoints})</span></td>
 
 					</tr>
 					</#list>

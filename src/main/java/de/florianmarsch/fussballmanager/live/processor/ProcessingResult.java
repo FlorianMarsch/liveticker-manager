@@ -65,16 +65,19 @@ public class ProcessingResult {
 		for (AllTimeTable allTimeTable : table) {
 			Trainer trainer = allTimeTable.getTrainer();
 			int position = table.indexOf(allTimeTable);
-			
+			int points = allTimeTable.getPoints();
 			AllTimeTable tableBefore = null;
 			for (AllTimeTable allTimeTableBefore : tableDayBefore) {
 				if(allTimeTableBefore.getTrainer().equals(trainer)){
 					tableBefore = allTimeTableBefore;
 				}
 			}
+			int pointsBefore = tableBefore.getPoints();
 			int positionBefore = tableDayBefore.indexOf(tableBefore);
 			int delta = positionBefore - position;
+			int deltaPoints = points-pointsBefore;
 			allTimeTable.setBetter(delta);
+			allTimeTable.setBetterPoints(deltaPoints);
 		}
 	}
 	
