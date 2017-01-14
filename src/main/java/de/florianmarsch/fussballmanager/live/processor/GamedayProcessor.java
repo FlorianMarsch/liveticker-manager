@@ -70,11 +70,11 @@ public class GamedayProcessor {
 
 		Map<Division, List<AllTimeTable>> divisionalTables;
 		
-		if(saveProcessing){
+//		if(saveProcessing){
 			divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday);
-		}else{
-			divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday, currentMatches);
-		}
+//		}else{
+//			divisionalTables = divisionProcessor.getDivisionalTables(currentMatchday, currentMatches);
+//		}
 		processingResult.setDivisionalTables(divisionalTables);
 
 		if (currentMatchday.getDivisionFinals() && saveProcessing) {
