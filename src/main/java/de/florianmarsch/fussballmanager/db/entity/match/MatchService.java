@@ -25,7 +25,7 @@ public class MatchService extends AbstractService<Match> {
 		ArrayList<Match> arrayList = new ArrayList<Match>();
 		List<Match> all = getAll();
 		for (Match match : all) {
-			if(match.getMatchday().equals(aMatchday)){
+			if(match.getMatchday() != null && match.getMatchday().equals(aMatchday)){
 				arrayList.add(match);
 			}
 		}
@@ -37,7 +37,7 @@ public class MatchService extends AbstractService<Match> {
 		List<Match> currentMatches = new ArrayList<Match>();
 
 		for (Match match : getAll()) {
-			if (match.getMatchday().getNumber() < currentMatchday.getNumber()) {
+			if (match.getMatchday()!=null && match.getMatchday().getNumber() < currentMatchday.getNumber()) {
 				if (match.getMatchday().getModus()
 						.equals(currentMatchday.getModus())) {
 					currentMatches.add(match);

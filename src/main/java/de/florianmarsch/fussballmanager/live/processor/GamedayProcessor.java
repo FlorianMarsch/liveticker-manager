@@ -100,7 +100,8 @@ public class GamedayProcessor {
 
 		List<Match> all = matchService.getAll();
 		for (Match match : all) {
-			if (match.getMatchday().equals(currentMatchday)) {
+			
+			if (match.getMatchday() != null && match.getMatchday().equals(currentMatchday)) {
 				currentMatches.add(match);
 			}
 		}
