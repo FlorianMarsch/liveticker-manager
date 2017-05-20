@@ -35,7 +35,7 @@ public class GoalResolver {
 				for (Trainer trainer : allPlayer.keySet()) {
 					Set<String> team = new HashSet<String>(allPlayer.get(trainer));
 
-					if (team.contains(tick.getName()) || containsPart(team,tick.getName() )) {
+					if (team.contains(tick.getName()) ) {
 
 						Match match = getMatch(matches, trainer);
 						if (match != null) {
