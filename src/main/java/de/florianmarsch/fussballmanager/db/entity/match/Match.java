@@ -16,8 +16,6 @@ public class Match extends AbstractEntity {
 	private Trainer home;
 	private Integer guestGoals = 0;
 	private Integer homeGoals = 0;
-	private String hashTag;
-	
 
 	public Matchday getMatchday() {
 		return matchday;
@@ -59,22 +57,22 @@ public class Match extends AbstractEntity {
 		this.homeGoals = homeGoals;
 	}
 
-	public Integer getHomePoints(){
-		if(homeGoals > guestGoals){
+	public Integer getHomePoints() {
+		if (homeGoals > guestGoals) {
 			return 3;
-		}else if(homeGoals < guestGoals){
+		} else if (homeGoals < guestGoals) {
 			return 0;
-		}else{
+		} else {
 			return 1;
 		}
 	}
-	
-	public Integer getGuestPoints(){
-		if(homeGoals < guestGoals){
+
+	public Integer getGuestPoints() {
+		if (homeGoals < guestGoals) {
 			return 3;
-		}else if(homeGoals > guestGoals){
+		} else if (homeGoals > guestGoals) {
 			return 0;
-		}else{
+		} else {
 			return 1;
 		}
 	}
@@ -82,17 +80,9 @@ public class Match extends AbstractEntity {
 	public Boolean isFake() {
 		return home.getFake() || guest.getFake();
 	}
-	
+
 	public Boolean isByeGame() {
 		return home.equals(guest);
 	}
 
-	public String getHashTag() {
-		return hashTag;
-	}
-
-	public void setHashTag(String hashTag) {
-		this.hashTag = hashTag;
-	}
-	
 }
