@@ -40,11 +40,6 @@ public class Matchday extends AbstractEntity{
 		this.results = results;
 	}
 	
-	@Override
-	public String getDisplayValue() {
-		return String.valueOf(number);
-	}
-	
 	public String getStatus() {
 		if(processed){
 			return modus + " - Inactive, Matchday in the past";

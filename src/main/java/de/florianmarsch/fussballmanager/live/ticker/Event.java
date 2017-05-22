@@ -81,7 +81,7 @@ public class Event {
 			tempJsonPlayer.put("type", getEvent());
 			tempJsonPlayer.put("owner", trainer.getName());
 			tempJsonPlayer.put("hashTag", "#"+ trainer.getHashTag());
-			tempJsonPlayer.put("gameHashTag", match.getDisplayValue());
+			tempJsonPlayer.put("gameHashTag", match.getHashTag());
 			tempJsonPlayer.put("result", match.getHomeGoals()+":"+match.getGuestGoals());
 			tempJsonPlayer.put("bye", match.isByeGame());
 			tempJsonPlayer.put("fake", match.isFake());

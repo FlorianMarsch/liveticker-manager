@@ -16,13 +16,9 @@ public class Match extends AbstractEntity {
 	private Trainer home;
 	private Integer guestGoals = 0;
 	private Integer homeGoals = 0;
+	private String hashTag;
+	
 
-	
-	@Override
-	public String getDisplayValue() {
-		return "#"+home.getHashTag()+"vs"+guest.getHashTag();
-	}
-	
 	public Matchday getMatchday() {
 		return matchday;
 	}
@@ -89,6 +85,14 @@ public class Match extends AbstractEntity {
 	
 	public Boolean isByeGame() {
 		return home.equals(guest);
+	}
+
+	public String getHashTag() {
+		return hashTag;
+	}
+
+	public void setHashTag(String hashTag) {
+		this.hashTag = hashTag;
 	}
 	
 }

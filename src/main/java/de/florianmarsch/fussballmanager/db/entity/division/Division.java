@@ -16,11 +16,6 @@ public class Division extends AbstractEntity implements Comparable<Division> {
 	private String description;
 	private List<Trainer> trainers;
 	
-	@Override
-	public String getDisplayValue() {
-		return "Division "+name;
-	}
-	
 	public String getName() {
 		return name;
 	}

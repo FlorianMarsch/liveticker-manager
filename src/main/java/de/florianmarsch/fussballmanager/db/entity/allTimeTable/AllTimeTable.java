@@ -1,7 +1,5 @@
 package de.florianmarsch.fussballmanager.db.entity.allTimeTable;
 
-import java.beans.Transient;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -24,15 +22,9 @@ public class AllTimeTable extends AbstractEntity implements Comparable<AllTimeTa
 
 	@javax.persistence.Transient
 	Integer better;
-	
+
 	@javax.persistence.Transient
 	Integer betterPoints;
-
-	@Override
-	public String getDisplayValue() {
-
-		return matchday.getDisplayValue() + "-" + trainer.getDisplayValue() + " " + points;
-	}
 
 	public Matchday getMatchday() {
 		return matchday;
@@ -171,7 +163,7 @@ public class AllTimeTable extends AbstractEntity implements Comparable<AllTimeTa
 	public void setBetter(Integer better) {
 		this.better = better;
 	}
-	
+
 	public Integer getBetterPoints() {
 		return betterPoints;
 	}

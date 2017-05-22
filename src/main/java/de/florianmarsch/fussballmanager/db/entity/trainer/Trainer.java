@@ -76,10 +76,6 @@ public class Trainer extends AbstractEntity {
 		this.hashTag = hashTag;
 	}
 
-	@Override
-	public String getDisplayValue() {
-		return name;
-	}
 	
 	
 	

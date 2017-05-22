@@ -82,7 +82,5 @@ public abstract class AbstractEntity {
 	public final String toString() {
 		return id;
 	}
-
-	public abstract String getDisplayValue();
 	
 }
