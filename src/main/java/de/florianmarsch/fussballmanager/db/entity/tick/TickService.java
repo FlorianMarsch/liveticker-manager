@@ -1,38 +1,37 @@
 package de.florianmarsch.fussballmanager.db.entity.tick;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
-import de.florianmarsch.fussballmanager.db.entity.tick.QTick;
-import de.florianmarsch.fussballmanager.db.service.AbstractService;
 
-public class TickService extends AbstractService<Tick> {
+public class TickService {
 
 	public TickService() {
-		super(QTick.tick);
 	}
 
-	@Override
-	public Tick getNewInstance() {
-		return new Tick();
-	}
-	
-	public List<Tick> getAllByMatchday(Matchday aMatchday){
+	public List<Tick> getAllByMatchday(Matchday aMatchday) {
 		List<Tick> response = new ArrayList<>();
-		List<Tick> all = getAll();
-		for (Tick tick : all) {
-			if(tick.getMatchdayNumber() == aMatchday.getNumber()){
-				response.add(tick);
-			}
+
+		try {
+			String gamedayUrl = "http://classic-kader-api.herokuapp.com/api/result/2016-17/" + aMatchday.getNumber();
+			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
+			String content = IOUtils.toString(is, "UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			List<Tick> parsed = mapper.readValue(content,new TypeReference<List<Tick>>(){});
+			response.addAll(parsed);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return response;
-	}
-
-	@Override
-	public Map<Object, Object> getCachedMap() {
-		return new HashMap<>();
 	}
 }

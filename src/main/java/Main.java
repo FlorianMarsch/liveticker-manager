@@ -15,10 +15,8 @@ import de.florianmarsch.fussballmanager.db.entity.match.MatchService;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
-import de.florianmarsch.fussballmanager.db.entity.tick.TickJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.florianmarsch.fussballmanager.db.json.BindContext;
-import de.florianmarsch.fussballmanager.live.GameDayFinder;
 import de.florianmarsch.fussballmanager.live.processor.GamedayProcessor;
 import de.florianmarsch.fussballmanager.live.processor.ProcessingResult;
 import de.florianmarsch.fussballmanager.live.ticker.Event;
@@ -72,7 +70,6 @@ public class Main {
 		new TrainerJSONProducer().bindServices(ctx);
 		new MatchdayJSONProducer().bindServices(ctx);
 		new MatchJSONProducer().bindServices(ctx);
-		new TickJSONProducer().bindServices(ctx);
 		new LineUpJSONProducer().bindServices(ctx);
 
 		

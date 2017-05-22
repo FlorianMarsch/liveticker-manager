@@ -33,19 +33,21 @@ public class GoalResolver {
 			}
 			try {
 				for (Trainer trainer : allPlayer.keySet()) {
-					Set<String> team = new HashSet<String>(allPlayer.get(trainer));
+					Match match = getMatch(matches, trainer);
+					if (match != null) {
+						// Trainer musst be at a gameday. may happen on semi
+						// finals
 
-					if (team.contains(tick.getName()) ) {
+						Set<String> team = new HashSet<String>(allPlayer.get(trainer));
 
-						Match match = getMatch(matches, trainer);
-						if (match != null) {
-							// Trainer musst be at a gameday. may happen on semi
-							// finals
+						String name = tick.getName();
+						System.out.println("check " + name + " in " + team + " ? " + team.contains(name));
+						if (team.contains(name)) {
 
 							Event event = new Event();
 							event.setEvent(tick.getEvent());
 							event.setId(tick.getId());
-							event.setName(tick.getName());
+							event.setName(name);
 							event.setTrainer(trainer);
 							event.setMatch(match);
 							event.addEventToMatch();
@@ -64,10 +66,10 @@ public class GoalResolver {
 
 	boolean containsPart(Set<String> team, String name) {
 		String[] split = name.split(" ");
-		String attempt = split[split.length-1];
-		
+		String attempt = split[split.length - 1];
+
 		for (String player : team) {
-			if(player.contains(attempt)){
+			if (player.contains(attempt)) {
 				return true;
 			}
 		}
