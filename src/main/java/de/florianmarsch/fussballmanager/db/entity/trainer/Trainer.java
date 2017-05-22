@@ -14,7 +14,10 @@ public class Trainer extends AbstractEntity {
 	private String name;
 	
 	@Column
-	private String url;
+	private String kaderUrl;
+	
+	@Column
+	private String excludeKaderUrl;
 	
 	@Column
 	private String hashTag;
@@ -49,12 +52,20 @@ public class Trainer extends AbstractEntity {
 		this.name = name;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getKaderUrl() {
+		return kaderUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setKaderUrl(String kaderUrl) {
+		this.kaderUrl = kaderUrl;
+	}
+
+	public String getExcludeKaderUrl() {
+		return excludeKaderUrl;
+	}
+
+	public void setExcludeKaderUrl(String excludeKaderUrl) {
+		this.excludeKaderUrl = excludeKaderUrl;
 	}
 
 	public String getHashTag() {
