@@ -15,6 +15,14 @@ public class Division extends AbstractEntity implements Comparable<Division> {
 
 	private String name;
 	private String description;
+	private String icon;
+	public String getIcon() {
+		return icon;
+	}
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 	private List<Trainer> trainers = new ArrayList<Trainer>();
 	
 	public String getName() {
