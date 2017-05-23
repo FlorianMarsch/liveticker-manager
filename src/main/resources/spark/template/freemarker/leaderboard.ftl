@@ -59,8 +59,8 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th width="20%">Division ${division.description}</th>
-						<th width="65%">logo</th>
+						<th width="30%">Division ${division.description}</th>
+						<th width="55%">logo</th>
 						<th>Punkte</th>
 						<th>Tore</th>
 
