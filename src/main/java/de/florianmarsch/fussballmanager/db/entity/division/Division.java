@@ -1,5 +1,6 @@
 package de.florianmarsch.fussballmanager.db.entity.division;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ public class Division extends AbstractEntity implements Comparable<Division> {
 
 	private String name;
 	private String description;
-	private List<Trainer> trainers;
+	private List<Trainer> trainers = new ArrayList<Trainer>();
 	
 	public String getName() {
 		return name;

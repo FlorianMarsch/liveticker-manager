@@ -21,10 +21,10 @@ public class AllTimeTable extends AbstractEntity implements Comparable<AllTimeTa
 	Integer loose = 0;
 
 	@javax.persistence.Transient
-	Integer better;
+	Integer better = 0;
 
 	@javax.persistence.Transient
-	Integer betterPoints;
+	Integer betterPoints = 0;
 
 	public Matchday getMatchday() {
 		return matchday;

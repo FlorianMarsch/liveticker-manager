@@ -59,7 +59,7 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th width="85%">Division ${division.name}</th>
+						<th width="85%">Division ${division.description}</th>
 
 						<th>Punkte</th>
 						<th>Tore</th>
