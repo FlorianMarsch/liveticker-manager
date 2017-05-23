@@ -1,6 +1,10 @@
 package de.florianmarsch.fussballmanager.db.entity.trainer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -27,6 +31,10 @@ public class Trainer extends AbstractEntity {
 
 	@Column
 	private String imageUrl;
+	
+	@ElementCollection
+	@Column
+	private Set<String> archivments = new HashSet<>();
 	
 	public String getImageUrl() {
 		return imageUrl;
@@ -76,6 +84,15 @@ public class Trainer extends AbstractEntity {
 		this.hashTag = hashTag;
 	}
 
+	public Set<String> getArchivments() {
+		return archivments;
+	}
+
+	public void setArchivments(Set<String> archivments) {
+		this.archivments = archivments;
+	}
+
+	
 	
 	
 	
