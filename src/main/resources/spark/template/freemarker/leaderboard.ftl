@@ -42,6 +42,27 @@
 .grey {
     color: silver; 
 }
+
+.glyphicons-cup{
+	background-image: url("http://classic.comunio.de/getImg.phtml?cid=1");
+	background-size: 16px 16px;
+    background-repeat: no-repeat;
+	min-height: 16px;
+    min-width: 16px;
+}
+
+.glyphicons-batman{
+	background-image: url("https://vignette3.wikia.nocookie.net/batmantheanimatedseries/images/6/64/Favicon.ico/revision/latest?cb=20130302054027");
+	background-size: 16px 16px;
+    background-repeat: no-repeat;
+	min-height: 16px;
+    min-width: 16px;
+}
+.glyphicons-centipede{
+	background-image: url("https://www.pokewiki.de/images/2/20/Pok%C3%A9monicon_010.png");
+	min-height: 16px;
+    min-width: 16px;
+}
 </style>
 
 </head>
@@ -59,8 +80,8 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th width="35%">Division ${division.description}</th>
-						<th width="50%">logo</th>
+						<th width="85%">${division.description} Division <span class="glyphicon ${division.icon}"></span></th>
+						
 						<th>Punkte</th>
 						<th>Tore</th>
 
@@ -70,8 +91,8 @@
 				<tbody>
 				<#list table as x>
 					<tr>
-						<td>${x?counter}. ${x.trainer.name}</td>
-						<td><!-- archivments --></td>
+						<td>${x?counter}. ${x.trainer.name} <!-- archivments --></td>
+						
 						<td>${x.points}</td>
 						
 						
