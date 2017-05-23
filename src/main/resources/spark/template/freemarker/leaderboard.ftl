@@ -59,8 +59,8 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th width="85%">Division ${division.description}</th>
-
+						<th width="20%">Division ${division.description}</th>
+						<th width="65%">logo</th>
 						<th>Punkte</th>
 						<th>Tore</th>
 
@@ -71,7 +71,7 @@
 				<#list table as x>
 					<tr>
 						<td>${x?counter}. ${x.trainer.name}</td>
-						
+						<td><!-- archivments --></td>
 						<td>${x.points}</td>
 						
 						
