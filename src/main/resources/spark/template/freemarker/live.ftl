@@ -92,7 +92,7 @@
 							<div class="caption overview">
 								<h2>
 									<a target="_blank" href="https://twitter.com/search?q=%23${x.home.hashTag}vs${x.guest.hashTag}&src=typd&lang=de">
-									${x.displayValue}
+									#${x.home.hashTag}vs${x.guest.hashTag}
 									</a>
 								</h2>
 								<div class="result">
