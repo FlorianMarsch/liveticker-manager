@@ -22,7 +22,7 @@ public class TickService {
 		List<Tick> response = new ArrayList<>();
 
 		try {
-			String gamedayUrl = "http://classic-kader-api.herokuapp.com/api/result/2017-18/" + aMatchday.getNumber();
+			String gamedayUrl = "http://node-comunio-system-api.herokuapp.com/api/result/2017-18/" + aMatchday.getNumber();
 			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
 			String content = IOUtils.toString(is, "UTF-8");
 			ObjectMapper mapper = new ObjectMapper();
