@@ -32,6 +32,10 @@ public class Trainer extends AbstractEntity {
 	@Column
 	private String imageUrl;
 	
+	@Column
+	private String twitterName;
+
+
 	@ElementCollection
 	@Column
 	private Set<String> archivments = new HashSet<>();
@@ -94,6 +98,13 @@ public class Trainer extends AbstractEntity {
 
 	
 	
+	public String getTwitterName() {
+		return twitterName;
+	}
+
+	public void setTwitterName(String twitterName) {
+		this.twitterName = twitterName;
+	}
 	
 	
 }

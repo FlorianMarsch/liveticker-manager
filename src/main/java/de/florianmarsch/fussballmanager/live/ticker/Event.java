@@ -79,7 +79,12 @@ public class Event {
 			tempJsonPlayer.put("id", getId());
 			tempJsonPlayer.put("name", getName());
 			tempJsonPlayer.put("type", getEvent());
-			tempJsonPlayer.put("owner", trainer.getName());
+			if(trainer.getTwitterName() != null) {
+				tempJsonPlayer.put("owner", trainer.getTwitterName());
+			}else {
+				tempJsonPlayer.put("owner", trainer.getName());
+			}
+			
 			tempJsonPlayer.put("hashTag", "#"+ trainer.getHashTag());
 			tempJsonPlayer.put("gameHashTag", "#"+match.getHome().getHashTag()+"vs"+match.getGuest().getHashTag());
 			tempJsonPlayer.put("result", match.getHomeGoals()+":"+match.getGuestGoals());
