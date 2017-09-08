@@ -2,6 +2,7 @@ import static spark.Spark.get;
 import static spark.SparkBase.port;
 import static spark.SparkBase.staticFileLocation;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +230,7 @@ public class Main {
 
 	static Matchday getLiveGameDay() {
 		List<Matchday> all = new MatchdayService().getAll();
+		Collections.sort(all);
 		Matchday aMatchday = null;
 		for (Matchday tempMatchday : all) {
 			if(!tempMatchday.getProcessed()){

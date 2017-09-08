@@ -7,7 +7,7 @@ import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
 
 @Table
 @Entity
-public class Matchday extends AbstractEntity{
+public class Matchday extends AbstractEntity implements Comparable<Matchday>{
 
 	private Integer number;
 	private Boolean processed = Boolean.FALSE;
@@ -53,6 +53,10 @@ public class Matchday extends AbstractEntity{
 	}
 	public void setDivisionFinals(Boolean divisionFinals) {
 		this.divisionFinals = divisionFinals;
+	}
+	@Override
+	public int compareTo(Matchday other) {
+		return getNumber().compareTo(other.getNumber());
 	}
 	
 }
