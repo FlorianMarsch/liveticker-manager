@@ -20,6 +20,20 @@ public class MatchService extends AbstractService<Match> {
 		return new Match();
 	}
 	
+	@Override
+	public List<Match> getAll() {
+		List<Match> all = super.getAll();
+		Collections.sort(all, new Comparator<Match>() {
+
+			@Override
+			public int compare(Match match1, Match match2) {
+				return match1.getMatchday().getNumber().compareTo(match2.getMatchday().getNumber());
+			}
+		});
+		
+		return all;
+	}
+	
 	public List<Match> getAllByMatchday(Matchday aMatchday){
 		
 		ArrayList<Match> arrayList = new ArrayList<Match>();
