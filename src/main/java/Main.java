@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
+import de.florianmarsch.fussballmanager.db.entity.division.DivisionJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.Match;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchJSONProducer;
@@ -18,6 +19,7 @@ import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
 import de.florianmarsch.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.florianmarsch.fussballmanager.db.json.BindContext;
+import de.florianmarsch.fussballmanager.live.processor.DivisionProcessor;
 import de.florianmarsch.fussballmanager.live.processor.GamedayProcessor;
 import de.florianmarsch.fussballmanager.live.processor.ProcessingResult;
 import de.florianmarsch.fussballmanager.live.ticker.Event;
@@ -72,7 +74,7 @@ public class Main {
 		new MatchdayJSONProducer().bindServices(ctx);
 		new MatchJSONProducer().bindServices(ctx);
 		new LineUpJSONProducer().bindServices(ctx);
-
+		new DivisionJSONProducer().bindServices(ctx);
 		
 		get("/leaderboard", (request, response) -> {
 			Matchday aMatchday = getLiveGameDay();
