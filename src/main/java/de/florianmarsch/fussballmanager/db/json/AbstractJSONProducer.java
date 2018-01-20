@@ -33,12 +33,15 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 	
 	protected void register(AbstractService<E> aAbstractService, String aRoot) {
-		root = "api/"+aRoot.toLowerCase();
-		if(root.endsWith("h")) {
-			root = root +"es";
-		}else {
-			root = root+"s";
+		root = aRoot.toLowerCase();
+		if(!root.contains("/")) {
+			if(root.endsWith("h")) {
+				root = root +"es";
+			}else {
+				root = root+"s";
+			}
 		}
+		root = "api/"+root;
 		System.out.println("Register root : " + root);
 		handler = new RequestHandler<E>(aAbstractService);
 	}

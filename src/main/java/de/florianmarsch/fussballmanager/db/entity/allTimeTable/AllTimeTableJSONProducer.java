@@ -20,7 +20,7 @@ public class AllTimeTableJSONProducer extends AbstractJSONProducer<AllTimeTable>
 	
 	@Override
 	protected void register(AbstractService<AllTimeTable> aAbstractService, String aRoot) {
-		super.register(aAbstractService, "standing/overview");
+		super.register(aAbstractService, "standings/overview");
 	}
 
 	

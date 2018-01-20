@@ -20,7 +20,7 @@ public class DivisionalTableJSONProducer extends AbstractJSONProducer<Divisional
 	
 	@Override
 	protected void register(AbstractService<DivisionalTable> aAbstractService, String aRoot) {
-		super.register(aAbstractService, "standing/division");
+		super.register(aAbstractService, "standings/division");
 	}
 
 	
