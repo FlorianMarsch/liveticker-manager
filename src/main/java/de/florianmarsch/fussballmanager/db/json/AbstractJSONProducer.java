@@ -32,7 +32,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		register(aAbstractService, forName.getSimpleName());
 	}
 	
-	private void register(AbstractService<E> aAbstractService, String aRoot) {
+	protected void register(AbstractService<E> aAbstractService, String aRoot) {
 		root = aRoot.toLowerCase();
 		if(root.endsWith("h")) {
 			root = root +"es";

@@ -1,5 +1,6 @@
 import static spark.SparkBase.port;
 
+import de.florianmarsch.fussballmanager.db.entity.allTimeTable.AllTimeTableJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.division.DivisionJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.MatchJSONProducer;
@@ -26,6 +27,7 @@ public class Main {
 		new MatchJSONProducer().bindServices(ctx);
 		new LineUpJSONProducer().bindServices(ctx);
 		new DivisionJSONProducer().bindServices(ctx);
+		new AllTimeTableJSONProducer().bindServices(ctx);
 
 	}	
 		
