@@ -1,4 +1,4 @@
-package de.florianmarsch.fussballmanager.db.entity.allTimeTable;
+package de.florianmarsch.fussballmanager.db.entity.divisionalTable;
 
 import java.util.List;
 
@@ -9,25 +9,25 @@ import de.florianmarsch.fussballmanager.db.service.AbstractService;
 import spark.Request;
 import spark.Spark;
 
-public class AllTimeTableJSONProducer extends AbstractJSONProducer<AllTimeTable>{
+public class DivisionalTableJSONProducer extends AbstractJSONProducer<DivisionalTable>{
 
-	private AllTimeTableService service;
+	private DivisionalTableService service;
 	private MatchdayService matchdayService ;
 	
-	public AllTimeTableJSONProducer() {
-		super(new AllTimeTableService());
+	public DivisionalTableJSONProducer() {
+		super(new DivisionalTableService());
 	}
 	
 	@Override
-	protected void register(AbstractService<AllTimeTable> aAbstractService, String aRoot) {
-		super.register(aAbstractService, "standing/overview");
+	protected void register(AbstractService<DivisionalTable> aAbstractService, String aRoot) {
+		super.register(aAbstractService, "standing/division");
 	}
 
 	
 	@Override
 	public void registerCustom() {
 		
-		service = (AllTimeTableService) getHandler().getService();
+		service = (DivisionalTableService) getHandler().getService();
 		matchdayService = new MatchdayService();
 		
 		
@@ -35,7 +35,7 @@ public class AllTimeTableJSONProducer extends AbstractJSONProducer<AllTimeTable>
 			
 			Matchday matchday = getMatchday(request);
 
-			List<AllTimeTable> found = service.getAllByMatchday(matchday);
+			List<DivisionalTable> found = service.getAllByMatchday(matchday);
 			return toJson(found);
 		});
 	}
