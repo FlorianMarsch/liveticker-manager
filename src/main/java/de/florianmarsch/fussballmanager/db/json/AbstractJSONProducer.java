@@ -66,27 +66,20 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 			List<E> found = handler.get(request);
 			handler.delete(found.get(0));
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", new JSONArray());
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+		
+			return "[]";
+		});
 		
 	}
 
 	private void registerGetSchema() {
 		Spark.get("/" + root + "/" + "schema/", (request, response) -> {
 
-			Stopwatch stopwatch = Stopwatch.createStarted();
-
+		
 			Map<String, String> types = handler.getSchema();
 
-			JSONObject data = new JSONObject(types);
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", data.toString());
-			stopwatch.stop();
-			System.out.println(stopwatch.elapsed(TimeUnit.MICROSECONDS));
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+			return types;
+		});
 
 	}
 
@@ -94,11 +87,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		Spark.put("/" + root + "/:id", (request, response) -> {
 
 			List<E> found = handler.save(request);
-			JSONArray data = JSON.getJsonArray(found);
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", data.toString());
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+			return found;
+		});
 
 	}
 
@@ -107,38 +97,25 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 			String data = handler.getAttributeValue(request);
 
-			Map<String, Object> attributes = new HashMap<>();
-			JSONArray value = new JSONArray();
-			value.put(data);
-			attributes.put("data", value);
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+			return data;
+		});
 	}
 
 	private void registerGetById() {
 		Spark.get("/" + root + "/:id", (request, response) -> {
 
-			Stopwatch stopwatch = Stopwatch.createStarted();
+		
 
 			List<E> found = handler.get(request);
-			JSONArray data = JSON.getJsonArray(found);
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", data.toString());
-			stopwatch.stop();
-			System.out.println(stopwatch.elapsed(TimeUnit.MICROSECONDS));
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+			return found;
+		});
 	}
 
 	private void registerGetAll() {
 		Spark.get("/" + root, (request, response) -> {
 			List<E> all = handler.getAll();
-			JSONArray data = JSON.getJsonArray(all);
-
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", data.toString());
-			return new ModelAndView(attributes, "json.ftl");
-		}, new FreeMarkerEngine());
+			return all;
+		});
 	}
 
 }
