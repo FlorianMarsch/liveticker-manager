@@ -1,5 +1,7 @@
 import static spark.Spark.exception;
 
+import com.google.gson.Gson;
+
 import spark.Request;
 import spark.Response;
 
@@ -14,8 +16,9 @@ public class ErrorHandler {
 	}
 
 	public void handle(Exception e, Request request, Response response) {
+		Gson gson = new Gson();
 		response.status(500);
-		response.body(e.getMessage());
+		response.body(gson.toJson(e));
 		e.printStackTrace();
 	}
 	

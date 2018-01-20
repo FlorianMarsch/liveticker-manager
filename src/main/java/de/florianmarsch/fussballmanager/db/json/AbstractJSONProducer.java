@@ -2,26 +2,20 @@ package de.florianmarsch.fussballmanager.db.json;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.common.base.Stopwatch;
+import com.google.gson.Gson;
 
 import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
 import de.florianmarsch.fussballmanager.db.service.AbstractService;
-import spark.ModelAndView;
 import spark.Spark;
-import spark.template.freemarker.FreeMarkerEngine;
 
 public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	protected String root;
 	private RequestHandler<E> handler;
+	private Gson gson;
 	
 	public AbstractJSONProducer(AbstractService<E> aAbstractService) {
 		Type genericSuperclass = this.getClass().getGenericSuperclass();
@@ -34,6 +28,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		gson = new Gson();
 		register(aAbstractService, forName.getSimpleName());
 	}
 	
@@ -67,7 +62,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			List<E> found = handler.get(request);
 			handler.delete(found.get(0));
 		
-			return "[]";
+			return gson.toJson(null);
 		});
 		
 	}
@@ -78,7 +73,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		
 			Map<String, String> types = handler.getSchema();
 
-			return types;
+			return gson.toJson(types);
 		});
 
 	}
@@ -87,7 +82,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		Spark.put("/" + root + "/:id", (request, response) -> {
 
 			List<E> found = handler.save(request);
-			return found;
+			return gson.toJson(found);
 		});
 
 	}
@@ -97,7 +92,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 			String data = handler.getAttributeValue(request);
 
-			return data;
+			return gson.toJson(data);
 		});
 	}
 
@@ -107,14 +102,14 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		
 
 			List<E> found = handler.get(request);
-			return found;
+			return gson.toJson(found);
 		});
 	}
 
 	private void registerGetAll() {
 		Spark.get("/" + root, (request, response) -> {
 			List<E> all = handler.getAll();
-			return all;
+			return gson.toJson(all);
 		});
 	}
 
