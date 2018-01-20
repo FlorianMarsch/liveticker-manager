@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
 import de.florianmarsch.fussballmanager.db.entity.allTimeTable.AllTimeTable;
@@ -33,7 +34,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		gson = new Gson();
+		gson = new GsonBuilder().setPrettyPrinting().create();
+
 		register(aAbstractService, forName.getSimpleName());
 	}
 
@@ -137,6 +139,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	
 	private Route getWrapped(Route route) {
 		return (request, response) -> {
+			response.header("Content-Type", "application/json");
 			return route.handle(request, response);
 		};
 	}
