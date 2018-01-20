@@ -2,12 +2,16 @@ package de.florianmarsch.fussballmanager.db.json;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
 import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
+import de.florianmarsch.fussballmanager.db.entity.allTimeTable.AllTimeTable;
+import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.service.AbstractService;
 import spark.Route;
 import spark.Spark;
@@ -113,25 +117,34 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	protected void get(String path, Route route) {
 		System.out.println("register get : " + path);
-		Spark.get(path, route);
+		Spark.get(path, getWrapped(route));
 	}
 
 	protected void put(String path, Route route) {
 		System.out.println("register put : " + path);
-		Spark.put(path, route);
+		Spark.put(path, getWrapped(route));
 	}
 
 	protected void post(String path, Route route) {
 		System.out.println("register post : " + path);
-		Spark.post(path, route);
+		Spark.post(path, getWrapped(route));
 	}
 
 	protected void delete(String path, Route route) {
 		System.out.println("register delete : " + path);
-		Spark.delete(path, route);
+		Spark.delete(path, getWrapped(route));
+	}
+	
+	private Route getWrapped(Route route) {
+		return (request, response) -> {
+			return route.handle(request, response);
+		};
 	}
 
 	public String toJson(Object notAJson) {
+		if(notAJson instanceof String) {
+			return notAJson.toString();
+		}
 		return gson.toJson(notAJson);
 	}
 
