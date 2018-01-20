@@ -22,7 +22,7 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 	}
 
 	public Map<String, String> getSchema() {
-		E temp = service.getNewInstance();
+		E temp = getService().getNewInstance();
 		Map<String, String> types = null;
 		try {
 			types = JSON.describeTypes(temp);
@@ -38,7 +38,7 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 		List<E> found = get(id);
 		E entity;
 		if (found.isEmpty()) {
-			entity = service.getNewInstance();
+			entity = getService().getNewInstance();
 		} else {
 			entity = found.get(0);
 		}
@@ -63,9 +63,13 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		service.save(entity);
+		getService().save(entity);
 		return get(entity.getId());
 
+	}
+
+	public AbstractService<E> getService() {
+		return service;
 	}
 
 	private void setProperty(E entity, String key, Object value)
@@ -99,7 +103,7 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 
 	public List<E> get(String id) {
 		List<E> found = new ArrayList<E>(1);
-		E temp = service.getAllAsMap().get(id);
+		E temp = getService().getAllAsMap().get(id);
 		if (temp != null) {
 			found.add(temp);
 		}
@@ -107,12 +111,12 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 	}
 	
 	public void delete(E aEntity) {
-		service.delete(aEntity);
+		getService().delete(aEntity);
 	}
 	
 
 	public List<E> getAll() {
-		List<E> all = service.getAll();
+		List<E> all = getService().getAll();
 		return all;
 	}
 
@@ -127,7 +131,7 @@ public class RequestHandler<E extends AbstractEntity> implements PropertyResolve
 
 	@Override
 	public Object resolve(Object aValue) {
-		return service.getAllAsMap().get(aValue);
+		return getService().getAllAsMap().get(aValue);
 	}
 
 }

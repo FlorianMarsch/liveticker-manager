@@ -33,7 +33,12 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 	
 	private void register(AbstractService<E> aAbstractService, String aRoot) {
-		root = aRoot;
+		root = aRoot.toLowerCase();
+		if(root.endsWith("h")) {
+			root = root +"es";
+		}else {
+			root = root+"s";
+		}
 		System.out.println("Register root : " + root);
 		handler = new RequestHandler<E>(aAbstractService);
 	}
@@ -45,35 +50,39 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	public void bindServices(BindContext aBindContext) {
-		aBindContext.bind(root, handler);
+		aBindContext.bind(root, getHandler());
 		
 		registerGetAll();
 		registerGetById();
-		registerGetAttributeById();
 		registerGetSchema();
 		registerSave();
 		registerDelete();
+		registerCustom();
 	}
 
 	private void registerDelete() {
 		Spark.delete("/" + root + "/:id", (request, response) -> {
 
 
-			List<E> found = handler.get(request);
-			handler.delete(found.get(0));
+			List<E> found = getHandler().get(request);
+			getHandler().delete(found.get(0));
 		
-			return gson.toJson(null);
+			return toJson(null);
 		});
 		
+	}
+
+	public RequestHandler<E> getHandler() {
+		return handler;
 	}
 
 	private void registerGetSchema() {
 		Spark.get("/" + root + "/" + "schema/", (request, response) -> {
 
 		
-			Map<String, String> types = handler.getSchema();
+			Map<String, String> types = getHandler().getSchema();
 
-			return gson.toJson(types);
+			return toJson(types);
 		});
 
 	}
@@ -81,36 +90,37 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	private void registerSave() {
 		Spark.put("/" + root + "/:id", (request, response) -> {
 
-			List<E> found = handler.save(request);
-			return gson.toJson(found);
+			List<E> found = getHandler().save(request);
+			return toJson(found);
 		});
 
 	}
 
-	private void registerGetAttributeById() {
-		Spark.get("/" + root + "/:id/:property", (request, response) -> {
-
-			String data = handler.getAttributeValue(request);
-
-			return gson.toJson(data);
-		});
-	}
 
 	private void registerGetById() {
 		Spark.get("/" + root + "/:id", (request, response) -> {
 
 		
 
-			List<E> found = handler.get(request);
+			List<E> found = getHandler().get(request);
 			return gson.toJson(found);
 		});
 	}
 
 	private void registerGetAll() {
 		Spark.get("/" + root, (request, response) -> {
-			List<E> all = handler.getAll();
-			return gson.toJson(all);
+			List<E> all = getHandler().getAll();
+			return toJson(all);
 		});
+	}
+	
+
+	public String toJson(Object notAJson) {
+		return gson.toJson(notAJson);
+	}
+	
+	public void registerCustom() {
+		
 	}
 
 }
