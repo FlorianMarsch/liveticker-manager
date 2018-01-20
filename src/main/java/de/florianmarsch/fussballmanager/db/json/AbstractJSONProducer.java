@@ -9,18 +9,19 @@ import com.google.gson.Gson;
 
 import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
 import de.florianmarsch.fussballmanager.db.service.AbstractService;
+import spark.Route;
 import spark.Spark;
+import spark.route.HttpMethod;
 
 public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	protected String root;
 	private RequestHandler<E> handler;
 	private Gson gson;
-	
+
 	public AbstractJSONProducer(AbstractService<E> aAbstractService) {
 		Type genericSuperclass = this.getClass().getGenericSuperclass();
-		Type x = ((ParameterizedType) genericSuperclass)
-				.getActualTypeArguments()[0];
+		Type x = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
 		Class<?> forName = null;
 		try {
 			forName = Class.forName(x.getTypeName());
@@ -31,30 +32,28 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		gson = new Gson();
 		register(aAbstractService, forName.getSimpleName());
 	}
-	
+
 	protected void register(AbstractService<E> aAbstractService, String aRoot) {
 		root = aRoot.toLowerCase();
-		if(!root.contains("/")) {
-			if(root.endsWith("h")) {
-				root = root +"es";
-			}else {
-				root = root+"s";
+		if (!root.contains("/")) {
+			if (root.endsWith("h")) {
+				root = root + "es";
+			} else {
+				root = root + "s";
 			}
 		}
-		root = "api/"+root;
-		System.out.println("Register root : " + root);
+		root = "api/" + root;
 		handler = new RequestHandler<E>(aAbstractService);
 	}
 
 	@Deprecated
-	public AbstractJSONProducer(AbstractService<E> aAbstractService,
-			String aRoot) {
+	public AbstractJSONProducer(AbstractService<E> aAbstractService, String aRoot) {
 		register(aAbstractService, aRoot);
 	}
 
 	public void bindServices(BindContext aBindContext) {
 		aBindContext.bind(root, getHandler());
-		
+
 		registerGetAll();
 		registerGetById();
 		registerGetSchema();
@@ -64,15 +63,14 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	private void registerDelete() {
-		Spark.delete("/" + root + "/:id", (request, response) -> {
-
+		delete("/" + root + "/:id", (request, response) -> {
 
 			List<E> found = getHandler().get(request);
 			getHandler().delete(found.get(0));
-		
+
 			return toJson(null);
 		});
-		
+
 	}
 
 	public RequestHandler<E> getHandler() {
@@ -80,9 +78,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	private void registerGetSchema() {
-		Spark.get("/" + root + "/" + "schema/", (request, response) -> {
+		get("/" + root + "/" + "schema/", (request, response) -> {
 
-		
 			Map<String, String> types = getHandler().getSchema();
 
 			return toJson(types);
@@ -91,7 +88,7 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	private void registerSave() {
-		Spark.put("/" + root + "/:id", (request, response) -> {
+		put("/" + root + "/:id", (request, response) -> {
 
 			List<E> found = getHandler().save(request);
 			return toJson(found);
@@ -99,11 +96,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	}
 
-
 	private void registerGetById() {
-		Spark.get("/" + root + "/:id", (request, response) -> {
-
-		
+		get("/" + root + "/:id", (request, response) -> {
 
 			List<E> found = getHandler().get(request);
 			return gson.toJson(found);
@@ -111,19 +105,38 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 	}
 
 	private void registerGetAll() {
-		Spark.get("/" + root, (request, response) -> {
+		get("/" + root, (request, response) -> {
 			List<E> all = getHandler().getAll();
 			return toJson(all);
 		});
 	}
-	
+
+	protected void get(String path, Route route) {
+		System.out.println("register get : " + path);
+		Spark.get(path, route);
+	}
+
+	protected void put(String path, Route route) {
+		System.out.println("register put : " + path);
+		Spark.put(path, route);
+	}
+
+	protected void post(String path, Route route) {
+		System.out.println("register post : " + path);
+		Spark.post(path, route);
+	}
+
+	protected void delete(String path, Route route) {
+		System.out.println("register delete : " + path);
+		Spark.delete(path, route);
+	}
 
 	public String toJson(Object notAJson) {
 		return gson.toJson(notAJson);
 	}
-	
+
 	public void registerCustom() {
-		
+
 	}
 
 }

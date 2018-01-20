@@ -31,7 +31,7 @@ public class DivisionalTableJSONProducer extends AbstractJSONProducer<Divisional
 		matchdayService = new MatchdayService();
 		
 		
-		Spark.get("/" + root + "/matchday/:number", (request, response) -> {
+		get("/" + root + "/matchday/:number", (request, response) -> {
 			
 			Matchday matchday = getMatchday(request);
 

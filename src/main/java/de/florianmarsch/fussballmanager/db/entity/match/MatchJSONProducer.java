@@ -5,36 +5,31 @@ import java.util.List;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
 import de.florianmarsch.fussballmanager.db.json.AbstractJSONProducer;
-import de.florianmarsch.fussballmanager.db.service.AbstractService;
 import spark.Request;
-import spark.Spark;
 
-public class MatchJSONProducer extends AbstractJSONProducer<Match>{
+public class MatchJSONProducer extends AbstractJSONProducer<Match> {
 
 	private MatchService service;
 	private MatchdayService matchdayService;
-	
+
 	public MatchJSONProducer() {
 		super(new MatchService());
 	}
 
-	
 	@Override
 	public void registerCustom() {
-		
+
 		service = (MatchService) getHandler().getService();
 		matchdayService = new MatchdayService();
-		
-		
-		Spark.get("/" + root + "/matchday/:number", (request, response) -> {
-			
+
+		get("/" + root + "/matchday/:number", (request, response) -> {
+
 			Matchday matchday = getMatchday(request);
 
 			List<Match> found = service.getAllByMatchday(matchday);
 			return toJson(found);
 		});
 	}
-
 
 	private Matchday getMatchday(Request request) {
 		Integer matchdayNumber = Integer.valueOf(request.params("number"));
