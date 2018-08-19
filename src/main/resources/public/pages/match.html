@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+
+<style>
+.overview {
+	text-align: center;
+}
+
+.result {
+	display: inline-flex;
+}
+
+.result img {
+	max-height: 9rem;
+	max-width:9rem;
+}
+
+
+.gameresult {
+	font-size: 3rem;
+}
+
+.trainer {
+	text-transform: uppercase;
+	display: block;
+}
+
+@media print {
+	.noprint {
+		display: none;
+	}
+}
+</style>
+</head>
+<body>
+
+
+
+
+
+
+	<script>
+		var app = angular.module('myApp', []);
+
+		app.controller('customersCtrl', function($scope, $http) {
+			var scope = $scope;
+			var http = $http;
+			var me = this;
+			scope.matches;
+			scope.matchdays;
+			scope.trainer;
+			scope.search;
+
+			scope.error = function(response) {
+				alert("Error");
+			}
+
+			$http({
+				method : 'GET',
+				url : '/Match'
+			}).then(function successCallback(response) {
+				scope.matches = response.data.data;
+				$http({
+					method : 'GET',
+					url : '/Trainer'
+				}).then(function successCallback(response) {
+					scope.trainer = response.data.data;
+					$http({
+						method : 'GET',
+						url : '/Matchday'
+					}).then(function successCallback(response) {
+						scope.matchdays = response.data.data;
+					}, scope.error);
+				}, scope.error);
+			}, scope.error);
+
+			scope.getTrainer = function(id) {
+				var found;
+				scope.trainer.forEach(function(element, index) {
+					if (element.id === id) {
+						found = element;
+					}
+				});
+				return found;
+			};
+			scope.getMatches = function(id) {
+				var found = new Array;
+				scope.matches.forEach(function(element, index) {
+					if (element.matchday === id) {
+						found.push(element);
+					}
+				});
+				return found;
+			};
+			scope.getNobrBefore = function(text) {
+				var response = "";
+				var length = 20 - text.length;
+				for (i = 0; i < length; i++) {
+					response += " ";
+				}
+				return response + text;
+			};
+			scope.getNobrAfter = function(text) {
+				var response = "";
+				var length = 20 - text.length;
+				for (i = 0; i < length; i++) {
+					response += " ";
+				}
+				return text + response;
+			};
+
+		});
+	</script>
+
+	<div class="panel-body" ng-app="myApp" ng-controller="customersCtrl">
+
+		<div class="panel panel-default noprint">
+			<div class="panel-heading">Filter</div>
+			<div class="panel-body">
+				<div class="input-group">
+					<input type="text" class="form-control" ng-model="search" placeholder="Search for your #...">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">Go!</button>
+					</span>
+				</div>
+				<!-- /input-group -->
+
+			</div>
+		</div>
+
+
+
+
+
+		<div class="panel panel-default" ng-repeat="m in matchdays ">
+			<div class="panel-heading">Spieltag {{m.number}} : {{m.modus}}</div>
+			<div class="panel-body" id="{{m.number}}">
+
+
+
+
+				<div class="row">
+					<div class="col-sm-12 col-md-4" ng-repeat="x in getMatches(m.id) | filter:search">
+						<div class="thumbnail">
+							<div class="caption overview">
+								<h2>
+									<a target="_blank" href="https://twitter.com/search?q=%23{{getTrainer(x.home).hashTag}}vs{{getTrainer(x.guest).hashTag}}&src=typd&lang=de">
+									{{x.displayValue}}
+									</a>
+								</h2>
+								<div class="result">
+									<p>
+										<span><img
+											src="{{getTrainer(x.home).imageUrl}}"></img></span>
+									</p>
+									<p>
+										<span class="trainer">{{getTrainer(x.home).name}}</span>
+										<span class="gameresult">{{x.homeGoals}}</span> <span
+											class="gameresult">:</span> <span class="gameresult">{{x.guestGoals}}</span>
+										<span class="trainer">{{getTrainer(x.guest).name}}</span>
+									</p>
+									<p>
+										<span><img
+											src="{{getTrainer(x.guest).imageUrl}}"></img></span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

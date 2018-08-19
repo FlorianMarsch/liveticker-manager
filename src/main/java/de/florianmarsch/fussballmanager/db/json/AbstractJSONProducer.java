@@ -5,28 +5,28 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.google.common.base.Stopwatch;
 
 import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
-import de.florianmarsch.fussballmanager.db.entity.allTimeTable.AllTimeTable;
-import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.service.AbstractService;
-import spark.Route;
+import spark.ModelAndView;
 import spark.Spark;
-import spark.route.HttpMethod;
+import spark.template.freemarker.FreeMarkerEngine;
 
 public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	protected String root;
 	private RequestHandler<E> handler;
-	private Gson gson;
-
+	
 	public AbstractJSONProducer(AbstractService<E> aAbstractService) {
 		Type genericSuperclass = this.getClass().getGenericSuperclass();
-		Type x = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+		Type x = ((ParameterizedType) genericSuperclass)
+				.getActualTypeArguments()[0];
 		Class<?> forName = null;
 		try {
 			forName = Class.forName(x.getTypeName());
@@ -34,125 +34,111 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		gson = new GsonBuilder().setPrettyPrinting().create();
-
 		register(aAbstractService, forName.getSimpleName());
 	}
-
-	protected void register(AbstractService<E> aAbstractService, String aRoot) {
-		root = aRoot.toLowerCase();
-		if (!root.contains("/")) {
-			if (root.endsWith("h")) {
-				root = root + "es";
-			} else {
-				root = root + "s";
-			}
-		}
-		root = "api/" + root;
+	
+	private void register(AbstractService<E> aAbstractService, String aRoot) {
+		root = aRoot;
+		System.out.println("Register root : " + root);
 		handler = new RequestHandler<E>(aAbstractService);
 	}
 
 	@Deprecated
-	public AbstractJSONProducer(AbstractService<E> aAbstractService, String aRoot) {
+	public AbstractJSONProducer(AbstractService<E> aAbstractService,
+			String aRoot) {
 		register(aAbstractService, aRoot);
 	}
 
 	public void bindServices(BindContext aBindContext) {
-		aBindContext.bind(root, getHandler());
-
+		aBindContext.bind(root, handler);
+		
 		registerGetAll();
 		registerGetById();
+		registerGetAttributeById();
 		registerGetSchema();
 		registerSave();
 		registerDelete();
-		registerCustom();
 	}
 
 	private void registerDelete() {
-		delete("/" + root + "/:id", (request, response) -> {
+		Spark.delete("/" + root + "/:id", (request, response) -> {
 
-			List<E> found = getHandler().get(request);
-			getHandler().delete(found.get(0));
 
-			return toJson(null);
-		});
-
-	}
-
-	public RequestHandler<E> getHandler() {
-		return handler;
+			List<E> found = handler.get(request);
+			handler.delete(found.get(0));
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", new JSONArray());
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
+		
 	}
 
 	private void registerGetSchema() {
-		get("/" + root + "/" + "schema/", (request, response) -> {
+		Spark.get("/" + root + "/" + "schema/", (request, response) -> {
 
-			Map<String, String> types = getHandler().getSchema();
+			Stopwatch stopwatch = Stopwatch.createStarted();
 
-			return toJson(types);
-		});
+			Map<String, String> types = handler.getSchema();
+
+			JSONObject data = new JSONObject(types);
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			stopwatch.stop();
+			System.out.println(stopwatch.elapsed(TimeUnit.MICROSECONDS));
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 
 	}
 
 	private void registerSave() {
-		put("/" + root + "/:id", (request, response) -> {
+		Spark.put("/" + root + "/:id", (request, response) -> {
 
-			List<E> found = getHandler().save(request);
-			return toJson(found);
-		});
+			List<E> found = handler.save(request);
+			JSONArray data = JSON.getJsonArray(found);
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 
+	}
+
+	private void registerGetAttributeById() {
+		Spark.get("/" + root + "/:id/:property", (request, response) -> {
+
+			String data = handler.getAttributeValue(request);
+
+			Map<String, Object> attributes = new HashMap<>();
+			JSONArray value = new JSONArray();
+			value.put(data);
+			attributes.put("data", value);
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 	}
 
 	private void registerGetById() {
-		get("/" + root + "/:id", (request, response) -> {
+		Spark.get("/" + root + "/:id", (request, response) -> {
 
-			List<E> found = getHandler().get(request);
-			return gson.toJson(found);
-		});
+			Stopwatch stopwatch = Stopwatch.createStarted();
+
+			List<E> found = handler.get(request);
+			JSONArray data = JSON.getJsonArray(found);
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			stopwatch.stop();
+			System.out.println(stopwatch.elapsed(TimeUnit.MICROSECONDS));
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 	}
 
 	private void registerGetAll() {
-		get("/" + root, (request, response) -> {
-			List<E> all = getHandler().getAll();
-			return toJson(all);
-		});
-	}
+		Spark.get("/" + root, (request, response) -> {
+			List<E> all = handler.getAll();
+			JSONArray data = JSON.getJsonArray(all);
 
-	protected void get(String path, Route route) {
-		System.out.println("register get : " + path);
-		Spark.get(path, getWrapped(route));
-	}
-
-	protected void put(String path, Route route) {
-		System.out.println("register put : " + path);
-		Spark.put(path, getWrapped(route));
-	}
-
-	protected void post(String path, Route route) {
-		System.out.println("register post : " + path);
-		Spark.post(path, getWrapped(route));
-	}
-
-	protected void delete(String path, Route route) {
-		System.out.println("register delete : " + path);
-		Spark.delete(path, getWrapped(route));
-	}
-	
-	private Route getWrapped(Route route) {
-		return (request, response) -> {
-			response.header("Content-Type", "application/json");
-			return route.handle(request, response);
-		};
-	}
-
-	public String toJson(Object notAJson) {
-		if(notAJson instanceof String) {
-			return notAJson.toString();
-		}
-		return gson.toJson(notAJson);
-	}
-
-	public void registerCustom() {
-
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", data.toString());
+			return new ModelAndView(attributes, "json.ftl");
+		}, new FreeMarkerEngine());
 	}
 
 }

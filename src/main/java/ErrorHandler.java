@@ -1,24 +1,24 @@
 import static spark.Spark.exception;
 
-import com.google.gson.Gson;
-
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.freemarker.FreeMarkerEngine;
 
 
 public class ErrorHandler {
 	
-	
+	private String renderdErrorMessage;
 	
 	public ErrorHandler(){
-
-		
+		FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
+		ModelAndView errorModelAndView = new ModelAndView(null, "error.ftl");
+		renderdErrorMessage = freeMarkerEngine.render(errorModelAndView);
 	}
 
 	public void handle(Exception e, Request request, Response response) {
-		Gson gson = new Gson();
 		response.status(500);
-		response.body(gson.toJson(e));
+		response.body(renderdErrorMessage);
 		e.printStackTrace();
 	}
 	
