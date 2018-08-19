@@ -22,7 +22,7 @@ public class TickService {
 		List<Tick> response = new ArrayList<>();
 
 		String season = System.getenv("SEASON");
-		
+		System.out.println("Use Season : "+season);
 		try {
 			String gamedayUrl = "http://node-comunio-system-api.herokuapp.com/api/result/"+season+"/" + aMatchday.getNumber();
 			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
