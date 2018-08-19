@@ -21,8 +21,10 @@ public class TickService {
 	public List<Tick> getAllByMatchday(Matchday aMatchday) {
 		List<Tick> response = new ArrayList<>();
 
+		String season = System.getenv("SEASON");
+		
 		try {
-			String gamedayUrl = "http://node-comunio-system-api.herokuapp.com/api/result/2017-18/" + aMatchday.getNumber();
+			String gamedayUrl = "http://node-comunio-system-api.herokuapp.com/api/result/"+season+"/" + aMatchday.getNumber();
 			InputStream is = (InputStream) new URL(gamedayUrl).getContent();
 			String content = IOUtils.toString(is, "UTF-8");
 			ObjectMapper mapper = new ObjectMapper();
