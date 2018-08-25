@@ -41,7 +41,7 @@ public class GoalResolver {
 						Set<String> team = new HashSet<String>(allPlayer.get(trainer));
 
 						String name = tick.getName();
-						System.out.println("check " + name + " in " + team + " ? " + team.contains(name));
+						System.out.println("check " + name + " in "+trainer+" :" + team + " ? " + team.contains(name));
 						if (team.contains(name)) {
 
 							Event event = new Event();
