@@ -2,6 +2,7 @@ import static spark.Spark.get;
 import static spark.SparkBase.port;
 import static spark.SparkBase.staticFileLocation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -200,12 +201,8 @@ public class Main {
 			String param = ":id";
 
 			String id = request.params(param);
-			System.out.println(id);
-			
 			Match match = new MatchService().getAllAsMap().get(id);
-			System.out.println(match);
 			Matchday aMatchday = match.getMatchday();
-			System.out.println(aMatchday);
 
 			GamedayProcessor gp = new GamedayProcessor();
 			ProcessingResult process = null;
@@ -215,16 +212,30 @@ public class Main {
 				process = gp.process(aMatchday);
 			}
 
+			
+			
 			Map<String, Object> attributes = new HashMap<>();
 
 			List<Match> matches = process.getMatches();
+			Match currentMatch = null;
 			for (Match temp : matches) {
 				if (temp.getId().equals(id)) {
 					attributes.put("x", temp);
-					System.out.println(temp);
+					currentMatch = temp;
 				}
 			}
 
+			List<Event> events = process.getEvents();
+			List<Event> currentEvents = new ArrayList<Event> ();
+			for (Event e : events) {
+				if (e.getMatch().getId().equals(id)) {
+					
+					currentEvents.add(e);
+				}
+			}
+			attributes.put("events", currentEvents);
+			
+			
 			return new ModelAndView(attributes, "screen.ftl");
 		} , new FreeMarkerEngine());
 

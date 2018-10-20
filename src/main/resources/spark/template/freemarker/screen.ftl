@@ -26,6 +26,11 @@
                                 <span><img src="${x.guest.imageUrl}" style="max-height: 9rem; max-width:9rem;"></img></span>
                             </p>
                         </div>
+                        <div>
+                        <#list events as event>
+                        <span>${event.name}</span>
+                        </#list>
+                        </div>
                     </div>
                 </div>
             </div>
