@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
 </head>
-<body>
-    <div class="panel-body" ng-app="myApp" ng-controller="customersCtrl">
-        <div class="row">
+<body style="margin:0px;">
+    <div class="panel-body" ng-app="myApp" ng-controller="customersCtrl" style="padding-top: 50vh;min-height: 100vh;margin: auto 0;color:white;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;background-image:url(https://images.pexels.com/photos/112786/pexels-photo-112786.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);background-position:center;background-size:cover;">
+        <div class="row" style="    margin-top: -90px;">
             <div >
                 <div >
                     <div style="text-align: center;">
