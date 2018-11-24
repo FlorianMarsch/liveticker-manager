@@ -91,6 +91,9 @@
 						<td>
 							${x.guest.name}
 						</td>
+						<td>
+							<a href="/screen/${x.id}"> zur Übersicht</a>
+						</td>
 					</tr>
 </#list>
 				</tbody>
