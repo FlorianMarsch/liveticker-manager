@@ -78,16 +78,22 @@
 
 
 
-.glyphicons-cup{
-	background-image: url("http://classic.comunio.de/getImg.phtml?cid=1");
+.glyphicons-1{
+	background-image: url("https://image.flaticon.com/icons/png/128/1152/1152810.png");
 }
 
-.glyphicons-batman{
-	background-image: url("https://vignette3.wikia.nocookie.net/batmantheanimatedseries/images/6/64/Favicon.ico/revision/latest?cb=20130302054027");
+.glyphicons-2{
+	background-image: url("https://img.icons8.com/cotton/2x/olympic-medal-silver.png");
 }
-.glyphicons-centipede{
-	background-image: url("https://www.pokewiki.de/images/2/20/Pok%C3%A9monicon_010.png");
+.glyphicons-3{
+	background-image: url("http://www.theverylittlewar.com/images/classement/medaillebronze.png");
 }
+
+.pos_3>td{
+border-bottom:35px solid white;
+
+}
+
 </style>
 
 </head>
@@ -109,8 +115,18 @@
 				</thead>
 				<tbody>
 				<#list allTimeTable as x>
-					<tr>
-						<td>${x?counter}. ${x.trainer.name}</td> 
+					<tr class="pos_${x?counter}">
+						<td>
+						<#if x?counter == 1>
+						<span class="glyphicon simbol glyphicons-1"></span>
+						<#elseif x?counter == 2>
+						<span class="glyphicon simbol glyphicons-2"></span>
+						<#elseif x?counter == 3>
+						<span class="glyphicon simbol glyphicons-3"></span>
+						<#else>
+						${x?counter}.
+						</#if>
+						 ${x.trainer.name}</td> 
 						<td>
 							<#if x.better == 0>
 								<!-- gleich gut -->
