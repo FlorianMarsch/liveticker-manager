@@ -27,9 +27,21 @@ public class DivisionProcessor {
 	
 	public Map<Division, List<AllTimeTable>> getDivisionalTables(List<Match> matches,Matchday currentMatchday){
 
+	
+		
+		List<Match> divisonalMatchesBefore = matchService.getDivisonalMatchesUntil(currentMatchday);
 		List<Match> divisonalMatches = matchService.getDivisonalMatchesUntil(currentMatchday,matches);
 	
-		return getDivisionalTables(currentMatchday, divisonalMatches);
+		Map<Division, List<AllTimeTable>> current = getDivisionalTables(currentMatchday, divisonalMatches);
+		Map<Division, List<AllTimeTable>> before = getDivisionalTables(currentMatchday, divisonalMatchesBefore);
+		
+		for (Division division : current.keySet()) {
+			List<AllTimeTable> table = current.get(division);
+			List<AllTimeTable> tableBefore = before.get(division);
+			current.put(division, applyTableDayBefore(table, tableBefore));
+		}
+		
+		return current;
 	}
 	
 	public Map<Division, List<AllTimeTable>> getDivisionalTables(Matchday currentMatchday){
@@ -102,5 +114,30 @@ public class DivisionProcessor {
 			divisionService.save(division);
 		}
 		return order;
+	}
+	
+	public List<AllTimeTable> applyTableDayBefore(List<AllTimeTable> table, List<AllTimeTable> tableDayBefore){
+		if(tableDayBefore == null || tableDayBefore.isEmpty()){
+			return table;
+		}
+		
+		for (AllTimeTable allTimeTable : table) {
+			Trainer trainer = allTimeTable.getTrainer();
+			int position = table.indexOf(allTimeTable);
+			int points = allTimeTable.getPoints();
+			AllTimeTable tableBefore = null;
+			for (AllTimeTable allTimeTableBefore : tableDayBefore) {
+				if(allTimeTableBefore.getTrainer().equals(trainer)){
+					tableBefore = allTimeTableBefore;
+				}
+			}
+			int pointsBefore = tableBefore.getPoints();
+			int positionBefore = tableDayBefore.indexOf(tableBefore);
+			int delta = positionBefore - position;
+			int deltaPoints = points-pointsBefore;
+			allTimeTable.setBetter(delta);
+			allTimeTable.setBetterPoints(deltaPoints);
+		}
+		return table;
 	}
 }
