@@ -24,6 +24,14 @@ public class DivisionProcessor {
 	DivisionService divisionService = new DivisionService();
 	MatchService matchService = new MatchService();
 
+	
+	public Map<Division, List<AllTimeTable>> getDivisionalTables(List<Match> matches,Matchday currentMatchday){
+
+		List<Match> divisonalMatches = matchService.getDivisonalMatchesUntil(currentMatchday,matches);
+	
+		return getDivisionalTables(currentMatchday, divisonalMatches);
+	}
+	
 	public Map<Division, List<AllTimeTable>> getDivisionalTables(Matchday currentMatchday){
 
 		List<Match> divisonalMatches = matchService.getDivisonalMatchesUntil(currentMatchday);

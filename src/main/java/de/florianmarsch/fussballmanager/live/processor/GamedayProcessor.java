@@ -127,7 +127,7 @@ public class GamedayProcessor {
 		processingResult.setEvents(events);
 
 		Map<Division, List<AllTimeTable>> divisionalTables;
-		divisionalTables = divisionProcessor.getDivisionalTables(aMatchday);
+		divisionalTables = divisionProcessor.getDivisionalTables(allHappendMatchesUntil,aMatchday);
 		processingResult.setDivisionalTables(divisionalTables);
 		
 		return processingResult;

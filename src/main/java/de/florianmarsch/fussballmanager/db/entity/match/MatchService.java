@@ -62,8 +62,16 @@ public class MatchService extends AbstractService<Match> {
 	}
 	
 	public List<Match> getDivisonalMatchesUntil(Matchday currentMatchday) {
-		List<Match> currentMatches = new ArrayList<Match>();
+		
 		List<Match> matchesUntil = getMatchesUntil(currentMatchday);
+		
+		
+
+		return getDivisonalMatchesUntil(currentMatchday, matchesUntil);
+	}
+	
+	public List<Match> getDivisonalMatchesUntil(Matchday currentMatchday, List<Match> matchesUntil) {
+		List<Match> currentMatches = new ArrayList<Match>();
 		
 		Collections.sort(matchesUntil, new Comparator<Match>() {
 
