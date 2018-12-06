@@ -49,7 +49,7 @@ public abstract class JSONProducer<E extends AbstractEntity> {
 
 			List<E> found = handler.get(request);
 			response.status(200);
-			response.header("Content-Type", "application/json");
+			response.type("application/json");
 			return mapper.writeValueAsString(found);
 		});
 	}
@@ -58,7 +58,7 @@ public abstract class JSONProducer<E extends AbstractEntity> {
 		Spark.get("/" + root, (request, response) -> {
 			List<E> all = handler.getAll();
 			response.status(200);
-			response.header("Content-Type", "application/json");
+			response.type("application/json");
 			return mapper.writeValueAsString(all);
 		});
 	}

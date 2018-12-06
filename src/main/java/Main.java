@@ -127,7 +127,7 @@ public class Main {
 			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
 
 			response.status(200);
-			response.header("Content-Type", "application/json");
+			response.type("application/json");
 			return mapper.writeValueAsString(attributes);
 		} );
 		System.out.println("Register root : api/leaderboard");
@@ -296,7 +296,7 @@ public class Main {
 		
 		Spark.options("*",  (request, response) -> {
 			response.status(200);
-			response.header("Content-Type", "application/json");
+			response.type("application/json");
 			
 			response.header("Access-Control-Allow-Origin","*");
 			response.header("Access-Control-Allow-Methods","POST, GET, OPTIONS"); 
