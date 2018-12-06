@@ -63,6 +63,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 		registerGetSchema();
 		registerSave();
 		registerDelete();
+		
+		v2.bindServices(aBindContext);
 	}
 
 	private void registerDelete() {
