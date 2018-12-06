@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.google.common.base.Stopwatch;
 
 import de.florianmarsch.fussballmanager.db.entity.AbstractEntity;
+import de.florianmarsch.fussballmanager.db.json.v2.JSONProducer;
 import de.florianmarsch.fussballmanager.db.service.AbstractService;
 import spark.ModelAndView;
 import spark.Spark;
@@ -22,6 +23,8 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 
 	protected String root;
 	private RequestHandler<E> handler;
+	
+	private JSONProducer<E> v2;
 	
 	public AbstractJSONProducer(AbstractService<E> aAbstractService) {
 		Type genericSuperclass = this.getClass().getGenericSuperclass();
@@ -35,11 +38,13 @@ public abstract class AbstractJSONProducer<E extends AbstractEntity> {
 			e.printStackTrace();
 		}
 		register(aAbstractService, forName.getSimpleName());
+		v2 = new JSONProducer<E>(aAbstractService,forName.getSimpleName()) {
+		};
 	}
 	
 	private void register(AbstractService<E> aAbstractService, String aRoot) {
 		root = aRoot;
-		System.out.println("Register root : " + root);
+		System.out.println("Register root : " + root +" (deprecated see api/"+root+")");
 		handler = new RequestHandler<E>(aAbstractService);
 	}
 
