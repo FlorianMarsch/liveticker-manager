@@ -10,6 +10,9 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.florianmarsch.fussballmanager.db.entity.division.DivisionJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.lineup.LineUpJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.match.Match;
@@ -39,6 +42,10 @@ public class Main {
 		staticFileLocation("/public");
 
 		registerErrorHandler(new ErrorHandler());
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 		get("/the.appcache", (request, response) -> {
 			response.type("text/cache-manifest");
@@ -98,6 +105,31 @@ public class Main {
 
 			return new ModelAndView(attributes, "leaderboard.ftl");
 		} , new FreeMarkerEngine());
+		
+		get("/api/leaderboard", (request, response) -> {
+			Matchday aMatchday = getLiveGameDay();
+			
+			
+			GamedayProcessor gp = new GamedayProcessor();
+			ProcessingResult process = null;
+			if (aMatchday.getProcessed()) {
+				process = gp.review(aMatchday);
+			} else {
+				process = gp.process(aMatchday);
+			}
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("matchday", process.getMatchday());
+			attributes.put("events", process.getEvents());
+			attributes.put("results", process.getMatches());
+			attributes.put("allTimeTable", process.getTable());
+			attributes.put("divisionalTables", process.getDivisionalTables().entrySet());
+
+			response.status(200);
+			response.header("Content-Type", "application/json");
+			return mapper.writeValueAsString(attributes);
+		} );
+		System.out.println("Register root : api/leaderboard");
 		
 		
 		get("/leaderboard-overall-table", (request, response) -> {
