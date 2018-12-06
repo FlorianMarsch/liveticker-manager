@@ -4,9 +4,12 @@ import static spark.SparkBase.staticFileLocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 
@@ -21,6 +24,7 @@ import de.florianmarsch.fussballmanager.db.entity.match.MatchService;
 import de.florianmarsch.fussballmanager.db.entity.matchday.Matchday;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayJSONProducer;
 import de.florianmarsch.fussballmanager.db.entity.matchday.MatchdayService;
+import de.florianmarsch.fussballmanager.db.entity.trainer.Trainer;
 import de.florianmarsch.fussballmanager.db.entity.trainer.TrainerJSONProducer;
 import de.florianmarsch.fussballmanager.db.json.BindContext;
 import de.florianmarsch.fussballmanager.live.processor.DivisionProcessor;
@@ -135,6 +139,74 @@ public class Main {
 			return mapper.writeValueAsString(attributes);
 		} );
 		System.out.println("Register root : api/leaderboard");
+		
+		get("/api/statistik", (request, response) -> {
+			Matchday aMatchday = getLiveGameDay();
+			
+			MatchService matchservice = new MatchService();
+			List<Match> all = matchservice.getAll();
+			
+			List<Match> mostGoals = all.stream().filter(aMatch -> {
+				return Math.abs(aMatch.getHomeGoals()-aMatch.getGuestGoals()) > 0;
+			}).sorted((aMatch, otherMatch) -> {
+				return -1* Integer.valueOf(aMatch.getHomeGoals()+aMatch.getGuestGoals())
+						.compareTo(otherMatch.getHomeGoals()+otherMatch.getGuestGoals());
+			}).limit(3).collect(Collectors.toList());
+			
+			List<Match> mostDifference = all.stream().filter(aMatch -> {
+				return Math.abs(aMatch.getHomeGoals()-aMatch.getGuestGoals()) > 0;
+			}).sorted((aMatch, otherMatch) -> {
+				return -1* Integer.valueOf(Math.abs(aMatch.getHomeGoals()-aMatch.getGuestGoals()))
+						.compareTo(Math.abs(otherMatch.getHomeGoals()-otherMatch.getGuestGoals()));
+			}).limit(3).collect(Collectors.toList());
+			
+			
+			Map<Trainer, List<Match>> mostHomeGamesToNill = all.stream().filter(aMatch -> {
+				return aMatch.getHomeGoals() > 0 && aMatch.getGuestGoals() == 0;
+			}).collect(Collectors.groupingBy(aMatch->aMatch.getHome()));
+			Map<Trainer, List<Match>> mostGuestGamesToNill = all.stream().filter(aMatch -> {
+				return aMatch.getGuestGoals()> 0 && aMatch.getHomeGoals() == 0;
+			}).collect(Collectors.groupingBy(aMatch->aMatch.getGuest()));
+			
+			for (Trainer trainer : mostGuestGamesToNill.keySet()) {
+				if(!mostHomeGamesToNill.containsKey(trainer)) {
+					mostHomeGamesToNill.put(trainer, new ArrayList<>());
+				}
+				mostHomeGamesToNill.get(trainer).addAll(mostGuestGamesToNill.get(trainer));
+			}
+			Map<Trainer, Integer> gamesToNill = new HashMap<Trainer,Integer>();
+			for (Trainer trainer : mostHomeGamesToNill.keySet()) {
+				gamesToNill.put(trainer, mostHomeGamesToNill.get(trainer).size());
+			}
+			
+			Integer maxGamesToNill = gamesToNill.values().stream().max((a, b) -> {
+				return a.compareTo(b);
+			}).orElseGet(()->0);
+			
+			List<Trainer> mostGamesToNill = new ArrayList<Trainer>();
+			for (Trainer trainer : gamesToNill.keySet()) {
+				if(gamesToNill.get(trainer) == maxGamesToNill) {
+					mostGamesToNill.add(trainer);
+				}
+			}
+			Map<String, Object> gamesToNillResult = new HashMap<>();
+			gamesToNillResult.put("games", maxGamesToNill);
+			gamesToNillResult.put("trainer", mostGamesToNill);
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("mostGoals", mostGoals);
+			attributes.put("mostDifference", mostDifference);
+			attributes.put("gamesToNill", gamesToNillResult);
+
+			response.status(200);
+			response.type("application/json");
+			response.header("Access-Control-Allow-Origin","*");
+			response.header("Access-Control-Allow-Methods","POST, GET, OPTIONS"); 
+			response.header("Access-Control-Allow-Headers","access-control-allow-origin,access-control-allow-methods,access-control-allow-headers"); 
+		
+			return mapper.writeValueAsString(attributes);
+		} );
+		System.out.println("Register root : api/statistik");
 		
 		
 		get("/leaderboard-overall-table", (request, response) -> {
