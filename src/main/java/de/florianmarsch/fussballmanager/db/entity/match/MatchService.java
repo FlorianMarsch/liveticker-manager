@@ -83,7 +83,7 @@ public class MatchService extends AbstractService<Match> {
 		
 		for (Match match : matchesUntil) {
 			currentMatches.add(match);
-			if(match.getMatchday().getDivisionFinals()){
+			if(match.getMatchday().getDivisionFinals() && !match.getMatchday().equals(currentMatchday)){
 				currentMatches.clear();
 			}
 		}
